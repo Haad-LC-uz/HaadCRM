@@ -2,6 +2,7 @@
 
 public enum Role
 {
+    SuperAdmin,
     Admin,
     FinanceManager,
     MediaDepartment,
