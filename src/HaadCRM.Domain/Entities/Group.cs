@@ -16,4 +16,6 @@ public class Group : Auditable
     public DateTime EndTime { get; set; }
     public decimal Price { get; set; }
     public string Room { get; set; }
+
+    public IEnumerable<Lesson> Lessons { get; set; }
 }
