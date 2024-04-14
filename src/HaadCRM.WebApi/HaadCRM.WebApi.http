@@ -1,0 +1,6 @@
+@HaadCRM.WebApi_HostAddress = http://localhost:5150
+
+GET {{HaadCRM.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
