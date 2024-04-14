@@ -4,9 +4,12 @@ namespace HaadCRM.Domain.Entities;
 
 public class Group : Auditable
 {
+    public long CourseId { get; set; }
     public Course Course { get; set; }
-    public Employee TeacherId { get; set; }
-    public Employee AssistantId { get; set; }
+    public long TeacherId { get; set; }
+    public Employee Teacher { get; set; }
+    public long AssistantId { get; set; }
+    public Employee Assistant { get; set; }
     public string Name { get; set; }
     public DateTime StartTime { get; set; }
     public int Duration { get; set; }
