@@ -14,4 +14,6 @@ public class Employee : Auditable
     public decimal Salary { get; set; }
     public string PicturePath { get; set; }
     public Role Role { get; set; }
+
+    public IEnumerable<Group> Groups { get; set; }
 }
