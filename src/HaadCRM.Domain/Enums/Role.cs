@@ -4,6 +4,8 @@ public enum Role
 {
     SuperAdmin,
     Admin,
+    Teacher,
+    Assistant,
     FinanceManager,
     MediaDepartment,
     QualityAssistant,
