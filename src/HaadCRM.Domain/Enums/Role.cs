@@ -1,0 +1,13 @@
+﻿namespace HaadCRM.Domain.Enums;
+
+public enum Role
+{
+    Admin,
+    FinanceManager,
+    MediaDepartment,
+    QualityAssistant,
+    EDU,
+    CEO,
+    CFO,
+    MBC,
+}
