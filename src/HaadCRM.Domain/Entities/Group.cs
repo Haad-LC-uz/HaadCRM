@@ -19,4 +19,5 @@ public class Group : Auditable
 
     public IEnumerable<Lesson> Lessons { get; set; }
     public IEnumerable<GroupStudent> GroupStudents { get; set; }
+    public IEnumerable<RemovedStudent> RemovedStudents { get; set; }
 }
