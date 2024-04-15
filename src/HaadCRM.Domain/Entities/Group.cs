@@ -18,4 +18,6 @@ public class Group : Auditable
     public string Room { get; set; }
 
     public IEnumerable<Lesson> Lessons { get; set; }
+    public IEnumerable<GroupStudent> GroupStudents { get; set; }
+    public IEnumerable<RemovedStudent> RemovedStudents { get; set; }
 }

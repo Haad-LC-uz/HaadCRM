@@ -7,4 +7,6 @@ public class Lesson : Auditable
     public long GroupId { get; set; }
     public Group Group { get; set; }
     public string Name { get; set; }
+
+    public IEnumerable<LessonFile> Files { get; set; }
 }
