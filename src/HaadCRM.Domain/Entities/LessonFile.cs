@@ -1,6 +1,9 @@
-﻿namespace HaadCRM.Domain.Entities
+﻿using HaadCRM.Domain.Commons;
+
+namespace HaadCRM.Domain.Entities;
+
+public class LessonFile : Auditable
 {
-    internal class LessonFile
-    {
-    }
+    public long LessonId { get; set; }
+    public string FilePath { get; set; }
 }
