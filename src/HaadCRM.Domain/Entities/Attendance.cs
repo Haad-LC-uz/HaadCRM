@@ -9,6 +9,4 @@ public class Attendance : Auditable
     public long LessonId { get; set; }
     public Lesson Lesson { get; set; }
     public bool IsAttended { get; set; }
-
-
 }
