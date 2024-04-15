@@ -1,11 +1,12 @@
-﻿using HaadCRM.Service.DTOs.Employees;
+﻿using HaadCRM.Service.DTOs.Courses;
+using HaadCRM.Service.DTOs.Employees;
 
 namespace HaadCRM.Service.DTOs.Groups;
 
 public class GroupViewModel
 {
     public long Id { get; set; }
-    public long Course { get; set; }
+    public CourseViewModel Course { get; set; }
     public EmployeeViewModel Teacher { get; set; }
     public EmployeeViewModel Assistant { get; set; }
     public string Name { get; set; }
