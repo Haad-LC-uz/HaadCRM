@@ -1,6 +1,9 @@
 ﻿using HaadCRM.Domain.Commons;
+using HaadCRM.Domain.Entities.Courses;
+using HaadCRM.Domain.Entities.Employees;
+using HaadCRM.Domain.Entities.Lessons;
 
-namespace HaadCRM.Domain.Entities;
+namespace HaadCRM.Domain.Entities.Groups;
 
 public class Group : Auditable
 {

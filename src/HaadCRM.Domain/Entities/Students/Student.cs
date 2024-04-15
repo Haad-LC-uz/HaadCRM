@@ -1,6 +1,6 @@
 ﻿using HaadCRM.Domain.Commons;
 
-namespace HaadCRM.Domain.Entities;
+namespace HaadCRM.Domain.Entities.Students;
 
 public class Student : Auditable
 {
