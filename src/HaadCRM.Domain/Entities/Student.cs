@@ -10,4 +10,6 @@ public class Student : Auditable
     public string Phone { get; set; }
     public string Password { get; set; }
     public string ProfilePicturePath { get; set; }
+
+    public IEnumerable<Attendance> Attendances { get; set; }
 }
