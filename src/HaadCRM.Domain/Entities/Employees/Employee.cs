@@ -1,7 +1,8 @@
 ﻿using HaadCRM.Domain.Commons;
+using HaadCRM.Domain.Entities.Groups;
 using HaadCRM.Domain.Enums;
 
-namespace HaadCRM.Domain.Entities;
+namespace HaadCRM.Domain.Entities.Employees;
 
 public class Employee : Auditable
 {
