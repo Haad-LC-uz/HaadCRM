@@ -12,5 +12,5 @@ public enum Role
     EDU,
     CEO,
     CFO,
-    MBC,
+    MBC
 }
