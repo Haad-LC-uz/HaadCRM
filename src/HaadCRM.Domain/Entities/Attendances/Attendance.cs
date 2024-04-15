@@ -1,6 +1,8 @@
 ﻿using HaadCRM.Domain.Commons;
+using HaadCRM.Domain.Entities.Lessons;
+using HaadCRM.Domain.Entities.Students;
 
-namespace HaadCRM.Domain.Entities;
+namespace HaadCRM.Domain.Entities.Attendances;
 
 public class Attendance : Auditable
 {

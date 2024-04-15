@@ -1,6 +1,6 @@
 ﻿using HaadCRM.Domain.Commons;
 
-namespace HaadCRM.Domain.Entities;
+namespace HaadCRM.Domain.Entities.Lessons;
 
 public class LessonFile : Auditable
 {
