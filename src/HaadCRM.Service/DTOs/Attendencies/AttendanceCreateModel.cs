@@ -1,6 +1,8 @@
-﻿namespace HaadCRM.Service.DTOs.Attendencies
+﻿namespace HaadCRM.Service.DTOs.Attendencies;
+
+public class AttendanceCreateModel
 {
-    internal class AttendanceCreateModel
-    {
-    }
+    public long StudentId { get; set; }
+    public long LessonId { get; set; }
+    public bool IsAttended { get; set; }
 }
