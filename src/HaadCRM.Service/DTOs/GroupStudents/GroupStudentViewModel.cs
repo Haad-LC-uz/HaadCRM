@@ -1,5 +1,5 @@
-﻿using HaadCRM.Domain.Entities.Students;
-using System.Text.RegularExpressions;
+﻿using HaadCRM.Domain.Entities.Groups;
+using HaadCRM.Domain.Entities.Students;
 
 namespace HaadCRM.Service.DTOs.GroupStudents;
 
