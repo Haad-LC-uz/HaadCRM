@@ -5,6 +5,7 @@ namespace HaadCRM.Service.DTOs.RemovedStudents;
 
 public class RemovedStudentViewModel
 {
+    public long Id { get; set; }
     public Student Student { get; set; }
     public Group Group { get; set; }
     public string Reason { get; set; }
