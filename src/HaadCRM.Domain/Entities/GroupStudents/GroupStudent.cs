@@ -7,9 +7,10 @@ namespace HaadCRM.Domain.Entities.GroupStudents;
 public class GroupStudent : Auditable
 {
     public long GroupId { get; set; }
-    public Group Group { get; set; }
     public long StudentId { get; set; }
-    public Student Student { get; set; }
     public bool IsPaid { get; set; }
     public bool IsPassed { get; set; }
+
+    public Group Group { get; set; }
+    public Student Student { get; set; }
 }

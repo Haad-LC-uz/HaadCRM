@@ -7,8 +7,9 @@ namespace HaadCRM.Domain.Entities.Students;
 public class Student : Auditable
 {
     public long UserId { get; set; }
-    public User User { get; set; }
     public long AssetId { get; set; }
+
+    public User User { get; set; }
     public Asset Asset { get; set; }
 
     public IEnumerable<Attendance> Attendances { get; set; }
