@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\GroupStudents\" />
     <Folder Include="DTOs\LessonFiles\" />
     <Folder Include="DTOs\RemovedStudents\" />
   </ItemGroup>
