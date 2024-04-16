@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="DTOs\LessonFiles\" />
-    <Folder Include="DTOs\RemovedStudents\" />
   </ItemGroup>
 
 </Project>
