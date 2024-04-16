@@ -5,7 +5,8 @@ namespace HaadCRM.Domain.Entities.Exams;
 public class ExamFiles : Auditable
 {
     public long ExamId { get; set; }
-    public string FilePath { get; set; }
+    public long AssetId { get; set; }
 
     public Exam Exam { get; set; }
+    public Asset Asset { get; set; }
 }

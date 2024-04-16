@@ -5,7 +5,8 @@ namespace HaadCRM.Domain.Entities.Homeworks;
 public class HomeworkFiles : Auditable
 {
     public long HomeworkId { get; set; }
-    public string FilePath { get; set; }
+    public long AssetId { get; set; }
 
     public Homework Homework { get; set; }
+    public Asset Asset { get; set; }
 }
