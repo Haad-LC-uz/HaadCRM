@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using HaadCRM.Domain.Commons;
+﻿using HaadCRM.Domain.Commons;
 using HaadCRM.Domain.Entities.Attendances;
 using HaadCRM.Domain.Entities.Courses;
 using HaadCRM.Domain.Entities.Employees;
