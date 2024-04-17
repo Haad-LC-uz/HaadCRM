@@ -1,8 +1,6 @@
-﻿using HaadCRM.Domain.Commons;
+﻿namespace HaadCRM.Service.DTOs.Users;
 
-namespace HaadCRM.Domain.Entities.Users;
-
-public class User : Auditable
+public class UserCreateModel
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -10,6 +8,4 @@ public class User : Auditable
     public string Password { get; set; }
     public string Phone { get; set; }
     public long UserRoleId { get; set; }
-
-    public UserRole UserRole { get; set; }
 }

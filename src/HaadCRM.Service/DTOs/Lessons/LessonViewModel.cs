@@ -6,5 +6,6 @@ public class LessonViewModel
 {
     public long Id { get; set; }
     public GroupViewModel Group { get; set; }
+    public DateTime DateOfLesson { get; set; }
     public string Name { get; set; }
 }

@@ -14,6 +14,6 @@ public class Homework : Auditable
 
     public Lesson Lesson { get; set; }
     public Employee Assistant { get; set; }
-    public IEnumerable<HomeworkFiles> HomeworkFiles { get; set; }
-    public IEnumerable<HomeworkGrades> HomeworkGrades { get; set; }
+    public IEnumerable<HomeworkFile> HomeworkFiles { get; set; }
+    public IEnumerable<HomeworkGrade> HomeworkGrades { get; set; }
 }

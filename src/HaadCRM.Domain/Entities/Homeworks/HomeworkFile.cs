@@ -2,7 +2,7 @@
 
 namespace HaadCRM.Domain.Entities.Homeworks;
 
-public class HomeworkFiles : Auditable
+public class HomeworkFile : Auditable
 {
     public long HomeworkId { get; set; }
     public long AssetId { get; set; }

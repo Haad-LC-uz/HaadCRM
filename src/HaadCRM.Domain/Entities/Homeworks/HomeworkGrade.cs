@@ -4,7 +4,7 @@ using HaadCRM.Domain.Entities.Students;
 
 namespace HaadCRM.Domain.Entities.Homeworks;
 
-public class HomeworkGrades : Auditable
+public class HomeworkGrade : Auditable
 {
     public long StudentId { get; set; }
     public long AssistantId { get; set; }
