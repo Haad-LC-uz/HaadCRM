@@ -2,7 +2,7 @@
 
 namespace HaadCRM.Domain.Entities.Exams;
 
-public class ExamFiles : Auditable
+public class ExamFile : Auditable
 {
     public long ExamId { get; set; }
     public long AssetId { get; set; }
