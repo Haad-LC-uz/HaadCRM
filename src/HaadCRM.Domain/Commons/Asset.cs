@@ -1,4 +1,6 @@
-﻿namespace HaadCRM.Domain.Commons;
+﻿using HaadCRM.Domain.Enums;
+
+namespace HaadCRM.Domain.Commons;
 
 public class Asset : Auditable
 {

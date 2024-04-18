@@ -1,4 +1,4 @@
-﻿using HaadCRM.Service.Configurations;
+﻿using HaadCRM.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 
 namespace HaadCRM.Service.DTOs.Assets;

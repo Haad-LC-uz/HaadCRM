@@ -9,6 +9,6 @@ public class RemovedStudent : Auditable
     public long GroupId { get; set; }
     public string Reason { get; set; }
 
-    public Student Student { get; set; }
     public Group Group { get; set; }
+    public Student Student { get; set; }
 }
