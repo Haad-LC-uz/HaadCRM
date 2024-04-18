@@ -111,7 +111,6 @@ public class MappingProfile : Profile
         CreateMap<UserRole, UserRoleViewModel>().ReverseMap();
 
         CreateMap<Asset, AssetCreateModel>().ReverseMap();
-        CreateMap<Asset, AssetUpdateModel>().ReverseMap();
         CreateMap<Asset, AssetViewModel>().ReverseMap();
 
         CreateMap<Permission, PermissionCreateModel>().ReverseMap();
