@@ -9,12 +9,21 @@ public class UserRoleService(IUnitOfWork unitOfWork, IMapper mapper) : IUserRole
 {
     public async ValueTask<UserRoleViewModel> CreateAsync(UserRoleCreateModel createModel)
     {
+        var existingRole = await unitOfWork.UserRoles.SelectAsync(role => role.Name == createModel.Name);
+
+        if (existingRole != null)
+        {
+            throw new AlreadyExistException("A role with the same name already exists.");
+        }
+
         var userRole = mapper.Map<UserRole>(createModel);
+
         var createdUserRole = await unitOfWork.UserRoles.InsertAsync(userRole);
         await unitOfWork.SaveAsync();
 
         return mapper.Map<UserRoleViewModel>(createdUserRole);
     }
+
 
     public async ValueTask<bool> DeleteAsync(long id)
     {
