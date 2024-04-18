@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using HaadCRM.Domain.Commons;
+﻿using HaadCRM.Domain.Commons;
+using System.Linq.Expressions;
 
 namespace HaadCRM.Data.Repositories;
 

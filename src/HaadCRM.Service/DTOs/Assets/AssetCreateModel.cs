@@ -1,7 +1,10 @@
-﻿namespace HaadCRM.Service.DTOs.Assets;
+﻿using HaadCRM.Service.Configurations;
+using Microsoft.AspNetCore.Http;
+
+namespace HaadCRM.Service.DTOs.Assets;
 
 public class AssetCreateModel
 {
-    public string Name { get; set; }
-    public string Path { get; set; }
+    public IFormFile File { get; set; }
+    public FileType FileType { get; set; }
 }

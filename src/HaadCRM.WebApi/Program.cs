@@ -1,7 +1,6 @@
 using HaadCRM.Data.Contexts;
 using HaadCRM.Service.Helpers;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration.UserSecrets;
 using PathHelper = HaadCRM.Service.Helpers.PathHelper;
 
 var builder = WebApplication.CreateBuilder(args);
