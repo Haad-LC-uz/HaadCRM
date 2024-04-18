@@ -27,7 +27,7 @@ public class UserRoleService : IUserRoleService
 
     public async ValueTask<bool> DeleteAsync(long id)
     {
-        var userRole = await _unitOfWork.UserRoles.SelectAsync(role => role.Id == id) 
+        var userRole = await _unitOfWork.UserRoles.SelectAsync(role => role.Id == id)
             ?? throw new NotFoundException($"UserRole is not found with this ID={id}");
         await _unitOfWork.UserRoles.DeleteAsync(userRole);
         await _unitOfWork.SaveAsync();
@@ -43,14 +43,14 @@ public class UserRoleService : IUserRoleService
 
     public async ValueTask<UserRoleViewModel> GetByIdAsync(long id)
     {
-        var userRole = await _unitOfWork.UserRoles.SelectAsync(role => role.Id == id) 
+        var userRole = await _unitOfWork.UserRoles.SelectAsync(role => role.Id == id)
             ?? throw new NotFoundException($"UserRole is not found with this ID={id}");
         return _mapper.Map<UserRoleViewModel>(userRole);
     }
 
     public async ValueTask<UserRoleViewModel> UpdateAsync(long id, UserRoleUpdateModel updateModel)
     {
-        var userRole = await _unitOfWork.UserRoles.SelectAsync(role => role.Id == id) 
+        var userRole = await _unitOfWork.UserRoles.SelectAsync(role => role.Id == id)
             ?? throw new NotFoundException($"UserRole is not found with this ID={id}");
         _mapper.Map(updateModel, userRole);
 
