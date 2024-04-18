@@ -1,7 +1,7 @@
 ﻿using HaadCRM.Service.DTOs.Assets;
-using HaadCRM.Service.DTOs.Users;
+using HaadCRM.Service.DTOs.Users.Users.UserDTOs;
 
-namespace HaadCRM.Service.DTOs.Students;
+namespace HaadCRM.Service.DTOs.Students.StudentDTOs;
 
 public class StudentViewModel
 {

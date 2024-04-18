@@ -1,4 +1,4 @@
-﻿namespace HaadCRM.Service.DTOs.Students;
+﻿namespace HaadCRM.Service.DTOs.Students.StudentDTOs;
 
 public class StudentUpdateModel
 {

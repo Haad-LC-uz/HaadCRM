@@ -1,6 +1,6 @@
 ﻿using HaadCRM.Service.DTOs.Employees;
 using HaadCRM.Service.DTOs.Homeworks;
-using HaadCRM.Service.DTOs.Students;
+using HaadCRM.Service.DTOs.Students.StudentDTOs;
 
 namespace HaadCRM.Service.DTOs.HomeworkGrades;
 
