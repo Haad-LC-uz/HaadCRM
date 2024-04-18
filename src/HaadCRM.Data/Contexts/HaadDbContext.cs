@@ -15,7 +15,7 @@ namespace HaadCRM.Data.Contexts;
 
 public class HaadDbContext : DbContext
 {
-    public HaadDbContext(DbContextOptions<HaadDbContext> options ) : base(options) { }
+    public HaadDbContext(DbContextOptions<HaadDbContext> options) : base(options) { }
     public DbSet<Asset> Assets { get; set; }
     public DbSet<Attendance> Attendances { get; set; }
     public DbSet<Course> Courses { get; set; }

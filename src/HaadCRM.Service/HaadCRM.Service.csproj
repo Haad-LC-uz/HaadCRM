@@ -12,6 +12,7 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HaadCRM.Data\HaadCRM.Data.csproj" />
     <ProjectReference Include="..\HaadCRM.Domain\HaadCRM.Domain.csproj" />
   </ItemGroup>
 </Project>
