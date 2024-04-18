@@ -1,4 +1,4 @@
-﻿namespace HaadCRM.Service.DTOs.Homeworks;
+﻿namespace HaadCRM.Service.DTOs.Homework;
 
 public class HomeworkUpdateModel
 {

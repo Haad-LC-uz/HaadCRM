@@ -1,7 +1,7 @@
 ﻿using HaadCRM.Data.Contexts;
 using HaadCRM.Domain.Commons;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Data.Repositories;
 
@@ -19,6 +19,7 @@ public class Repository<T> : IRepository<T> where T : Auditable
     {
         return (await set.AddAsync(entity)).Entity;
     }
+
     public async Task<T> UpdateAsync(T entity)
     {
         entity.UpdatedAt = DateTime.UtcNow;
