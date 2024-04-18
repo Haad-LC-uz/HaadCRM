@@ -10,9 +10,14 @@
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.34" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HaadCRM.Data\HaadCRM.Data.csproj" />
     <ProjectReference Include="..\HaadCRM.Domain\HaadCRM.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\UserServices\" />
+    <Folder Include="Services\Users\" />
   </ItemGroup>
 </Project>
