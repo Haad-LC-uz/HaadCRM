@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HaadCRM.Data\HaadCRM.Data.csproj" />
+    <ProjectReference Include="..\HaadCRM.Service\HaadCRM.Service.csproj" />
   </ItemGroup>
 
 </Project>
