@@ -17,7 +17,6 @@
     <ProjectReference Include="..\HaadCRM.Domain\HaadCRM.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\UserServices\" />
     <Folder Include="Services\Users\" />
   </ItemGroup>
 </Project>
