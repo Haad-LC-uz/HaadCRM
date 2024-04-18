@@ -1,17 +1,35 @@
-﻿using HaadCRM.Service.DTOs.Courses;
+﻿using AutoMapper;
+using HaadCRM.Data.UnitOfWorks;
+using HaadCRM.Service.DTOs.Courses;
+using HaadCRM.Service.Exceptions;
 
 namespace HaadCRM.Service.Services.Courses;
 
-public class CourseService : ICourceService
+public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourceService
 {
-    public Task<CourseViewModel> CreateAsync(CourseCreateModel course)
+    public async Task<CourseViewModel> CreateAsync(CourseCreateModel course)
     {
-        throw new NotImplementedException();
+        var existCourse = await unitOfWork.Courses.SelectAsync(
+            expression: c => c.Name == course.Name);
+
+        if (existCourse is not null)
+            throw new AlreadyExistException($"Course already exist with Name = {course.Name}");
+
+        var createdCourse = await unitOfWork.Courses.InsertAsync(existCourse);
+        await unitOfWork.SaveAsync();
+
+        return mapper.Map<CourseViewModel>(createdCourse);
     }
 
-    public Task<bool> DeleteAsync(long id)
+    public async Task<bool> DeleteAsync(long id)
     {
-        throw new NotImplementedException();
+        var existCourse = await unitOfWork.Courses.SelectAsync(expression: c => c.Id == id)
+            ?? throw new NotFoundException($"Couse is not found with Id = {id}");
+
+        await unitOfWork.Courses.DeleteAsync(existCourse);
+        await unitOfWork.SaveAsync();
+
+        return true;
     }
 
     public Task<IEnumerable<CourseViewModel>> GetAllAsync()
