@@ -26,9 +26,11 @@ using HaadCRM.Service.DTOs.Homeworks;
 using HaadCRM.Service.DTOs.LessonFiles;
 using HaadCRM.Service.DTOs.Lessons;
 using HaadCRM.Service.DTOs.RemovedStudents;
-using HaadCRM.Service.DTOs.Students;
-using HaadCRM.Service.DTOs.UserRoles;
-using HaadCRM.Service.DTOs.Users;
+using HaadCRM.Service.DTOs.Students.StudentDTOs;
+using HaadCRM.Service.DTOs.Users.Permissions.PermissionDTOs;
+using HaadCRM.Service.DTOs.Users.Permissions.UserPermissions;
+using HaadCRM.Service.DTOs.Users.Users.UserDTOs;
+using HaadCRM.Service.DTOs.Users.Users.UserRoles;
 
 namespace HaadCRM.Service.Mappers;
 
@@ -111,5 +113,13 @@ public class MappingProfile : Profile
         CreateMap<Asset, AssetCreateModel>().ReverseMap();
         CreateMap<Asset, AssetUpdateModel>().ReverseMap();
         CreateMap<Asset, AssetViewModel>().ReverseMap();
+
+        CreateMap<Permission, PermissionCreateModel>().ReverseMap();
+        CreateMap<Permission, PermissionUpdateModel>().ReverseMap();
+        CreateMap<Permission, PermissionViewModel>().ReverseMap();
+
+        CreateMap<UserPermission, UserPermissionCreateModel>().ReverseMap();
+        CreateMap<UserPermission, UserPermissionUpdateModel>().ReverseMap();
+        CreateMap<UserPermission, UserPermissionViewModel>().ReverseMap();
     }
 }

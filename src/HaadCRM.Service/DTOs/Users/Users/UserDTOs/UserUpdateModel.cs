@@ -1,6 +1,6 @@
-﻿namespace HaadCRM.Service.DTOs.Users;
+﻿namespace HaadCRM.Service.DTOs.Users.Users.UserDTOs;
 
-public class UserCreateModel
+public class UserUpdateModel
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }

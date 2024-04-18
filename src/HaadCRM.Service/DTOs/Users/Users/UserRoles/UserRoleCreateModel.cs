@@ -1,4 +1,4 @@
-﻿namespace HaadCRM.Service.DTOs.UserRoles;
+﻿namespace HaadCRM.Service.DTOs.Users.Users.UserRoles;
 
 public class UserRoleCreateModel
 {
