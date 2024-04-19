@@ -59,8 +59,22 @@ public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonServ
         return mapper.Map<LessonViewModel>(existLesson);
     }
 
-    public Task<LessonViewModel> UpdateAsync(long id, LessonUpdateModel lesson)
+    public async Task<LessonViewModel> UpdateAsync(long id, LessonUpdateModel lesson)
     {
-        throw new NotImplementedException();
+        var existGroup = await unitOfWork.Groups.SelectAsync(
+            expression: g => g.Id == lesson.GroupId && !g.IsDeleted)
+            ?? throw new NotFoundException($"Group not found with Id = {lesson.GroupId}");
+
+        var existLesson = await unitOfWork.Lessons.SelectAsync(
+           expression: l => l.Id == id && !l.IsDeleted,
+           includes: ["Group"])
+            ?? throw new NotFoundException($"Lesson not found with Id = {id}");
+
+        var mapped = mapper.Map(lesson, existLesson);
+        var updated = await unitOfWork.Lessons.UpdateAsync(mapped);
+        updated.Group = existGroup;
+        await unitOfWork.SaveAsync();
+
+        return mapper.Map<LessonViewModel>(updated);
     }
 }
