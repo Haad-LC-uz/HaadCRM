@@ -50,8 +50,16 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourceServ
         return mapper.Map<CourseViewModel>(existCourse);
     }
 
-    public Task<CourseUpdateModel> UpdateAsync(long id, CourseUpdateModel course)
+    public async Task<CourseViewModel> UpdateAsync(long id, CourseUpdateModel course)
     {
-        throw new NotImplementedException();
+        var existCourse = await unitOfWork.Courses.SelectAsync(
+            expression: c => c.Id == id && !c.IsDeleted)
+            ?? throw new NotFoundException($"Couse is not found with Id = {id}");
+
+        var mapped = mapper.Map(course, existCourse);
+        var updated = await unitOfWork.Courses.UpdateAsync(mapped);
+        await unitOfWork.SaveAsync();
+
+        return mapper.Map<CourseViewModel>(course);
     }
 }
