@@ -54,9 +54,13 @@ public class GroupService(IMapper mapper, IUnitOfWork unitOfWork) : IGroupServic
         return mapper.Map<IEnumerable<GroupViewModel>>(Groups);
     }
 
-    public ValueTask<GroupViewModel> GetByIdAsync(long id)
+    public async ValueTask<GroupViewModel> GetByIdAsync(long id)
     {
-        throw new NotImplementedException();
+        var existGroup = await unitOfWork.Groups.SelectAsync(
+           expression: g => g.Id == id && !g.IsDeleted)
+           ?? throw new NotFoundException($"Group with Id = {id} is not found");
+
+        return mapper.Map<GroupViewModel>(existGroup);
     }
 
     public ValueTask<GroupViewModel> UpdateAsync(long id, GroupUpdateModel group)
