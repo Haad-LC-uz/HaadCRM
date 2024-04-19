@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace HaadCRM.Service.Services.LessonFiles;
 
-namespace HaadCRM.Service.Services.LessonFiles
+public class ILessonService
 {
-    internal class ILessonService
-    {
-    }
 }
