@@ -1,12 +1,30 @@
-﻿using HaadCRM.Service.DTOs.LessonsDTOs.Lessons;
+﻿using AutoMapper;
+using HaadCRM.Data.UnitOfWorks;
+using HaadCRM.Domain.Entities.Lessons;
+using HaadCRM.Service.DTOs.LessonsDTOs.Lessons;
+using HaadCRM.Service.Exceptions;
 
 namespace HaadCRM.Service.Services.Lessons;
 
-public class LessonService : ILessonService
+public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonService
 {
-    public Task<LessonViewModel> CreateAsync(LessonCreateModel lesson)
+    public async Task<LessonViewModel> CreateAsync(LessonCreateModel lesson)
     {
-        throw new NotImplementedException();
+        var existGroup = await unitOfWork.Groups.SelectAsync(
+            expression: g => g.Id == lesson.GroupId && !g.IsDeleted)
+            ?? throw new NotFoundException($"Group not found with Id = {lesson.GroupId}");
+
+        var existLesson = await unitOfWork.Lessons.SelectAsync(
+            expression:
+            l => l.Name == lesson.Name && !l.IsDeleted);
+
+        if (existLesson is not null)
+            throw new AlreadyExistException($"Lesson is already exist with Name = {lesson.Name}");
+
+        var createdLesson = await unitOfWork.Lessons.InsertAsync(mapper.Map<Lesson>(lesson));
+        await unitOfWork.SaveAsync();
+
+        return mapper.Map<LessonViewModel>(createdLesson);
     }
 
     public Task<bool> DeleteAsync(long id)
