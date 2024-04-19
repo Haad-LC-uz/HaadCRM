@@ -2,7 +2,7 @@
 
 namespace HaadCRM.Service.Services.Lessons;
 
-public interface LessonService
+public interface ILessonService
 {
     Task<LessonViewModel> CreateAsync(LessonCreateModel lesson);
     Task<LessonViewModel> UpdateAsync(long id, LessonUpdateModel lesson);
