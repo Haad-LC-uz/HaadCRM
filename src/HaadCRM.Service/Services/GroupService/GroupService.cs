@@ -37,7 +37,13 @@ public class GroupService(IMapper mapper, IUnitOfWork unitOfWork) : IGroupServic
     public async ValueTask<bool> DeleteAsync(long id)
     {
         var existGroup = await unitOfWork.Groups.SelectAsync(
-            expression: g => g.)
+            expression: g => g.Id == id && !g.IsDeleted)
+            ?? throw new NotFoundException($"Group with Id = {id} is not found");
+
+        await unitOfWork.Groups.DeleteAsync(existGroup);
+        await unitOfWork.SaveAsync();
+
+        return true;
     }
 
     public ValueTask<GroupViewModel> GetAllAsync()
