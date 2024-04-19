@@ -1,5 +1,12 @@
-﻿namespace HaadCRM.Service.Services.LessonFiles;
+﻿using HaadCRM.Service.DTOs.LessonsDTOs.LessonFiles;
 
-public class ILessonFilesService
+namespace HaadCRM.Service.Services.LessonFiles;
+
+public interface ILessonFilesService
 {
+    Task<LessonFileViewModel> CreateAsync(LessonFileViewModel lessonfile);
+    Task<LessonFileViewModel> UpdateAsync(long id, LessonFileUpdateModel lessonfile);
+    Task<bool> DeleteAsync(long id);
+    Task<LessonFileViewModel> GetByIdAsync(long id);
+    Task<IEnumerable<LessonFileViewModel>> GetAllAsync();
 }
