@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using HaadCRM.Data.UnitOfWorks;
+﻿using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Service.DTOs.Courses;
 using HaadCRM.Service.Exceptions;
+using AutoMapper;
 
 namespace HaadCRM.Service.Services.Courses;
 
