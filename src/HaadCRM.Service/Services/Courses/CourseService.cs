@@ -7,7 +7,7 @@ namespace HaadCRM.Service.Services.Courses;
 
 public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourceService
 {
-    public async Task<CourseViewModel> CreateAsync(CourseCreateModel course)
+    public async ValueTask<CourseViewModel> CreateAsync(CourseCreateModel course)
     {
         var existCourse = await unitOfWork.Courses.SelectAsync(
             expression: c => c.Name == course.Name && !c.IsDeleted);
@@ -21,7 +21,7 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourceServ
         return mapper.Map<CourseViewModel>(createdCourse);
     }
 
-    public async Task<bool> DeleteAsync(long id)
+    public async ValueTask<bool> DeleteAsync(long id)
     {
         var existCourse = await unitOfWork.Courses.SelectAsync(
             expression: c => c.Id == id && !c.IsDeleted)
@@ -33,7 +33,7 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourceServ
         return true;
     }
 
-    public async Task<IEnumerable<CourseViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<CourseViewModel>> GetAllAsync()
     {
         var Courses = await unitOfWork.Courses.SelectAsEnumerableAsync(
             expression: c => !c.IsDeleted);
@@ -41,7 +41,7 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourceServ
         return mapper.Map<IEnumerable<CourseViewModel>>(Courses);
     }
 
-    public async Task<CourseViewModel> GetByIdAsync(long id)
+    public async ValueTask<CourseViewModel> GetByIdAsync(long id)
     {
         var existCourse = await unitOfWork.Courses.SelectAsync(
             expression: c => !c.IsDeleted)
@@ -50,7 +50,7 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourceServ
         return mapper.Map<CourseViewModel>(existCourse);
     }
 
-    public async Task<CourseViewModel> UpdateAsync(long id, CourseUpdateModel course)
+    public async ValueTask<CourseViewModel> UpdateAsync(long id, CourseUpdateModel course)
     {
         var existCourse = await unitOfWork.Courses.SelectAsync(
             expression: c => c.Id == id && !c.IsDeleted)
