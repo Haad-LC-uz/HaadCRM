@@ -24,6 +24,7 @@ public class PermissionService(IUnitOfWork unitOfWork, IMapper mapper)
 
         return mapper.Map<PermissionViewModel>(createdPermission);        
     }
+    
     public async ValueTask<PermissionViewModel> UpdateAsync(long id, PermissionUpdateModel updateModel){
         var permission = await unitOfWork.Permissions.SelectAsync(permission => permission.Id == id)
            ?? throw new NotFoundException($"Permission is not found with this ID={id}");
@@ -35,6 +36,7 @@ public class PermissionService(IUnitOfWork unitOfWork, IMapper mapper)
 
         return mapper.Map<PermissionViewModel>(permission);
     }
+
     public async ValueTask<bool> DeleteAsync(long id)
     {
         var permission = await unitOfWork.Permissions.SelectAsync(permission => permission.Id == id)
@@ -44,11 +46,13 @@ public class PermissionService(IUnitOfWork unitOfWork, IMapper mapper)
         
         return true;
     }
+
     public async ValueTask<IEnumerable<PermissionViewModel>> GetAllAsync()
     {
         var permissions = await unitOfWork.Permissions.SelectAsEnumerableAsync();
         return mapper.Map<IEnumerable<PermissionViewModel>>(permissions);
     }
+
     public async ValueTask<PermissionViewModel> GetByIdAsync(long id)
     {
         var permission = await unitOfWork.Permissions.SelectAsync(permission => permission.Id == id)
