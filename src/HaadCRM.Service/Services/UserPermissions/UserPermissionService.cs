@@ -41,7 +41,7 @@ public class UserPermissionService(IMapper mapper, IUnitOfWork unitOfWork) : IUs
     public async ValueTask<bool> DeleteAsync(long userId, long permissionId)
     {
         var userPermission = await unitOfWork.UserPermissions.SelectAsync(up =>
-            up.UserId == userId && up.PermissionId == permissionId)
+            up.UserId == userId && up.PermissionId == permissionId && !up.IsDeleted)
             ?? throw new NotFoundException("User permission not found.");
         await unitOfWork.UserPermissions.DeleteAsync(userPermission);
         await unitOfWork.SaveAsync();
