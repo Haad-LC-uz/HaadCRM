@@ -63,8 +63,28 @@ public class GroupService(IMapper mapper, IUnitOfWork unitOfWork) : IGroupServic
         return mapper.Map<GroupViewModel>(existGroup);
     }
 
-    public ValueTask<GroupViewModel> UpdateAsync(long id, GroupUpdateModel group)
+    public async ValueTask<GroupViewModel> UpdateAsync(long id, GroupUpdateModel group)
     {
-        throw new NotImplementedException();
+        var existCourse = await unitOfWork.Courses.SelectAsync(
+           expression: c => c.Id == group.CourseId && !c.IsDeleted)
+           ?? throw new NotFoundException($"Course with Id = {group.CourseId} is not found");
+
+        var existTeacher = await unitOfWork.Users.SelectAsync(
+            expression: t => (t.UserRole.Name.ToLower() == ("Teacher").ToLower()) && t.Id == group.TeacherId && !t.IsDeleted)
+            ?? throw new NotFoundException($"Teacher with Id = {group.TeacherId} is not found");
+
+        var existAssistant = await unitOfWork.Users.SelectAsync(
+            expression: t => (t.UserRole.Name.ToLower() == ("Assistant").ToLower()) && t.Id == group.AssistantId && !t.IsDeleted)
+            ?? throw new NotFoundException($"Assistant with Id = {group.TeacherId} is not found");
+
+        var existGroup = await unitOfWork.Groups.SelectAsync(
+           expression: g => g.Id == id && !g.IsDeleted)
+           ?? throw new NotFoundException($"Group with Id = {id} is not found");
+
+        var mapped = mapper.Map(group, existGroup);
+        var updated = await unitOfWork.Groups.UpdateAsync(mapped);
+        await unitOfWork.SaveAsync();
+
+        return mapper.Map<GroupViewModel>(updated);
     }
 }
