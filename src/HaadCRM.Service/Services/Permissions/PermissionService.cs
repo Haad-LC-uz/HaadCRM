@@ -6,7 +6,7 @@ using HaadCRM.Service.Exceptions;
 
 namespace HaadCRM.Service.Services.Permissions;
 
-public class PermissionService(IUnitOfWork unitOfWork, IMapper mapper)
+public class PermissionService(IUnitOfWork unitOfWork, IMapper mapper) : IPermissionService
 {
     public async ValueTask<PermissionViewModel> CreateAsync(PermissionCreateModel createModel)
     {
@@ -22,10 +22,11 @@ public class PermissionService(IUnitOfWork unitOfWork, IMapper mapper)
 
         await unitOfWork.SaveAsync();
 
-        return mapper.Map<PermissionViewModel>(createdPermission);        
+        return mapper.Map<PermissionViewModel>(createdPermission);
     }
-    
-    public async ValueTask<PermissionViewModel> UpdateAsync(long id, PermissionUpdateModel updateModel){
+
+    public async ValueTask<PermissionViewModel> UpdateAsync(long id, PermissionUpdateModel updateModel)
+    {
         var permission = await unitOfWork.Permissions.SelectAsync(permission => permission.Id == id)
            ?? throw new NotFoundException($"Permission is not found with this ID={id}");
         mapper.Map(updateModel, permission);
@@ -43,7 +44,7 @@ public class PermissionService(IUnitOfWork unitOfWork, IMapper mapper)
            ?? throw new NotFoundException($"Permission is not found with this ID={id}");
         await unitOfWork.Permissions.DeleteAsync(permission);
         await unitOfWork.SaveAsync();
-        
+
         return true;
     }
 
