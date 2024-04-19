@@ -27,9 +27,16 @@ public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonServ
         return mapper.Map<LessonViewModel>(createdLesson);
     }
 
-    public Task<bool> DeleteAsync(long id)
+    public async Task<bool> DeleteAsync(long id)
     {
-        throw new NotImplementedException();
+        var existLesson = await unitOfWork.Lessons.SelectAsync(
+            expression: l => l.Id == id && !l.IsDeleted)
+            ?? throw new NotFoundException($"Lesson is not found with Id = {id}");
+
+        await unitOfWork.Lessons.DeleteAsync(existLesson);
+        await unitOfWork.SaveAsync();
+
+        return true;
     }
 
     public Task<IEnumerable<LessonViewModel>> GetAllAsync()
