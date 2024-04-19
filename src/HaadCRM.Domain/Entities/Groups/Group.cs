@@ -1,8 +1,8 @@
 ﻿using HaadCRM.Domain.Commons;
 using HaadCRM.Domain.Entities.Courses;
+using HaadCRM.Domain.Entities.Employees;
 using HaadCRM.Domain.Entities.Lessons;
 using HaadCRM.Domain.Entities.Students;
-using HaadCRM.Domain.Entities.Employees;
 
 namespace HaadCRM.Domain.Entities.Groups;
 

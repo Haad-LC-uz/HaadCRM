@@ -1,6 +1,6 @@
 ﻿using HaadCRM.Domain.Commons;
-using HaadCRM.Domain.Entities.Groups;
 using HaadCRM.Domain.Entities.Employees;
+using HaadCRM.Domain.Entities.Groups;
 
 namespace HaadCRM.Domain.Entities.Exams;
 

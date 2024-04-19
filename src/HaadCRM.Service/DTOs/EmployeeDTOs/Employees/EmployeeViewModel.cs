@@ -1,6 +1,4 @@
 ﻿using HaadCRM.Service.DTOs.Assets;
-using HaadCRM.Service.DTOs.EmployeeRoles;
-using HaadCRM.Service.DTOs.Users.Users.UserDTOs;
 
 namespace HaadCRM.Service.DTOs.EmployeeDTOs.Employees;
 
