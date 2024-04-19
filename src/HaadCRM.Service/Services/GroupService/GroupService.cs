@@ -1,17 +1,43 @@
-﻿using HaadCRM.Service.DTOs.GroupDTOs.Groups;
+﻿using AutoMapper;
+using HaadCRM.Data.UnitOfWorks;
+using HaadCRM.Domain.Entities.Groups;
+using HaadCRM.Service.DTOs.GroupDTOs.Groups;
+using HaadCRM.Service.Exceptions;
 
 namespace HaadCRM.Service.Services.GroupService;
 
-public class GroupService : IGroupService
+public class GroupService(IMapper mapper, IUnitOfWork unitOfWork) : IGroupService
 {
-    public ValueTask<GroupViewModel> CreateAsync(GroupCreateModel group)
+    public async ValueTask<GroupViewModel> CreateAsync(GroupCreateModel group)
     {
-        throw new NotImplementedException();
+        var existCourse = await unitOfWork.Courses.SelectAsync(
+            expression: c => c.Id == group.CourseId && !c.IsDeleted)
+            ?? throw new NotFoundException($"Course with Id = {group.CourseId} is not found");
+
+        var existTeacher = await unitOfWork.Users.SelectAsync(
+            expression: t => (t.UserRole.Name.ToLower() == ("Teacher").ToLower()) && t.Id == group.TeacherId && !t.IsDeleted)
+            ?? throw new NotFoundException($"Teacher with Id = {group.TeacherId} is not found");
+
+        var existAssistant = await unitOfWork.Users.SelectAsync(
+            expression: t => (t.UserRole.Name.ToLower() == ("Assistant").ToLower()) && t.Id == group.AssistantId && !t.IsDeleted)
+            ?? throw new NotFoundException($"Assistant with Id = {group.TeacherId} is not found");
+
+        var existGroup = await unitOfWork.Groups.SelectAsync(
+            expression: g => g.Name == group.Name && !g.IsDeleted);
+
+        if (existGroup is not null)
+            throw new AlreadyExistException($"Group with Name = {group.Name} is already exists");
+
+        var created = await unitOfWork.Groups.InsertAsync(mapper.Map<Group>(group));
+        await unitOfWork.SaveAsync();
+
+        return mapper.Map<GroupViewModel>(created);
     }
 
-    public ValueTask<bool> DeleteAsync(GroupCreateModel group)
+    public async ValueTask<bool> DeleteAsync(long id)
     {
-        throw new NotImplementedException();
+        var existGroup = await unitOfWork.Groups.SelectAsync(
+            expression: g => g.)
     }
 
     public ValueTask<GroupViewModel> GetAllAsync()

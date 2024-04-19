@@ -6,7 +6,7 @@ public interface IGroupService
 {
     ValueTask<GroupViewModel> CreateAsync(GroupCreateModel group);
     ValueTask<GroupViewModel> UpdateAsync(long id, GroupUpdateModel group);
-    ValueTask<bool> DeleteAsync(GroupCreateModel group);
+    ValueTask<bool> DeleteAsync(long id);
     ValueTask<GroupViewModel> GetByIdAsync(long id);
     ValueTask<GroupViewModel> GetAllAsync();
 }
