@@ -49,5 +49,16 @@ public class EmployeeService
         return _mapper.Map<EmployeeViewModel>(employee);
     }
 
+    public async ValueTask<bool> DeleteAsync(long id)
+    {
+        var employee = await _unitOfWork.Employees.SelectAsync(emp => emp.Id == id)
+            ?? throw new NotFoundException($"Employee is not found with this ID={id}");
+
+        await _unitOfWork.Employees.DeleteAsync(employee);
+        await _unitOfWork.SaveAsync();
+
+        return true;
+    }
+
     
 }
