@@ -1,10 +1,9 @@
-﻿using HaadCRM.Service.DTOs.Employees;
-using HaadCRM.Service.DTOs.HomeworkDTOs.Homework;
+﻿using HaadCRM.Service.DTOs.HomeworkDTOs.Homework;
 using HaadCRM.Service.DTOs.StudentDTOs.Students;
 
 namespace HaadCRM.Service.DTOs.HomeworkDTOs.HomeworkGrades;
 
-public class HomeworkGradeViewModel
+public class HomeWorkGradeViewModel
 {
     public long Id { get; set; }
     public StudentViewModel Student { get; set; }

@@ -33,7 +33,7 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
 
     public async ValueTask<UserViewModel> UpdateAsync(long id, UserUpdateModel updateModel)
     {
-        var user = await unitOfWork.Users.SelectAsync(user => user.Id == id) 
+        var user = await unitOfWork.Users.SelectAsync(user => user.Id == id)
             ?? throw new NotFoundException($"User is not found with ID={id}");
         mapper.Map(updateModel, user);
 
@@ -45,7 +45,7 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
 
     public async ValueTask<bool> DeleteAsync(long id)
     {
-        var user = await unitOfWork.Users.SelectAsync(user => user.Id == id) 
+        var user = await unitOfWork.Users.SelectAsync(user => user.Id == id)
             ?? throw new NotFoundException($"User is not found with ID={id}");
         await unitOfWork.Users.DeleteAsync(user);
         await unitOfWork.SaveAsync();
@@ -61,7 +61,7 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
 
     public async ValueTask<UserViewModel> GetByIdAsync(long id)
     {
-        var user = await unitOfWork.Users.SelectAsync(user => user.Id == id) 
+        var user = await unitOfWork.Users.SelectAsync(user => user.Id == id)
             ?? throw new NotFoundException($"User is not found with ID={id}");
         return mapper.Map<UserViewModel>(user);
     }

@@ -1,5 +1,4 @@
-﻿using HaadCRM.Service.Configurations;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace HaadCRM.Service.Helpers;
 

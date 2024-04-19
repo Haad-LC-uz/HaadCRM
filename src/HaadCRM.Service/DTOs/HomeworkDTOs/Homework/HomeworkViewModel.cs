@@ -1,5 +1,4 @@
-﻿using HaadCRM.Service.DTOs.Employees;
-using HaadCRM.Service.DTOs.LessonsDTOs.Lessons;
+﻿using HaadCRM.Service.DTOs.LessonsDTOs.Lessons;
 
 namespace HaadCRM.Service.DTOs.HomeworkDTOs.Homework;
 

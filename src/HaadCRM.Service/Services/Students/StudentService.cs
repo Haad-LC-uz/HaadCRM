@@ -2,14 +2,7 @@
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Students;
 using HaadCRM.Service.DTOs.StudentDTOs.Students;
-using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HaadCRM.Service.Services.Students;
 
@@ -58,7 +51,9 @@ public class StudentService(IUnitOfWork unitOfWork, IMapper mapper) : IStudentSe
 
     public async ValueTask<IEnumerable<StudentViewModel>> GetAllAsync()
     {
-        var students = await unitOfWork.Students.SelectAsEnumerableAsync();
+        var students = await unitOfWork.Students.SelectAsEnumerableAsync(
+            expression: s => !s.IsDeleted,
+            includes: ["User", "Asset"]);
         return mapper.Map<IEnumerable<StudentViewModel>>(students);
     }
 }
