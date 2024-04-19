@@ -60,5 +60,17 @@ public class EmployeeService
         return true;
     }
 
-    
+    public async ValueTask<IEnumerable<EmployeeViewModel>> GetAllAsync()
+    {
+        var employees = await _unitOfWork.Employees.SelectAsEnumerableAsync();
+        return _mapper.Map<IEnumerable<EmployeeViewModel>>(employees);
+    }
+
+    public async ValueTask<EmployeeViewModel> GetByIdAsync(long id)
+    {
+        var employee = await _unitOfWork.Employees.SelectAsync(emp => emp.Id == id)
+            ?? throw new NotFoundException($"Employee is not found with this ID={id}");
+
+        return _mapper.Map<EmployeeViewModel>(employee);
+    }
 }
