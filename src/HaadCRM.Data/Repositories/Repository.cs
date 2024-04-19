@@ -15,19 +15,19 @@ public class Repository<T> : IRepository<T> where T : Auditable
         this.set = context.Set<T>();
     }
 
-    public async Task<T> InsertAsync(T entity)
+    public async ValueTask<T> InsertAsync(T entity)
     {
         return (await set.AddAsync(entity)).Entity;
     }
 
-    public async Task<T> UpdateAsync(T entity)
+    public async ValueTask<T> UpdateAsync(T entity)
     {
         entity.UpdatedAt = DateTime.UtcNow;
         set.Update(entity);
         return await Task.FromResult(entity);
     }
 
-    public async Task<T> DeleteAsync(T entity)
+    public async ValueTask<T> DeleteAsync(T entity)
     {
         entity.IsDeleted = true;
         entity.DeletedAt = DateTime.UtcNow;
@@ -35,12 +35,12 @@ public class Repository<T> : IRepository<T> where T : Auditable
         return await Task.FromResult(entity);
     }
 
-    public async Task<T> DropAsync(T entity)
+    public async ValueTask<T> DropAsync(T entity)
     {
         return await Task.FromResult(set.Remove(entity).Entity);
     }
 
-    public async Task<T> SelectAsync(Expression<Func<T, bool>> expression, string[] includes = null)
+    public async ValueTask<T> SelectAsync(Expression<Func<T, bool>> expression, string[] includes = null)
     {
         var query = set.Where(expression);
 
@@ -51,7 +51,7 @@ public class Repository<T> : IRepository<T> where T : Auditable
         return await query.FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<T>> SelectAsEnumerableAsync(Expression<Func<T, bool>> expression = null, string[] includes = null, bool isTracked = true)
+    public async ValueTask<IEnumerable<T>> SelectAsEnumerableAsync(Expression<Func<T, bool>> expression = null, string[] includes = null, bool isTracked = true)
     {
         var query = expression is null ? set : set.Where(expression);
 

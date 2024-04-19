@@ -5,12 +5,12 @@ namespace HaadCRM.Data.Repositories;
 
 public interface IRepository<T> where T : Auditable
 {
-    Task<T> InsertAsync(T entity);
-    Task<T> DeleteAsync(T entity);
-    Task<T> DropAsync(T entity);
-    Task<T> UpdateAsync(T entity);
-    Task<T> SelectAsync(Expression<Func<T, bool>> expression, string[] includes = null);
-    Task<IEnumerable<T>> SelectAsEnumerableAsync(
+    ValueTask<T> InsertAsync(T entity);
+    ValueTask<T> DeleteAsync(T entity);
+    ValueTask<T> DropAsync(T entity);
+    ValueTask<T> UpdateAsync(T entity);
+    ValueTask<T> SelectAsync(Expression<Func<T, bool>> expression, string[] includes = null);
+    ValueTask<IEnumerable<T>> SelectAsEnumerableAsync(
         Expression<Func<T, bool>> expression = null,
          string[] includes = null,
          bool isTracked = true);

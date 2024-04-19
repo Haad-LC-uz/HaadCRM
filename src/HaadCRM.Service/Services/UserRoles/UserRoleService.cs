@@ -24,7 +24,6 @@ public class UserRoleService(IUnitOfWork unitOfWork, IMapper mapper) : IUserRole
         return mapper.Map<UserRoleViewModel>(createdUserRole);
     }
 
-
     public async ValueTask<bool> DeleteAsync(long id)
     {
         var userRole = await unitOfWork.UserRoles.SelectAsync(role => role.Id == id)

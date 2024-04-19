@@ -4,9 +4,9 @@ namespace HaadCRM.Service.Services.Lessons;
 
 public interface ILessonService
 {
-    Task<LessonViewModel> CreateAsync(LessonCreateModel lesson);
-    Task<LessonViewModel> UpdateAsync(long id, LessonUpdateModel lesson);
-    Task<bool> DeleteAsync(long id);
-    Task<LessonViewModel> GetByIdAsync(long id);
-    Task<IEnumerable<LessonViewModel>> GetAllAsync();
+    ValueTask<LessonViewModel> CreateAsync(LessonCreateModel lesson);
+    ValueTask<LessonViewModel> UpdateAsync(long id, LessonUpdateModel lesson);
+    ValueTask<bool> DeleteAsync(long id);
+    ValueTask<LessonViewModel> GetByIdAsync(long id);
+    ValueTask<IEnumerable<LessonViewModel>> GetAllAsync();
 }

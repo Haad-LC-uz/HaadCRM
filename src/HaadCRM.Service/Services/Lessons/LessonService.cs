@@ -8,7 +8,7 @@ namespace HaadCRM.Service.Services.Lessons;
 
 public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonService
 {
-    public async Task<LessonViewModel> CreateAsync(LessonCreateModel lesson)
+    public async ValueTask<LessonViewModel> CreateAsync(LessonCreateModel lesson)
     {
         var existGroup = await unitOfWork.Groups.SelectAsync(
             expression: g => g.Id == lesson.GroupId && !g.IsDeleted)
@@ -28,7 +28,7 @@ public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonServ
         return mapper.Map<LessonViewModel>(createdLesson);
     }
 
-    public async Task<bool> DeleteAsync(long id)
+    public async ValueTask<bool> DeleteAsync(long id)
     {
         var existLesson = await unitOfWork.Lessons.SelectAsync(
             expression: l => l.Id == id && !l.IsDeleted)
@@ -40,7 +40,7 @@ public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonServ
         return true;
     }
 
-    public async Task<IEnumerable<LessonViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<LessonViewModel>> GetAllAsync()
     {
         var Lessons = await unitOfWork.Lessons.SelectAsEnumerableAsync(
             expression: l => !l.IsDeleted,
@@ -49,7 +49,7 @@ public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonServ
         return mapper.Map<IEnumerable<LessonViewModel>>(Lessons);
     }
 
-    public async Task<LessonViewModel> GetByIdAsync(long id)
+    public async ValueTask<LessonViewModel> GetByIdAsync(long id)
     {
         var existLesson = await unitOfWork.Lessons.SelectAsync(
             expression: l => l.Id == id && !l.IsDeleted,
@@ -59,7 +59,7 @@ public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonServ
         return mapper.Map<LessonViewModel>(existLesson);
     }
 
-    public async Task<LessonViewModel> UpdateAsync(long id, LessonUpdateModel lesson)
+    public async ValueTask<LessonViewModel> UpdateAsync(long id, LessonUpdateModel lesson)
     {
         var existGroup = await unitOfWork.Groups.SelectAsync(
             expression: g => g.Id == lesson.GroupId && !g.IsDeleted)
