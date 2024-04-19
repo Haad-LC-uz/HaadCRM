@@ -12,7 +12,7 @@ public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonServ
     {
         var existGroup = await unitOfWork.Groups.SelectAsync(
             expression: g => g.Id == lesson.GroupId && !g.IsDeleted)
-            ?? throw new NotFoundException($"Group not found with Id = {lesson.GroupId}");
+            ?? throw new NotFoundException($"Group is not found with Id = {lesson.GroupId}");
 
         var existLesson = await unitOfWork.Lessons.SelectAsync(
            expression: l => l.Name == lesson.Name && !l.IsDeleted,
@@ -63,12 +63,12 @@ public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonServ
     {
         var existGroup = await unitOfWork.Groups.SelectAsync(
             expression: g => g.Id == lesson.GroupId && !g.IsDeleted)
-            ?? throw new NotFoundException($"Group not found with Id = {lesson.GroupId}");
+            ?? throw new NotFoundException($"Group is not found with Id = {lesson.GroupId}");
 
         var existLesson = await unitOfWork.Lessons.SelectAsync(
            expression: l => l.Id == id && !l.IsDeleted,
            includes: ["Group"])
-            ?? throw new NotFoundException($"Lesson not found with Id = {id}");
+            ?? throw new NotFoundException($"Lesson is not found with Id = {id}");
 
         var mapped = mapper.Map(lesson, existLesson);
         var updated = await unitOfWork.Lessons.UpdateAsync(mapped);
