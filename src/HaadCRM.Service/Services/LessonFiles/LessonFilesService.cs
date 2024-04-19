@@ -44,9 +44,8 @@ public class LessonFilesService(IMapper mapper, IUnitOfWork unitOfWork) : ILesso
 
     public async ValueTask<IEnumerable<LessonFileViewModel>> GetAllAsync()
     {
-        var Lessons = unitOfWork.Lessons.SelectAsQueryable()
-            .Where(lf => !lf.IsDeleted)
-            .ToList();
+        var Lessons = await unitOfWork.Lessons.SelectAsEnumerableAsync(
+            expression: lf => !lf.IsDeleted);
 
         return mapper.Map<IEnumerable<LessonFileViewModel>>(Lessons);
     }
