@@ -83,7 +83,7 @@ public class MappingProfile : Profile
 
         CreateMap<HomeworkGrade, HomeworkGradeCreateModel>().ReverseMap();
         CreateMap<HomeworkGrade, HomeworkGradeUpdateModel>().ReverseMap();
-        CreateMap<HomeworkGrade, HomeWorkGradeViewModel>().ReverseMap();
+        CreateMap<HomeworkGrade, HomeworkGradeViewModel>().ReverseMap();
 
         CreateMap<Lesson, LessonCreateModel>().ReverseMap();
         CreateMap<Lesson, LessonUpdateModel>().ReverseMap();
