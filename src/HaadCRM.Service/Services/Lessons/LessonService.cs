@@ -15,13 +15,14 @@ public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonServ
             ?? throw new NotFoundException($"Group not found with Id = {lesson.GroupId}");
 
         var existLesson = await unitOfWork.Lessons.SelectAsync(
-            expression:
-            l => l.Name == lesson.Name && !l.IsDeleted);
+           expression: l => l.Name == lesson.Name && !l.IsDeleted,
+           includes: ["Group"]);
 
         if (existLesson is not null)
             throw new AlreadyExistException($"Lesson is already exist with Name = {lesson.Name}");
 
         var createdLesson = await unitOfWork.Lessons.InsertAsync(mapper.Map<Lesson>(lesson));
+        createdLesson.Group = existGroup;
         await unitOfWork.SaveAsync();
 
         return mapper.Map<LessonViewModel>(createdLesson);
@@ -39,14 +40,23 @@ public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonServ
         return true;
     }
 
-    public Task<IEnumerable<LessonViewModel>> GetAllAsync()
+    public async Task<IEnumerable<LessonViewModel>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var Lessons = await unitOfWork.Lessons.SelectAsEnumerableAsync(
+            expression: l => !l.IsDeleted,
+            includes: ["Group"]);
+
+        return mapper.Map<IEnumerable<LessonViewModel>>(Lessons);
     }
 
-    public Task<LessonViewModel> GetByIdAsync(long id)
+    public async Task<LessonViewModel> GetByIdAsync(long id)
     {
-        throw new NotImplementedException();
+        var existLesson = await unitOfWork.Lessons.SelectAsync(
+            expression: l => l.Id == id && !l.IsDeleted,
+            includes: ["Group"])
+            ?? throw new NotFoundException($"Lesson is not found with Id = {id}");
+
+        return mapper.Map<LessonViewModel>(existLesson);
     }
 
     public Task<LessonViewModel> UpdateAsync(long id, LessonUpdateModel lesson)
