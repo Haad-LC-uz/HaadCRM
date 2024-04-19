@@ -8,5 +8,5 @@ public interface IGroupService
     ValueTask<GroupViewModel> UpdateAsync(long id, GroupUpdateModel group);
     ValueTask<bool> DeleteAsync(long id);
     ValueTask<GroupViewModel> GetByIdAsync(long id);
-    ValueTask<GroupViewModel> GetAllAsync();
+    ValueTask<IEnumerable<GroupViewModel>> GetAllAsync();
 }
