@@ -6,7 +6,7 @@ using HaadCRM.Service.Exceptions;
 
 namespace HaadCRM.Service.Services.UserPermissions;
 
-public class UserPermissionService(IMapper mapper, IUnitOfWork unitOfWork)
+public class UserPermissionService(IMapper mapper, IUnitOfWork unitOfWork) : IUserPermissionService
 {
     public async ValueTask<UserPermissionViewModel> CreateAsync(UserPermissionCreateModel createModel)
     {
@@ -28,7 +28,7 @@ public class UserPermissionService(IMapper mapper, IUnitOfWork unitOfWork)
     public async ValueTask<UserPermissionViewModel> UpdateAsync(UserPermissionUpdateModel updateModel)
     {
         var userPermission = await unitOfWork.UserPermissions.SelectAsync(up =>
-            up.UserId == updateModel.UserId && up.PermissionId == updateModel.PermissionId) 
+            up.UserId == updateModel.UserId && up.PermissionId == updateModel.PermissionId)
             ?? throw new NotFoundException("User permission not found.");
         mapper.Map(updateModel, userPermission);
         await unitOfWork.UserPermissions.UpdateAsync(userPermission);
@@ -41,7 +41,7 @@ public class UserPermissionService(IMapper mapper, IUnitOfWork unitOfWork)
     public async ValueTask<bool> DeleteAsync(long userId, long permissionId)
     {
         var userPermission = await unitOfWork.UserPermissions.SelectAsync(up =>
-            up.UserId == userId && up.PermissionId == permissionId) 
+            up.UserId == userId && up.PermissionId == permissionId)
             ?? throw new NotFoundException("User permission not found.");
         await unitOfWork.UserPermissions.DeleteAsync(userPermission);
         await unitOfWork.SaveAsync();
@@ -58,7 +58,7 @@ public class UserPermissionService(IMapper mapper, IUnitOfWork unitOfWork)
     public async ValueTask<UserPermissionViewModel> GetByIdAsync(long userId, long permissionId)
     {
         var userPermission = await unitOfWork.UserPermissions.SelectAsync(up =>
-            up.UserId == userId && up.PermissionId == permissionId) 
+            up.UserId == userId && up.PermissionId == permissionId)
             ?? throw new NotFoundException("User permission not found.");
         return mapper.Map<UserPermissionViewModel>(userPermission);
     }
