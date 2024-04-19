@@ -46,9 +46,12 @@ public class GroupService(IMapper mapper, IUnitOfWork unitOfWork) : IGroupServic
         return true;
     }
 
-    public ValueTask<GroupViewModel> GetAllAsync()
+    public async ValueTask<IEnumerable<GroupViewModel>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var Groups = await unitOfWork.Groups.SelectAsEnumerableAsync(
+            expression: g => !g.IsDeleted);
+
+        return mapper.Map<IEnumerable<GroupViewModel>>(Groups);
     }
 
     public ValueTask<GroupViewModel> GetByIdAsync(long id)
