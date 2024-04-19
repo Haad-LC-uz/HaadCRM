@@ -13,7 +13,7 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourceServ
             expression: c => c.Name == course.Name && !c.IsDeleted);
 
         if (existCourse is not null)
-            throw new AlreadyExistException($"Course already exist with Name = {course.Name}");
+            throw new AlreadyExistException($"Course is already exist with Name = {course.Name}");
 
         var createdCourse = await unitOfWork.Courses.InsertAsync(existCourse);
         await unitOfWork.SaveAsync();
@@ -25,7 +25,7 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourceServ
     {
         var existCourse = await unitOfWork.Courses.SelectAsync(
             expression: c => c.Id == id && !c.IsDeleted)
-            ?? throw new NotFoundException($"Couse is not found with Id = {id}");
+            ?? throw new NotFoundException($"Course is not found with Id = {id}");
 
         await unitOfWork.Courses.DeleteAsync(existCourse);
         await unitOfWork.SaveAsync();
@@ -45,7 +45,7 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourceServ
     {
         var existCourse = await unitOfWork.Courses.SelectAsync(
             expression: c => !c.IsDeleted)
-            ?? throw new NotFoundException($"Couse is not found with Id = {id}");
+            ?? throw new NotFoundException($"Course is not found with Id = {id}");
 
         return mapper.Map<CourseViewModel>(existCourse);
     }
@@ -54,7 +54,7 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourceServ
     {
         var existCourse = await unitOfWork.Courses.SelectAsync(
             expression: c => c.Id == id && !c.IsDeleted)
-            ?? throw new NotFoundException($"Couse is not found with Id = {id}");
+            ?? throw new NotFoundException($"Course is not found with Id = {id}");
 
         var mapped = mapper.Map(course, existCourse);
         var updated = await unitOfWork.Courses.UpdateAsync(mapped);
