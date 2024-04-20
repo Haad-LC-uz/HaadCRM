@@ -59,8 +59,24 @@ public class GroupStudentService(IMapper mapper, IUnitOfWork unitOfWork) : IGrou
         return mapper.Map<GroupStudentViewModel>(existGroupStudent);
     }
 
-    public ValueTask<GroupStudentViewModel> UpdateAsync(long id, GroupStudentUpdateModel groupStudent)
+    public async ValueTask<GroupStudentViewModel> UpdateAsync(long id, GroupStudentUpdateModel groupStudent)
     {
-        throw new NotImplementedException();
+        var existGroup = await unitOfWork.Groups.SelectAsync(
+            expression: g => g.Id == groupStudent.GroupId && !g.IsDeleted)
+            ?? throw new NotFoundException($"Group with Id = {groupStudent.GroupId} is not found");
+
+        var existStudent = await unitOfWork.Students.SelectAsync(
+            expression: s => s.Id == groupStudent.StudentId && !s.IsDeleted)
+            ?? throw new NotFoundException($"Student with Id = {groupStudent.StudentId} is not found");
+
+        var existGroupStudent = await unitOfWork.GroupStudents.SelectAsync(
+           expression: gs => gs.Id == id && !gs.IsDeleted)
+           ?? throw new NotFoundException($"GroupStudent with Id = {id} is not found");
+
+        var mapped = mapper.Map(groupStudent, existGroupStudent);
+        var updated = await unitOfWork.GroupStudents.UpdateAsync(mapped);
+        await unitOfWork.SaveAsync();
+
+        return mapper.Map<GroupStudentViewModel>(updated);
     }
 }
