@@ -3,8 +3,6 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Employees;
 using HaadCRM.Service.DTOs.EmployeeDTOs.Employees;
 using HaadCRM.Service.Exceptions;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace HaadCRM.Service.Services.Employees
 {
