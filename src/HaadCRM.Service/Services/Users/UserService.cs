@@ -6,16 +6,8 @@ using HaadCRM.Service.Exceptions;
 
 namespace HaadCRM.Service.Services.Users
 {
-    public class UserService : IUserService
+    public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
-
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
-        }
 
         // Creates a new user
         public async ValueTask<UserViewModel> CreateAsync(UserCreateModel createModel)
