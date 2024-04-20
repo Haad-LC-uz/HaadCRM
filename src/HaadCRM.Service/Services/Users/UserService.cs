@@ -4,92 +4,91 @@ using HaadCRM.Domain.Entities.Users;
 using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Exceptions;
 
-namespace HaadCRM.Service.Services.Users
+namespace HaadCRM.Service.Services.Users;
+
+public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
 {
-    public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
+
+    // Creates a new user
+    public async ValueTask<UserViewModel> CreateAsync(UserCreateModel createModel)
     {
+        // Check if a user with the same email or phone already exists
+        var existingUser = await unitOfWork.Users.SelectAsync(user =>
+            user.Email == createModel.Email || user.Phone == createModel.Phone);
 
-        // Creates a new user
-        public async ValueTask<UserViewModel> CreateAsync(UserCreateModel createModel)
+        if (existingUser != null)
         {
-            // Check if a user with the same email or phone already exists
-            var existingUser = await unitOfWork.Users.SelectAsync(user =>
-                user.Email == createModel.Email || user.Phone == createModel.Phone);
-
-            if (existingUser != null)
-            {
-                throw new AlreadyExistException("A user with the same email or phone already exists.");
-            }
-
-            // Map the createModel to a User entity
-            var user = mapper.Map<User>(createModel);
-
-            // Retrieve the user role by ID, throw NotFoundException if not found
-            var userRole = await unitOfWork.UserRoles.SelectAsync(role => role.Id == createModel.UserRoleId)
-                ?? throw new NotFoundException($"UserRole is not found with ID={createModel.UserRoleId}");
-
-            // Assign the user role to the user
-            user.UserRole = userRole;
-
-            // Insert the new user into the database
-            var createdUser = await unitOfWork.Users.InsertAsync(user);
-            await unitOfWork.SaveAsync();
-
-            // Map the created user back to a view model and return
-            return mapper.Map<UserViewModel>(createdUser);
+            throw new AlreadyExistException("A user with the same email or phone already exists.");
         }
 
-        // Updates an existing user by ID with the provided updateModel
-        public async ValueTask<UserViewModel> UpdateAsync(long id, UserUpdateModel updateModel)
-        {
-            // Find the user by ID, throw NotFoundException if not found
-            var user = await unitOfWork.Users.SelectAsync(user => user.Id == id)
-                ?? throw new NotFoundException($"User is not found with ID={id}");
+        // Map the createModel to a User entity
+        var user = mapper.Map<User>(createModel);
 
-            // Map properties from updateModel to the retrieved user entity
-            mapper.Map(updateModel, user);
+        // Retrieve the user role by ID, throw NotFoundException if not found
+        var userRole = await unitOfWork.UserRoles.SelectAsync(role => role.Id == createModel.UserRoleId)
+            ?? throw new NotFoundException($"UserRole is not found with ID={createModel.UserRoleId}");
 
-            // Update the user in the database
-            await unitOfWork.Users.UpdateAsync(user);
-            await unitOfWork.SaveAsync();
+        // Assign the user role to the user
+        user.UserRole = userRole;
 
-            // Map the updated user back to a view model and return
-            return mapper.Map<UserViewModel>(user);
-        }
+        // Insert the new user into the database
+        var createdUser = await unitOfWork.Users.InsertAsync(user);
+        await unitOfWork.SaveAsync();
 
-        // Deletes a user by ID
-        public async ValueTask<bool> DeleteAsync(long id)
-        {
-            // Find the user by ID, throw NotFoundException if not found
-            var user = await unitOfWork.Users.SelectAsync(user => user.Id == id)
-                ?? throw new NotFoundException($"User is not found with ID={id}");
+        // Map the created user back to a view model and return
+        return mapper.Map<UserViewModel>(createdUser);
+    }
 
-            // Delete the user from the database
-            await unitOfWork.Users.DeleteAsync(user);
-            await unitOfWork.SaveAsync();
+    // Updates an existing user by ID with the provided updateModel
+    public async ValueTask<UserViewModel> UpdateAsync(long id, UserUpdateModel updateModel)
+    {
+        // Find the user by ID, throw NotFoundException if not found
+        var user = await unitOfWork.Users.SelectAsync(user => user.Id == id)
+            ?? throw new NotFoundException($"User is not found with ID={id}");
 
-            return true; // Deletion successful
-        }
+        // Map properties from updateModel to the retrieved user entity
+        mapper.Map(updateModel, user);
 
-        // Gets all users
-        public async ValueTask<IEnumerable<UserViewModel>> GetAllAsync()
-        {
-            // Retrieve all users from the database
-            var users = await unitOfWork.Users.SelectAsEnumerableAsync();
+        // Update the user in the database
+        await unitOfWork.Users.UpdateAsync(user);
+        await unitOfWork.SaveAsync();
 
-            // Map the list of users to a list of view models and return
-            return mapper.Map<IEnumerable<UserViewModel>>(users);
-        }
+        // Map the updated user back to a view model and return
+        return mapper.Map<UserViewModel>(user);
+    }
 
-        // Gets a user by ID
-        public async ValueTask<UserViewModel> GetByIdAsync(long id)
-        {
-            // Find the user by ID, throw NotFoundException if not found
-            var user = await unitOfWork.Users.SelectAsync(user => user.Id == id)
-                ?? throw new NotFoundException($"User is not found with ID={id}");
+    // Deletes a user by ID
+    public async ValueTask<bool> DeleteAsync(long id)
+    {
+        // Find the user by ID, throw NotFoundException if not found
+        var user = await unitOfWork.Users.SelectAsync(user => user.Id == id)
+            ?? throw new NotFoundException($"User is not found with ID={id}");
 
-            // Map the retrieved user to a view model and return
-            return mapper.Map<UserViewModel>(user);
-        }
+        // Delete the user from the database
+        await unitOfWork.Users.DeleteAsync(user);
+        await unitOfWork.SaveAsync();
+
+        return true; // Deletion successful
+    }
+
+    // Gets all users
+    public async ValueTask<IEnumerable<UserViewModel>> GetAllAsync()
+    {
+        // Retrieve all users from the database
+        var users = await unitOfWork.Users.SelectAsEnumerableAsync();
+
+        // Map the list of users to a list of view models and return
+        return mapper.Map<IEnumerable<UserViewModel>>(users);
+    }
+
+    // Gets a user by ID
+    public async ValueTask<UserViewModel> GetByIdAsync(long id)
+    {
+        // Find the user by ID, throw NotFoundException if not found
+        var user = await unitOfWork.Users.SelectAsync(user => user.Id == id)
+            ?? throw new NotFoundException($"User is not found with ID={id}");
+
+        // Map the retrieved user to a view model and return
+        return mapper.Map<UserViewModel>(user);
     }
 }
