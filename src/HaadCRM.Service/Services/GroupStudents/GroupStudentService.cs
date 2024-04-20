@@ -47,9 +47,13 @@ public class GroupStudentService(IMapper mapper, IUnitOfWork unitOfWork) : IGrou
         throw new NotImplementedException();
     }
 
-    public ValueTask<GroupStudentViewModel> GetByIdAsync(long id)
+    public async ValueTask<GroupStudentViewModel> GetByIdAsync(long id)
     {
-        throw new NotImplementedException();
+        var existGroupStudent = await unitOfWork.GroupStudents.SelectAsync(
+            expression: gs => gs.Id == id && !gs.IsDeleted)
+            ?? throw new NotFoundException($"GroupStudent with Id = {id} is not found");
+
+        return mapper.Map<GroupStudentViewModel>(existGroupStudent);
     }
 
     public ValueTask<GroupStudentViewModel> UpdateAsync(long id, GroupStudentUpdateModel groupStudent)
