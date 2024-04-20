@@ -42,9 +42,12 @@ public class GroupStudentService(IMapper mapper, IUnitOfWork unitOfWork) : IGrou
         return true;
     }
 
-    public ValueTask<IEnumerable<GroupStudentViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<GroupStudentViewModel>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var GroupStudents = await unitOfWork.GroupStudents.SelectAsEnumerableAsync(
+            expression: gss => !gss.IsDeleted);
+
+        return mapper.Map<IEnumerable<GroupStudentViewModel>>(GroupStudents);
     }
 
     public async ValueTask<GroupStudentViewModel> GetByIdAsync(long id)
