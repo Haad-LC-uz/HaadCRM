@@ -6,7 +6,7 @@ using HaadCRM.Service.Exceptions;
 
 namespace HaadCRM.Service.Services.GroupStudents;
 
-public class GroupStudentService(IMapper mapper, IUnitOfWork unitOfWork) : IGroupStudent
+public class GroupStudentService(IMapper mapper, IUnitOfWork unitOfWork) : IGroupStudentService
 {
     public async ValueTask<GroupStudentViewModel> CreateAsync(GroupStudentCreateModel groupStudent)
     {

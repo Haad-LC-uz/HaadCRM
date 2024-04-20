@@ -2,7 +2,7 @@
 
 namespace HaadCRM.Service.Services.GroupStudents;
 
-public interface IGroupStudent
+public interface IGroupStudentService
 {
     ValueTask<GroupStudentViewModel> CreateAsync(GroupStudentCreateModel groupStudent);
     ValueTask<GroupStudentViewModel> UpdateAsync(long id, GroupStudentUpdateModel groupStudent);
