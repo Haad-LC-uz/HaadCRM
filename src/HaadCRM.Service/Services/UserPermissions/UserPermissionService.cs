@@ -6,16 +6,8 @@ using HaadCRM.Service.Exceptions;
 
 namespace HaadCRM.Service.Services.UserPermissions
 {
-    public class UserPermissionService : IUserPermissionService
+    public class UserPermissionService(IMapper mapper, IUnitOfWork unitOfWork) : IUserPermissionService
     {
-        private readonly IMapper mapper;
-        private readonly IUnitOfWork unitOfWork;
-
-        public UserPermissionService(IMapper mapper, IUnitOfWork unitOfWork)
-        {
-            this.mapper = mapper;
-            this.unitOfWork = unitOfWork;
-        }
 
         // Creates a new user permission
         public async ValueTask<UserPermissionViewModel> CreateAsync(UserPermissionCreateModel createModel)
