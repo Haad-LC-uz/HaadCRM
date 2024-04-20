@@ -3,61 +3,94 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Users;
 using HaadCRM.Service.DTOs.UserDTOs.Permissions;
 using HaadCRM.Service.Exceptions;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace HaadCRM.Service.Services.Permissions;
-
-public class PermissionService(IUnitOfWork unitOfWork, IMapper mapper) : IPermissionService
+namespace HaadCRM.Service.Services.Permissions
 {
-    public async ValueTask<PermissionViewModel> CreateAsync(PermissionCreateModel createModel)
+    public class PermissionService : IPermissionService
     {
-        var existPermission = await unitOfWork.Permissions.SelectAsync(permission => permission.Method == createModel.Method);
-        if (existPermission != null)
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
+
+        public PermissionService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            throw new AlreadyExistException($"This permission is already exist with method={createModel.Method}");
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
-        var permission = mapper.Map<Permission>(createModel);
+        // Creates a new permission
+        public async ValueTask<PermissionViewModel> CreateAsync(PermissionCreateModel createModel)
+        {
+            // Check if a permission with the same method already exists
+            var existPermission = await unitOfWork.Permissions.SelectAsync(permission => permission.Method == createModel.Method);
+            if (existPermission != null)
+            {
+                throw new AlreadyExistException($"This permission already exists with method={createModel.Method}");
+            }
 
-        var createdPermission = await unitOfWork.Permissions.InsertAsync(permission);
+            // Map the createModel to a Permission entity
+            var permission = mapper.Map<Permission>(createModel);
 
-        await unitOfWork.SaveAsync();
+            // Insert the new permission into the database
+            var createdPermission = await unitOfWork.Permissions.InsertAsync(permission);
+            await unitOfWork.SaveAsync();
 
-        return mapper.Map<PermissionViewModel>(createdPermission);
-    }
+            // Map the created permission back to a view model and return
+            return mapper.Map<PermissionViewModel>(createdPermission);
+        }
 
-    public async ValueTask<PermissionViewModel> UpdateAsync(long id, PermissionUpdateModel updateModel)
-    {
-        var permission = await unitOfWork.Permissions.SelectAsync(permission => permission.Id == id)
-           ?? throw new NotFoundException($"Permission is not found with this ID={id}");
-        mapper.Map(updateModel, permission);
+        // Updates an existing permission
+        public async ValueTask<PermissionViewModel> UpdateAsync(long id, PermissionUpdateModel updateModel)
+        {
+            // Find the permission by ID, throw NotFoundException if not found
+            var permission = await unitOfWork.Permissions.SelectAsync(permission => permission.Id == id)
+               ?? throw new NotFoundException($"Permission is not found with this ID={id}");
 
-        await unitOfWork.Permissions.UpdateAsync(permission);
+            // Map properties from updateModel to the retrieved permission entity
+            mapper.Map(updateModel, permission);
 
-        await unitOfWork.SaveAsync();
+            // Update the permission in the database
+            await unitOfWork.Permissions.UpdateAsync(permission);
+            await unitOfWork.SaveAsync();
 
-        return mapper.Map<PermissionViewModel>(permission);
-    }
+            // Map the updated permission back to a view model and return
+            return mapper.Map<PermissionViewModel>(permission);
+        }
 
-    public async ValueTask<bool> DeleteAsync(long id)
-    {
-        var permission = await unitOfWork.Permissions.SelectAsync(permission => permission.Id == id)
-           ?? throw new NotFoundException($"Permission is not found with this ID={id}");
-        await unitOfWork.Permissions.DeleteAsync(permission);
-        await unitOfWork.SaveAsync();
+        // Deletes a permission by ID
+        public async ValueTask<bool> DeleteAsync(long id)
+        {
+            // Find the permission by ID, throw NotFoundException if not found
+            var permission = await unitOfWork.Permissions.SelectAsync(permission => permission.Id == id)
+               ?? throw new NotFoundException($"Permission is not found with this ID={id}");
 
-        return true;
-    }
+            // Delete the permission from the database
+            await unitOfWork.Permissions.DeleteAsync(permission);
+            await unitOfWork.SaveAsync();
 
-    public async ValueTask<IEnumerable<PermissionViewModel>> GetAllAsync()
-    {
-        var permissions = await unitOfWork.Permissions.SelectAsEnumerableAsync();
-        return mapper.Map<IEnumerable<PermissionViewModel>>(permissions);
-    }
+            return true; // Deletion successful
+        }
 
-    public async ValueTask<PermissionViewModel> GetByIdAsync(long id)
-    {
-        var permission = await unitOfWork.Permissions.SelectAsync(permission => permission.Id == id)
-           ?? throw new NotFoundException($"Permission is not found with this ID={id}");
-        return mapper.Map<PermissionViewModel>(permission);
+        // Gets all permissions
+        public async ValueTask<IEnumerable<PermissionViewModel>> GetAllAsync()
+        {
+            // Retrieve all permissions from the database
+            var permissions = await unitOfWork.Permissions.SelectAsEnumerableAsync();
+
+            // Map the list of permissions to a list of view models and return
+            return mapper.Map<IEnumerable<PermissionViewModel>>(permissions);
+        }
+
+        // Gets a permission by ID
+        public async ValueTask<PermissionViewModel> GetByIdAsync(long id)
+        {
+            // Find the permission by ID, throw NotFoundException if not found
+            var permission = await unitOfWork.Permissions.SelectAsync(permission => permission.Id == id)
+               ?? throw new NotFoundException($"Permission is not found with this ID={id}");
+
+            // Map the retrieved permission to a view model and return
+            return mapper.Map<PermissionViewModel>(permission);
+        }
     }
 }
