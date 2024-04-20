@@ -3,8 +3,6 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Users;
 using HaadCRM.Service.DTOs.UserDTOs.Permissions;
 using HaadCRM.Service.Exceptions;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace HaadCRM.Service.Services.Permissions
 {
