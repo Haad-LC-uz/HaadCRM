@@ -3,64 +3,97 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Employees;
 using HaadCRM.Service.DTOs.EmployeeDTOs.Employees;
 using HaadCRM.Service.Exceptions;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace HaadCRM.Service.Services.Employees;
-public class EmployeeService(IUnitOfWork unitOfWork, IMapper mapper) : IEmployeeService
+namespace HaadCRM.Service.Services.Employees
 {
-    public async ValueTask<EmployeeViewModel> CreateAsync(EmployeeCreateModel createModel)
+    public class EmployeeService : IEmployeeService
     {
-        var existEmployee = await unitOfWork.Employees.SelectAsync(employee => employee.UserId == createModel.UserId);
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
 
-        if (existEmployee != null)
+        public EmployeeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            throw new AlreadyExistException("An employee with the same user ID already exists.");
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
-        var employee = mapper.Map<Employee>(createModel);
+        // Creates a new employee
+        public async ValueTask<EmployeeViewModel> CreateAsync(EmployeeCreateModel createModel)
+        {
+            // Check if an employee with the same user ID already exists
+            var existEmployee = await unitOfWork.Employees.SelectAsync(employee => employee.UserId == createModel.UserId);
+            if (existEmployee != null)
+            {
+                throw new AlreadyExistException("An employee with the same user ID already exists.");
+            }
 
-        employee.EmployeeRole = await unitOfWork.EmployeeRoles.SelectAsync(id => id.Id == createModel.EmployeeRoleId);
+            // Map the createModel to an Employee entity
+            var employee = mapper.Map<Employee>(createModel);
 
-        var createdEmployee = await unitOfWork.Employees.InsertAsync(employee);
-        await unitOfWork.SaveAsync();
+            // Retrieve the associated employee role based on the provided ID
+            employee.EmployeeRole = await unitOfWork.EmployeeRoles.SelectAsync(id => id.Id == createModel.EmployeeRoleId);
 
-        return mapper.Map<EmployeeViewModel>(createdEmployee);
-    }
+            // Insert the new employee into the database
+            var createdEmployee = await unitOfWork.Employees.InsertAsync(employee);
+            await unitOfWork.SaveAsync();
 
-    public async ValueTask<EmployeeViewModel> UpdateAsync(long id, EmployeeUpdateModel updateModel)
-    {
-        var employee = await unitOfWork.Employees.SelectAsync(emp => emp.Id == id)
-            ?? throw new NotFoundException($"Employee is not found with this ID={id}");
+            // Map the created employee back to a view model and return
+            return mapper.Map<EmployeeViewModel>(createdEmployee);
+        }
 
-        mapper.Map(updateModel, employee);
+        // Updates an existing employee
+        public async ValueTask<EmployeeViewModel> UpdateAsync(long id, EmployeeUpdateModel updateModel)
+        {
+            // Find the employee by ID, throw NotFoundException if not found
+            var employee = await unitOfWork.Employees.SelectAsync(emp => emp.Id == id)
+                ?? throw new NotFoundException($"Employee is not found with this ID={id}");
 
-        await unitOfWork.Employees.UpdateAsync(employee);
-        await unitOfWork.SaveAsync();
+            // Map properties from updateModel to the retrieved employee entity
+            mapper.Map(updateModel, employee);
 
-        return mapper.Map<EmployeeViewModel>(employee);
-    }
+            // Update the employee in the database
+            await unitOfWork.Employees.UpdateAsync(employee);
+            await unitOfWork.SaveAsync();
 
-    public async ValueTask<bool> DeleteAsync(long id)
-    {
-        var employee = await unitOfWork.Employees.SelectAsync(emp => emp.Id == id)
-            ?? throw new NotFoundException($"Employee is not found with this ID={id}");
+            // Map the updated employee back to a view model and return
+            return mapper.Map<EmployeeViewModel>(employee);
+        }
 
-        await unitOfWork.Employees.DeleteAsync(employee);
-        await unitOfWork.SaveAsync();
+        // Deletes an employee by ID
+        public async ValueTask<bool> DeleteAsync(long id)
+        {
+            // Find the employee by ID, throw NotFoundException if not found
+            var employee = await unitOfWork.Employees.SelectAsync(emp => emp.Id == id)
+                ?? throw new NotFoundException($"Employee is not found with this ID={id}");
 
-        return true;
-    }
+            // Delete the employee from the database
+            await unitOfWork.Employees.DeleteAsync(employee);
+            await unitOfWork.SaveAsync();
 
-    public async ValueTask<IEnumerable<EmployeeViewModel>> GetAllAsync()
-    {
-        var employees = await unitOfWork.Employees.SelectAsEnumerableAsync();
-        return mapper.Map<IEnumerable<EmployeeViewModel>>(employees);
-    }
+            return true; // Deletion successful
+        }
 
-    public async ValueTask<EmployeeViewModel> GetByIdAsync(long id)
-    {
-        var employee = await unitOfWork.Employees.SelectAsync(emp => emp.Id == id)
-            ?? throw new NotFoundException($"Employee is not found with this ID={id}");
+        // Gets all employees
+        public async ValueTask<IEnumerable<EmployeeViewModel>> GetAllAsync()
+        {
+            // Retrieve all employees from the database
+            var employees = await unitOfWork.Employees.SelectAsEnumerableAsync();
 
-        return mapper.Map<EmployeeViewModel>(employee);
+            // Map the list of employees to a list of view models and return
+            return mapper.Map<IEnumerable<EmployeeViewModel>>(employees);
+        }
+
+        // Gets an employee by ID
+        public async ValueTask<EmployeeViewModel> GetByIdAsync(long id)
+        {
+            // Find the employee by ID, throw NotFoundException if not found
+            var employee = await unitOfWork.Employees.SelectAsync(emp => emp.Id == id)
+                ?? throw new NotFoundException($"Employee is not found with this ID={id}");
+
+            // Map the retrieved employee to a view model and return
+            return mapper.Map<EmployeeViewModel>(employee);
+        }
     }
 }
