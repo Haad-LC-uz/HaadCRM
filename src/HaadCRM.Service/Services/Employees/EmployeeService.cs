@@ -6,16 +6,8 @@ using HaadCRM.Service.Exceptions;
 
 namespace HaadCRM.Service.Services.Employees
 {
-    public class EmployeeService : IEmployeeService
+    public class EmployeeService(IUnitOfWork unitOfWork, IMapper mapper) : IEmployeeService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
-
-        public EmployeeService(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
-        }
 
         // Creates a new employee
         public async ValueTask<EmployeeViewModel> CreateAsync(EmployeeCreateModel createModel)
