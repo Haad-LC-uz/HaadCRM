@@ -6,16 +6,8 @@ using HaadCRM.Service.Exceptions;
 
 namespace HaadCRM.Service.Services.UserRoles
 {
-    public class UserRoleService : IUserRoleService
+    public class UserRoleService(IUnitOfWork unitOfWork, IMapper mapper) : IUserRoleService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
-
-        public UserRoleService(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
-        }
 
         // Creates a new user role
         public async ValueTask<UserRoleViewModel> CreateAsync(UserRoleCreateModel createModel)
