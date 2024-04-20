@@ -6,16 +6,8 @@ using HaadCRM.Service.Exceptions;
 
 namespace HaadCRM.Service.Services.Permissions
 {
-    public class PermissionService : IPermissionService
+    public class PermissionService(IUnitOfWork unitOfWork, IMapper mapper) : IPermissionService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
-
-        public PermissionService(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
-        }
 
         // Creates a new permission
         public async ValueTask<PermissionViewModel> CreateAsync(PermissionCreateModel createModel)
