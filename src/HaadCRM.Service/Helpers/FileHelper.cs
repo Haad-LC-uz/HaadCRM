@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using HaadCRM.Domain.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace HaadCRM.Service.Helpers;
 
