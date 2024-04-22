@@ -45,7 +45,7 @@ public class HomeworkService(IUnitOfWork unitOfWork, IMapper mapper) : IHomeWork
     public async ValueTask<HomeworkViewModel> GetByIdAsync(long id)
     {
         var homework = await unitOfWork.Homeworks.SelectAsync(h => h.Id == id && !h.IsDeleted);
-        if (homework == null)
+        if (homework is null)
             throw new NotFoundException($"Homework with ID={id} is not found or was deleted");
 
         return await Task.FromResult(mapper.Map<HomeworkViewModel>(homework));
