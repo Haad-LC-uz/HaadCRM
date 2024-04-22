@@ -26,7 +26,7 @@ public class HomeworkFilesService(IUnitOfWork unitOfWork, IMapper mapper) : IHom
     public async ValueTask<bool> DeleteAsync(long id)
     {
         var homeworkFile = await unitOfWork.HomeworkFiles.SelectAsync(hf => hf.Id == id && !hf.IsDeleted);
-        if (homeworkFile == null)
+        if (homeworkFile is null)
             throw new NotFoundException($"Homework file with ID={id} is not FOUND");
 
         await unitOfWork.HomeworkFiles.DeleteAsync(homeworkFile);
