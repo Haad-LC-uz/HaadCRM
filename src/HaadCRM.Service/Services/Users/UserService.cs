@@ -5,11 +5,16 @@ using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Helpers;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.Users;
 
-public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
+public class UserService(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    IMemoryCache memoryCache) : IUserService
 {
+    private readonly string cacheKey = "EmailCodeKey";
 
     // Creates a new user
     public async ValueTask<UserViewModel> CreateAsync(UserCreateModel createModel)
@@ -153,5 +158,20 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
             return true;
 
         return false;
+    }
+
+    public async ValueTask<User> ChangePasswordAsync(string phone, string oldPassword, string newPassword)
+    {
+        var existUser = await unitOfWork.Users.SelectAsync(
+            expression: u =>
+                u.Phone == phone && PasswordHasher.Verify(oldPassword, u.Password) && !u.IsDeleted,
+            includes: ["Role"])
+            ?? throw new ArgumentIsNotValidException($"Phone or password is not valid");
+
+        existUser.Password = PasswordHasher.Hash(newPassword);
+        await unitOfWork.Users.UpdateAsync(existUser);
+        await unitOfWork.SaveAsync();
+
+        return existUser;
     }
 }
