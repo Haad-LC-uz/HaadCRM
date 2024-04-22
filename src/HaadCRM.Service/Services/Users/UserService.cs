@@ -3,6 +3,7 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Users;
 using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Helpers;
 
 namespace HaadCRM.Service.Services.Users;
 
@@ -27,6 +28,9 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
         // Retrieve the user role by ID, throw NotFoundException if not found
         var userRole = await unitOfWork.UserRoles.SelectAsync(role => role.Id == createModel.UserRoleId)
             ?? throw new NotFoundException($"UserRole is not found with ID={createModel.UserRoleId}");
+
+        // Assign the Hashed Password to the user
+        user.Password = PasswordHasher.Hash(createModel.Password);
 
         // Assign the user role to the user
         user.UserRole = userRole;
