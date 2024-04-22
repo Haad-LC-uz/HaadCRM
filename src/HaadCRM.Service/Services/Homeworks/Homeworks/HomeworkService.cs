@@ -13,7 +13,7 @@ public class HomeworkService(IUnitOfWork unitOfWork, IMapper mapper) : IHomeWork
         var exist = await unitOfWork.Homeworks.SelectAsync(h => h.LessonId == createModel.LessonId
         && h.AssistantId == createModel.AssistantId);
 
-        if (exist == null)
+        if (exist is null)
             throw new AlreadyExistException("Lesson or Assistant is not found");
 
         await unitOfWork.Homeworks.InsertAsync(mapper.Map<Homework>(createModel));
