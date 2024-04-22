@@ -4,6 +4,7 @@ using HaadCRM.Domain.Entities.Users;
 using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Helpers;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace HaadCRM.Service.Services.Users;
 
@@ -105,5 +106,52 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
             ?? throw new ArgumentIsNotValidException($"Phone or password is not valid");
 
         return (user: existUser, token: AuthHelper.GenerateToken(existUser));
+    }
+
+    public async ValueTask<bool> ResetPasswordAsync(string phone, string newPassword)
+    {
+        var existUser = await unitOfWork.Users.SelectAsync(user => user.Phone == phone && !user.IsDeleted)
+            ?? throw new NotFoundException($"User is not found with this phone={phone}");
+
+        var code = memoryCache.Get(cacheKey) as string;
+        if (!await ConfirmCodeAsync(phone, code))
+            throw new ArgumentIsNotValidException("Confirmation failed");
+
+        existUser.Password = PasswordHasher.Hash(newPassword);
+        await unitOfWork.Users.UpdateAsync(existUser);
+        await unitOfWork.SaveAsync();
+
+        return true;
+    }
+
+    public async ValueTask<bool> SendCodeAsync(string phone)
+    {
+        var user = await unitOfWork.Users.SelectAsync(user => user.Phone == phone)
+            ?? throw new NotFoundException($"User is not found with this phone={phone}");
+
+        var random = new Random();
+        var code = random.Next(10000, 99999);
+        await EmailHelper.SendMessageAsync(user.Email, "Confirmation Code", code.ToString());
+
+        var memoryCacheOptions = new MemoryCacheEntryOptions()
+             .SetSize(50)
+             .SetAbsoluteExpiration(TimeSpan.FromSeconds(60))
+             .SetSlidingExpiration(TimeSpan.FromSeconds(30))
+             .SetPriority(CacheItemPriority.Normal);
+
+        memoryCache.Set(cacheKey, code.ToString(), memoryCacheOptions);
+
+        return true;
+    }
+
+    public async ValueTask<bool> ConfirmCodeAsync(string phone, string code)
+    {
+        var user = await unitOfWork.Users.SelectAsync(user => user.Phone == phone)
+            ?? throw new NotFoundException($"User is not found with this phone={phone}");
+
+        if (memoryCache.Get(cacheKey) as string == code)
+            return true;
+
+        return false;
     }
 }
