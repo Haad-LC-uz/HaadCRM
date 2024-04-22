@@ -27,7 +27,7 @@ public class HomeworkGradeService(IUnitOfWork unitOfWork, IMapper mapper) : IHom
     public async ValueTask<bool> DeleteAsync(long id)
     {
         var homeworkGrade = await unitOfWork.HomeworkGrades.SelectAsync(hg => hg.Id == id && !hg.IsDeleted);
-        if (homeworkGrade == null)
+        if (homeworkGrade is null)
             throw new NotFoundException($"HomeworkGrade with ID={id} is not found");
 
         await unitOfWork.HomeworkGrades.DeleteAsync(homeworkGrade);
