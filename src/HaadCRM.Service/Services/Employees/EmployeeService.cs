@@ -14,7 +14,7 @@ public class EmployeeService(IUnitOfWork unitOfWork, IMapper mapper) : IEmployee
     {
         // Check if an employee with the same user ID already exists
         var existEmployee = await unitOfWork.Employees.SelectAsync(employee => employee.UserId == createModel.UserId);
-        if (existEmployee != null)
+        if (existEmployee is not null)
         {
             throw new AlreadyExistException("An employee with the same user ID already exists.");
         }
