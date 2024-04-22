@@ -107,13 +107,7 @@ public class UserService(
         var existingUser = await unitOfWork.Users.SelectAsync(
             user => user.Phone == phone && !user.IsDeleted, // Omit password check for security
             includes: ["Role"]  // Include the user's role information
-        );
-
-        // Throw an exception if user is not found or inactive
-        if (existingUser == null)
-        {
-            throw new ArgumentIsNotValidException("Invalid login credentials");
-        }
+        ) ?? throw new ArgumentIsNotValidException("Invalid login credentials");
 
         // Login successful, return user and generated token
         return (user: existingUser, token: AuthHelper.GenerateToken(existingUser));
