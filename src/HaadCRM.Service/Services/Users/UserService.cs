@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace HaadCRM.Service.Services.Users;
 
 public class UserService(
-    IUnitOfWork unitOfWork, 
+    IUnitOfWork unitOfWork,
     IMapper mapper,
     IMemoryCache memoryCache) : IUserService
 {
