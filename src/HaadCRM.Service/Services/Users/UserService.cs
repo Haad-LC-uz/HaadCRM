@@ -95,4 +95,15 @@ public class UserService(IUnitOfWork unitOfWork, IMapper mapper) : IUserService
         // Map the retrieved user to a view model and return
         return mapper.Map<UserViewModel>(user);
     }
+
+    public async ValueTask<(User user, string token)> LoginAsync(string phone, string password)
+    {
+        var existUser = await unitOfWork.Users.SelectAsync(
+            expression: u =>
+                u.Phone == phone && PasswordHasher.Verify(password, u.Password) && !u.IsDeleted,
+            includes: ["Role"])
+            ?? throw new ArgumentIsNotValidException($"Phone or password is not valid");
+
+        return (user: existUser, token: AuthHelper.GenerateToken(existUser));
+    }
 }
