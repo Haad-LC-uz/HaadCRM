@@ -14,7 +14,7 @@ public class HomeworkFilesService(IUnitOfWork unitOfWork, IMapper mapper) : IHom
         hf.AssetId == createModel.AssetId
         && hf.HomeworkId == createModel.HomeworkId);
 
-        if (homeworkFile == null)
+        if (homeworkFile is null)
             throw new NotFoundException("Something is wrong! Try enter correctly ID");
 
         await unitOfWork.HomeworkFiles.InsertAsync(mapper.Map<HomeworkFile>(createModel));
