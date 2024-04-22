@@ -14,7 +14,7 @@ public class EmployeeRoleService(IUnitOfWork unitOfWork, IMapper mapper) : IEmpl
     {
         // Check if an employee role with the same name already exists
         var existingRole = await unitOfWork.EmployeeRoles.SelectAsync(role => role.Name == createModel.Name);
-        if (existingRole != null)
+        if (existingRole is not null)
         {
             throw new AlreadyExistException("An employee role with the same name already exists.");
         }
