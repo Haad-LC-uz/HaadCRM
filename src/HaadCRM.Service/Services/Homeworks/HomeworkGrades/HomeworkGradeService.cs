@@ -48,7 +48,7 @@ public class HomeworkGradeService(IUnitOfWork unitOfWork, IMapper mapper) : IHom
     public async ValueTask<HomeWorkGradeViewModel> GetByIdAsync(long id)
     {
         var homeworkGrade = await unitOfWork.HomeworkGrades.SelectAsync(hg => hg.Id == id && !hg.IsDeleted);
-        if (homeworkGrade == null)
+        if (homeworkGrade is null)
             throw new NotFoundException($"Homework Grade with ID={id} is not FOUND");
 
         return mapper.Map<HomeWorkGradeViewModel>(homeworkGrade);
