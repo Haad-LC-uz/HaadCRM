@@ -57,7 +57,7 @@ public class HomeworkGradeService(IUnitOfWork unitOfWork, IMapper mapper) : IHom
     public async ValueTask<HomeWorkGradeViewModel> UpdateAsync(long id, HomeworkGradeUpdateModel updateModel)
     {
         var homeworkGrade = await unitOfWork.HomeworkGrades.SelectAsync(hg => hg.Id == id && !hg.IsDeleted);
-        if (homeworkGrade == null)
+        if (homeworkGrade is null)
             throw new NotFoundException($"Homework Grade with ID={id} is not found or was deleted");
 
         await unitOfWork.HomeworkGrades.UpdateAsync(homeworkGrade);
