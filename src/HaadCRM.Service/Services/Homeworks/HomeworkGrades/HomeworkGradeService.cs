@@ -15,7 +15,7 @@ public class HomeworkGradeService(IUnitOfWork unitOfWork, IMapper mapper) : IHom
         && hg.AssistantId == createModel.AssistantId
         && hg.StudentId == createModel.StudentId);
 
-        if (homeworkGrade != null)
+        if (homeworkGrade is null)
             throw new NotFoundException("Something is wrong! Try enter correctly ID");
 
         await unitOfWork.HomeworkGrades.InsertAsync(mapper.Map<HomeworkGrade>(createModel));
