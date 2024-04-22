@@ -55,7 +55,7 @@ public class HomeworkFilesService(IUnitOfWork unitOfWork, IMapper mapper) : IHom
     public async ValueTask<HomeworkFileViewModel> UpdateAsync(long id, HomeworkFileUpdateModel updateModel)
     {
         var homeworkFile = await unitOfWork.HomeworkFiles.SelectAsync(hf => hf.Id == id && !hf.IsDeleted);
-        if (homeworkFile == null)
+        if (homeworkFile is null)
             throw new NotFoundException($"Homework file with ID={id} is not FOUND");
 
         await unitOfWork.HomeworkFiles.UpdateAsync(homeworkFile);
