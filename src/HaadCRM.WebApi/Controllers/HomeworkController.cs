@@ -49,4 +49,14 @@ public class HomeworkController(IHomeWorkService homeWorkService) : ControllerBa
             Data = await homeWorkService.GetAllAsync()
         });
     }
+    [HttpGet("{id:long}")]
+    public async ValueTask<IActionResult> GetByIdAsync(long id)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await homeWorkService.GetByIdAsync(id)
+        });
+    }
 }
