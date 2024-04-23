@@ -49,4 +49,13 @@ public class HomeworkGradeController(IHomeworkGradeService homeworkGradeService)
             Data = await homeworkGradeService.GetAllAsync()
         });
     }
+    public async ValueTask<IActionResult> GetByIdAsync(long id)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await homeworkGradeService.GetByIdAsync(id)
+        });
+    }
 }
