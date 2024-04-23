@@ -4,6 +4,17 @@ using HaadCRM.Domain.Entities.Lessons;
 
 namespace HaadCRM.Domain.Entities.Homeworks;
 
+/// <summary>
+/// The Homework class represents the Homework entity that contains properties for Homework,
+/// such as:
+/// LessonId
+/// AssistantId
+/// Title
+/// Description
+/// DeadLine
+/// HomeworkFiles
+/// HomeworkGrades
+/// </summary>
 public class Homework : Auditable
 {
     public long LessonId { get; set; }
