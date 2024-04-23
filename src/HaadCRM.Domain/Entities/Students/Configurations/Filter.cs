@@ -1,5 +1,11 @@
 ﻿namespace HaadCRM.Service.Configurations;
 
+/// <summary>
+/// The Filter class represents the Filter Entity that contains properties for Filter,
+/// such as:
+/// OrderBy
+/// OrderType
+/// </summary>
 public class Filter
 {
     /// <summary>
