@@ -3,15 +3,24 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Users;
 using HaadCRM.Service.DTOs.UserDTOs.Permissions;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Lessons.Lessons;
+using HaadCRM.Service.Validators.Users.Permissions;
+using HaadCRM.Service.Validators.Users.UserPermissions;
 
 namespace HaadCRM.Service.Services.Permissions;
 
-public class PermissionService(IUnitOfWork unitOfWork, IMapper mapper) : IPermissionService
+public class PermissionService(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    PermissionCreateModelValidator createModelValidator,
+    PermissionUpdateModelValidator updateModelValidator) : IPermissionService
 {
 
     // Creates a new permission
     public async ValueTask<PermissionViewModel> CreateAsync(PermissionCreateModel createModel)
     {
+        await createModelValidator.ValidateOrPanicAsync(createModel);
         // Check if a permission with the same method already exists
         var existPermission = await unitOfWork.Permissions.SelectAsync(permission => permission.Method == createModel.Method);
         if (existPermission != null)
@@ -33,6 +42,7 @@ public class PermissionService(IUnitOfWork unitOfWork, IMapper mapper) : IPermis
     // Updates an existing permission
     public async ValueTask<PermissionViewModel> UpdateAsync(long id, PermissionUpdateModel updateModel)
     {
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
         // Find the permission by ID, throw NotFoundException if not found
         var permission = await unitOfWork.Permissions.SelectAsync(permission => permission.Id == id)
            ?? throw new NotFoundException($"Permission is not found with this ID={id}");

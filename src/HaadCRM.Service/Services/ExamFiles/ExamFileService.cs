@@ -3,13 +3,21 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Exams;
 using HaadCRM.Service.DTOs.ExamDTOs.ExamFiles;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Employees.EmployeeRoles;
+using HaadCRM.Service.Validators.Exams.ExamFiles;
 
 namespace HaadCRM.Service.Services.ExamFiles;
 
-public class ExamFileService(IUnitOfWork unitOfWork, IMapper mapper) : IExamFileService
+public class ExamFileService(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    ExamFileCreateModelValidator createModelValidator,
+    ExamFileUpdateModelValidator updateModelValidator) : IExamFileService
 {
     public async ValueTask<ExamFileViewModel> CreateAsync(ExamFileCreateModel createModel)
     {
+        await createModelValidator.ValidateOrPanicAsync(createModel);
         var existExamFile = await unitOfWork.ExamFiles.SelectAsync(ef =>
             ef.ExamId == createModel.ExamId && ef.AssetId == createModel.AssetId);
 
@@ -43,6 +51,7 @@ public class ExamFileService(IUnitOfWork unitOfWork, IMapper mapper) : IExamFile
 
     public async ValueTask<ExamFileViewModel> UpdateAsync(long id, ExamFileUpdateModel updateModel)
     {
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
         var existExamFile = await unitOfWork.ExamFiles.SelectAsync(ef => ef.Id == id)
                        ?? throw new NotFoundException($"ExamFile with ID={id} is not found");
 

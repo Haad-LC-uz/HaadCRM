@@ -3,13 +3,22 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Homeworks;
 using HaadCRM.Service.DTOs.HomeworkDTOs.HomeworkFiles;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Exams.ExamGrades;
+using HaadCRM.Service.Validators.Homework.HomeworkFiles;
+using Microsoft.VisualBasic;
 
 namespace HaadCRM.Service.Services.HomeworkFiles;
 
-public class HomeworkFilesService(IUnitOfWork unitOfWork, IMapper mapper) : IHomeworkFilesService
+public class HomeworkFilesService(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    HomeworkFileCreateModelValidator createModelValidator,
+    HomeworkFileUpdateModelValidator updateModelValidator) : IHomeworkFilesService
 {
     public async ValueTask<HomeworkFileViewModel> CreateAsync(HomeworkFileCreateModel createModel)
     {
+        await createModelValidator.ValidateOrPanicAsync(createModel);
         var homeworkFile = await unitOfWork.HomeworkFiles.SelectAsync(hf =>
         hf.AssetId == createModel.AssetId
         && hf.HomeworkId == createModel.HomeworkId);
@@ -45,19 +54,16 @@ public class HomeworkFilesService(IUnitOfWork unitOfWork, IMapper mapper) : IHom
 
     public async ValueTask<HomeworkFileViewModel> GetByIdAsync(long id)
     {
-        var homeworkFile = await unitOfWork.HomeworkFiles.SelectAsync(hf => hf.Id == id && !hf.IsDeleted);
-        if (homeworkFile == null)
-            throw new NotFoundException($"Homework file with ID={id} is not FOUND");
-
+        var homeworkFile = await unitOfWork.HomeworkFiles.SelectAsync(hf => hf.Id == id && !hf.IsDeleted) 
+            ?? throw new NotFoundException($"Homework file with ID={id} is not FOUND");
         return mapper.Map<HomeworkFileViewModel>(homeworkFile);
     }
 
     public async ValueTask<HomeworkFileViewModel> UpdateAsync(long id, HomeworkFileUpdateModel updateModel)
     {
-        var homeworkFile = await unitOfWork.HomeworkFiles.SelectAsync(hf => hf.Id == id && !hf.IsDeleted);
-        if (homeworkFile == null)
-            throw new NotFoundException($"Homework file with ID={id} is not FOUND");
-
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
+        var homeworkFile = await unitOfWork.HomeworkFiles.SelectAsync(hf => hf.Id == id && !hf.IsDeleted) 
+            ?? throw new NotFoundException($"Homework file with ID={id} is not FOUND");
         await unitOfWork.HomeworkFiles.UpdateAsync(homeworkFile);
         await unitOfWork.SaveAsync();
 

@@ -3,13 +3,21 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Groups;
 using HaadCRM.Service.DTOs.GroupDTOs.Groups;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Exams.ExamGrades;
+using HaadCRM.Service.Validators.Groups.Groups;
 
 namespace HaadCRM.Service.Services.GroupService;
 
-public class GroupService(IMapper mapper, IUnitOfWork unitOfWork) : IGroupService
+public class GroupService(
+    IMapper mapper, 
+    IUnitOfWork unitOfWork,
+    GroupCreateModelValidator createModelValidator,
+    GroupUpdateModelValidator updateModelValidator) : IGroupService
 {
     public async ValueTask<GroupViewModel> CreateAsync(GroupCreateModel group)
     {
+        await createModelValidator.ValidateOrPanicAsync(group);
         var existCourse = await unitOfWork.Courses.SelectAsync(
             expression: c => c.Id == group.CourseId && !c.IsDeleted)
             ?? throw new NotFoundException($"Course with Id = {group.CourseId} is not found");
@@ -65,6 +73,7 @@ public class GroupService(IMapper mapper, IUnitOfWork unitOfWork) : IGroupServic
 
     public async ValueTask<GroupViewModel> UpdateAsync(long id, GroupUpdateModel group)
     {
+        await updateModelValidator.ValidateOrPanicAsync(group);
         var existCourse = await unitOfWork.Courses.SelectAsync(
            expression: c => c.Id == group.CourseId && !c.IsDeleted)
            ?? throw new NotFoundException($"Course with Id = {group.CourseId} is not found");

@@ -3,13 +3,21 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Homeworks;
 using HaadCRM.Service.DTOs.HomeworkDTOs.Homework;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Exams.ExamGrades;
+using HaadCRM.Service.Validators.Homework.Homework;
 
 namespace HaadCRM.Service.Services.HomeworkServices;
 
-public class HomeworkService(IUnitOfWork unitOfWork, IMapper mapper) : IHomeWorkService
+public class HomeworkService(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    HomeworkCreateModelValidator createModelValidator,
+    HomeworkUpdateModelValidator updateModelValidator) : IHomeWorkService
 {
     public async ValueTask<HomeworkViewModel> CreateAsync(HomeworkCreateModel createModel)
     {
+        await createModelValidator.ValidateOrPanicAsync(createModel);
         var exist = await unitOfWork.Homework.SelectAsync(h => h.LessonId == createModel.LessonId
         && h.AssistantId == createModel.AssistantId);
 
@@ -53,6 +61,7 @@ public class HomeworkService(IUnitOfWork unitOfWork, IMapper mapper) : IHomeWork
 
     public async ValueTask<HomeworkViewModel> UpdateAsync(long id, HomeworkUpdateModel updateModel)
     {
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
         var homework = await unitOfWork.Homework.SelectAsync(h => h.Id == id && !h.IsDeleted);
         if (homework == null)
             throw new NotFoundException($"Homework with ID={id} is not found or was deleted");
