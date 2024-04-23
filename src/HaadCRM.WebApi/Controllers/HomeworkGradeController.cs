@@ -19,4 +19,14 @@ public class HomeworkGradeController(IHomeworkGradeService homeworkGradeService)
             Data = await homeworkGradeService.CreateAsync(homeworkGrade)
         });
     }
+    [HttpPut("{id:long}")]
+    public async ValueTask<IActionResult> PutAsync(long id, [FromBody] HomeworkGradeUpdateModel homeworkGrade)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await homeworkGradeService.UpdateAsync(id, homeworkGrade)
+        });
+    }
 }
