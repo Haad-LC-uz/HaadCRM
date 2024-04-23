@@ -39,4 +39,14 @@ public class HomeworkFileController(IHomeworkFilesService homeworkFilesService) 
             Data = await homeworkFilesService.DeleteAsync(id)
         });
     }
+    [HttpGet]
+    public async ValueTask<IActionResult> GetAllAsync()
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await homeworkFilesService.GetAllAsync()
+        });
+    }
 }
