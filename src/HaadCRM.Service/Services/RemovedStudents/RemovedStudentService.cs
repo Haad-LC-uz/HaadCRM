@@ -1,9 +1,10 @@
-﻿using HaadCRM.Data.UnitOfWorks;
+﻿using AutoMapper;
+using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Students;
 using HaadCRM.Service.DTOs.StudentDTOs.RemovedStudents;
 using HaadCRM.Service.Exceptions;
 
-namespace HaadCRM.Service.Services.Students.RemovedStudents;
+namespace HaadCRM.Service.Services.RemovedStudents;
 
 public class RemovedStudentService(IUnitOfWork unitOfWork, IMapper mapper) : IRemovedStudentService
 {

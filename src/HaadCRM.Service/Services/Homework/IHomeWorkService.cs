@@ -1,6 +1,6 @@
 ﻿using HaadCRM.Service.DTOs.HomeworkDTOs.Homework;
 
-namespace HaadCRM.Service.Services.Homeworks.Homeworks;
+namespace HaadCRM.Service.Services.Homework;
 
 public interface IHomeWorkService
 {
