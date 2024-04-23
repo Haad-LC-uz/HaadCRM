@@ -3,15 +3,22 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Employees;
 using HaadCRM.Service.DTOs.EmployeeDTOs.EmployeeRoles;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Employees.EmployeeRoles;
 
 namespace HaadCRM.Service.Services.EmployeeRoles;
 
-public class EmployeeRoleService(IUnitOfWork unitOfWork, IMapper mapper) : IEmployeeRoleService
+public class EmployeeRoleService(
+    IUnitOfWork unitOfWork,
+    IMapper mapper,
+    EmployeeRoleCreateModelValidator createModelValidator,
+    EmployeeRoleUpdateModelValidator updateModelValidator) : IEmployeeRoleService
 {
 
     // Creates a new employee role
     public async ValueTask<EmployeeRoleViewModel> CreateAsync(EmployeeRoleCreateModel createModel)
     {
+        await createModelValidator.ValidateOrPanicAsync(createModel);
         // Check if an employee role with the same name already exists
         var existingRole = await unitOfWork.EmployeeRoles.SelectAsync(role => role.Name == createModel.Name);
         if (existingRole != null)
@@ -33,6 +40,7 @@ public class EmployeeRoleService(IUnitOfWork unitOfWork, IMapper mapper) : IEmpl
     // Updates an existing employee role
     public async ValueTask<EmployeeRoleViewModel> UpdateAsync(long id, EmployeeRoleUpdateModel updateModel)
     {
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
         // Find the employee role by ID, throw NotFoundException if not found
         var employeeRole = await unitOfWork.EmployeeRoles.SelectAsync(role => role.Id == id)
             ?? throw new NotFoundException($"Employee role is not found with this ID={id}");
