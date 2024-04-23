@@ -20,7 +20,7 @@ public class LessonController(ILessonService lessonService) : ControllerBase
         });
     }
     [HttpPut("{id:long}")]
-    public async ValueTask<IActionResult> PutAsync([FromBody] long id, LessonUpdateModel lesson)
+    public async ValueTask<IActionResult> PutAsync(long id, [FromBody] LessonUpdateModel lesson)
     {
 
         return Ok(new Response
@@ -28,6 +28,16 @@ public class LessonController(ILessonService lessonService) : ControllerBase
             StatusCode = 200,
             Message = "Success",
             Data = await lessonService.UpdateAsync(id, lesson)
+        });
+    }
+    [HttpDelete("{id:long}")]
+    public async ValueTask<IActionResult> DeleteAsync(long id)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await lessonService.DeleteAsync(id)
         });
     }
 }
