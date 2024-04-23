@@ -39,4 +39,14 @@ public class HomeworkGradeController(IHomeworkGradeService homeworkGradeService)
             Data = await homeworkGradeService.DeleteAsync(id)
         });
     }
+    [HttpGet]
+    public async ValueTask<IActionResult> GetAllAsync()
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await homeworkGradeService.GetAllAsync()
+        });
+    }
 }
