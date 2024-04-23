@@ -23,6 +23,27 @@ using HaadCRM.Service.Services.Students.Students;
 using HaadCRM.Service.Services.UserPermissions;
 using HaadCRM.Service.Services.UserRoles;
 using HaadCRM.Service.Services.Users;
+using HaadCRM.Service.Validators.Attendances;
+using HaadCRM.Service.Validators.Cources;
+using HaadCRM.Service.Validators.Employees.EmployeeRoles;
+using HaadCRM.Service.Validators.Employees.Employees;
+using HaadCRM.Service.Validators.Exams.ExamFiles;
+using HaadCRM.Service.Validators.Exams.ExamGrades;
+using HaadCRM.Service.Validators.Exams.Exams;
+using HaadCRM.Service.Validators.Groups.Groups;
+using HaadCRM.Service.Validators.Groups.GroupStudents;
+using HaadCRM.Service.Validators.Homework.Homework;
+using HaadCRM.Service.Validators.Homework.HomeworkFiles;
+using HaadCRM.Service.Validators.Homework.HomeworkGrades;
+using HaadCRM.Service.Validators.Lessons.LessonFiles;
+using HaadCRM.Service.Validators.Lessons.Lessons;
+using HaadCRM.Service.Validators.Students.RemovedStudents;
+using HaadCRM.Service.Validators.Students.Students;
+using HaadCRM.Service.Validators.Users.Permissions;
+using HaadCRM.Service.Validators.Users.UserPermissions;
+using HaadCRM.Service.Validators.Users.UserRoles;
+using HaadCRM.Service.Validators.Users.Users;
+using HaadCRM.WebApi.MiddleWares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -58,6 +79,49 @@ public static class ServicesCollectionExtension
         services.AddScoped<IUserPermissionService, UserPermissionService>();
         services.AddScoped<IUserRoleService, UserRoleService>();
         services.AddScoped<IUserService, UserService>();
+    }
+    public static void AddValidators(this IServiceCollection services)
+    {
+        services.AddTransient<AttendanceCreateModelValidator>();
+        services.AddTransient<AttendanceUpdateModelValidator>();
+        services.AddTransient<CourseCreateModelValidator>();
+        services.AddTransient<CourseUpdateModelValidator>();
+        services.AddTransient<EmployeeRoleCreateModelValidator>();
+        services.AddTransient<EmployeeRoleUpdateModelValidator>();
+        services.AddTransient<EmployeeCreateModelValidator>();
+        services.AddTransient<EmployeeUpdateModelValidator>();
+        services.AddTransient<ExamFileCreateModelValidator>();
+        services.AddTransient<ExamFileUpdateModelValidator>();
+        services.AddTransient<ExamGradeCreateModelValidator>();
+        services.AddTransient<ExamGradeUpdateModelValidator>();
+        services.AddTransient<ExamCreateModelValidator>();
+        services.AddTransient<ExamUpdateModelValidator>();
+        services.AddTransient<GroupCreateModelValidator>();
+        services.AddTransient<GroupUpdateModelValidator>();
+        services.AddTransient<GroupStudentCreateModelValidator>();
+        services.AddTransient<GroupStudentUpdateModelValidator>();
+        services.AddTransient<HomeworkCreateModelValidator>();
+        services.AddTransient<HomeworkUpdateModelValidator>();
+        services.AddTransient<HomeworkFileCreateModelValidator>();
+        services.AddTransient<HomeworkFileUpdateModelValidator>();
+        services.AddTransient<HomeworkGradeCreateModelValidator>();
+        services.AddTransient<HomeworkGradeUpdateModelValidator>();
+        services.AddTransient<LessonFileCreateModelValidator>();
+        services.AddTransient<LessonFileUpdateModelValidator>();
+        services.AddTransient<LessonCreateModelValidator>();
+        services.AddTransient<LessonUpdateModelValidator>();
+        services.AddTransient<RemovedStudentCreateModelValidator>();
+        services.AddTransient<RemovedStudentUpdateModelValidator>();
+        services.AddTransient<StudentCreateModelValidator>();
+        services.AddTransient<StudentUpdateModelValidator>();
+        services.AddTransient<PermissionCreateModelValidator>();
+        services.AddTransient<PermissionUpdateModelValidator>();
+        services.AddTransient<UserPermissionCreateModelValidator>();
+        services.AddTransient<UserPermissionUpdateModelValidator>();
+        services.AddTransient<UserRoleCreateModelValidator>();
+        services.AddTransient<UserRoleUpdateModelValidator>();
+        services.AddTransient<UserCreateModelValidator>();
+        services.AddTransient<UserUpdateModelValidator>();
     }
 
     public static void AddJwtService(this IServiceCollection services, IConfiguration configuration)
@@ -111,4 +175,5 @@ public static class ServicesCollectionExtension
             });
         });
     }
+    
 }
