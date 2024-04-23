@@ -3,13 +3,22 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Exams;
 using HaadCRM.Service.DTOs.ExamDTOs.ExamGrades;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Exams.ExamFiles;
+using HaadCRM.Service.Validators.Exams.ExamGrades;
 
 namespace HaadCRM.Service.Services.ExamGrades;
 
-public class ExamGradeService(IUnitOfWork unitOfWork, IMapper mapper) : IExamGradeService
+public class ExamGradeService(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    ExamGradeCreateModelValidator createModelValidator,
+    ExamGradeUpdateModelValidator updateModelValidator) : IExamGradeService
 {
     public async ValueTask<ExamGradeViewModel> CreateAsync(ExamGradeCreateModel createModel)
     {
+        await createModelValidator.ValidateOrPanicAsync(createModel);
+
         var existExamGrade = await unitOfWork.ExamGrades.SelectAsync(eg =>
             eg.ExamId == createModel.ExamId && eg.StudentId == createModel.StudentId);
 
@@ -43,6 +52,8 @@ public class ExamGradeService(IUnitOfWork unitOfWork, IMapper mapper) : IExamGra
 
     public async ValueTask<ExamGradeViewModel> UpdateAsync(long id, ExamGradeUpdateModel updateModel)
     {
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
+
         var existExamGrade = await unitOfWork.ExamGrades.SelectAsync(eg => eg.Id == id)
                       ?? throw new NotFoundException($"ExamGrade with ID={id} is not found");
         mapper.Map(updateModel, existExamGrade);
