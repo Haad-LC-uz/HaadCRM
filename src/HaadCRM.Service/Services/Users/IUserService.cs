@@ -1,44 +1,83 @@
-﻿using HaadCRM.Service.DTOs.UserDTOs.Users;
+﻿using HaadCRM.Domain.Entities.Users; // Namespace containing User entity definition
+using HaadCRM.Service.DTOs.UserDTOs.Users; // Namespace containing User DTOs (Data Transfer Objects)
 
 namespace HaadCRM.Service.Services.Users;
 
-/// <summary>
-/// Interface defining operations related to users.
-/// </summary>
 public interface IUserService
 {
     /// <summary>
-    /// Creates a new user based on the provided createModel.
+    /// Creates a new user account.
     /// </summary>
-    /// <param name="createModel">The model containing data for creating the user.</param>
-    /// <returns>The newly created user view model.</returns>
+    /// <param name="createModel">A UserCreateModel object containing data for the new user.</param>
+    /// <returns>A task containing a UserViewModel object representing the created user.</returns>
     ValueTask<UserViewModel> CreateAsync(UserCreateModel createModel);
+    
+    /// <summary>
+    /// Updates an existing user account.
+    /// </summary>
+    /// <param name="id">The unique identifier of the user account to be updated.</param>
+    /// <param name="updateModel">A UserUpdateModel object containing data for the update.</param>
+    /// <returns>A task containing a UserViewModel object representing the updated user.</returns>
+    ValueTask<UserViewModel> UpdateAsync(long id, UserUpdateModel updateModel);
 
     /// <summary>
-    /// Deletes a user with the specified ID.
-    /// </summary>
-    /// <param name="id">The ID of the user to delete.</param>
-    /// <returns>True if the deletion was successful; otherwise, false.</returns>
+    /// Deletes a user account by its ID.
+    /// </summary>  
+    /// <param name="id">The unique identifier of the user account to be deleted.</param>
+    /// <returns>A task containing a boolean indicating if the deletion was successful.</returns>  
     ValueTask<bool> DeleteAsync(long id);
 
     /// <summary>
-    /// Retrieves all users.
+    /// Retrieves all user accounts as UserViewModel objects.
     /// </summary>
-    /// <returns>An enumerable collection of user view models.</returns>
+    /// <returns>A task containing an IEnumerable collection of UserViewModel objects.</returns>
     ValueTask<IEnumerable<UserViewModel>> GetAllAsync();
 
     /// <summary>
-    /// Retrieves a user by its ID.
+    /// Gets a user account by its ID.
     /// </summary>
-    /// <param name="id">The ID of the user to retrieve.</param>
-    /// <returns>The user view model corresponding to the specified ID.</returns>
+    /// <param name="id">The unique identifier of the user account to be retrieved.</param>
+    /// <returns>A task containing a UserViewModel object representing the retrieved user.</returns>
     ValueTask<UserViewModel> GetByIdAsync(long id);
 
     /// <summary>
-    /// Updates an existing user with the specified ID using the provided updateModel.
+    /// Logs a user in using their phone number and password.
     /// </summary>
-    /// <param name="id">The ID of the user to update.</param>
-    /// <param name="updateModel">The model containing updated data for the user.</param>
-    /// <returns>The updated user view model.</returns>
-    ValueTask<UserViewModel> UpdateAsync(long id, UserUpdateModel updateModel);
+    /// <param name="phone">The user's phone number.</param>
+    /// <param name="password">The user's password.</param>
+    /// <returns>A task containing a tuple with the User object and a token if login is successful, 
+    /// otherwise null and an empty string.</returns>
+    ValueTask<(User user, string token)> LoginAsync(string phone, string password);
+
+    /// <summary>
+    /// Changes a user's password.
+    /// </summary>
+    /// <param name="phone">The user's phone number.</param>
+    /// <param name="oldPassword">The user's current password.</param>
+    /// <param name="newPassword">The user's desired new password.</param>
+    /// <returns>A task containing the updated User object if successful.</returns>
+    ValueTask<User> ChangePasswordAsync(string phone, string oldPassword, string newPassword);
+
+    /// <summary>
+    /// Confirms a verification code sent to the user's phone number.
+    /// </summary>
+    /// <param name="phone">The user's phone number.</param>
+    /// <param name="code">The verification code sent to the user's phone.</param>
+    /// <returns>A task containing a boolean indicating if the code was confirmed successfully.</returns>
+    ValueTask<bool> ConfirmCodeAsync(string phone, string code);
+    /// <summary>
+    /// Resets a user's password without requiring the old password.
+    /// </summary>
+    /// <param name="phone">The user's phone number.</param>
+    /// <param name="newPassword">The user's desired new password.</param>
+    /// <returns>A task containing a boolean indicating if the password reset was successful.</returns>
+    ValueTask<bool> ResetPasswordAsync(string phone, string newPassword);
+
+    /// <summary>
+    /// Sends a verification code to the user's phone number.
+    /// </summary>
+    /// <param name="phone">The phone number to send the verification code to.</param>
+    /// <returns>A task containing a boolean indicating if the code was sent successfully.</returns>
+    ValueTask<bool> SendCodeAsync(string phone);
+
 }
