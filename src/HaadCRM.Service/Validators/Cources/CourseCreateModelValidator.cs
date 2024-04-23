@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using HaadCRM.Domain.Entities.Employees;
 using HaadCRM.Service.DTOs.Courses;
 
 namespace HaadCRM.Service.Validators.Cources;
