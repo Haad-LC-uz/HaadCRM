@@ -50,5 +50,15 @@ public class LessonController(ILessonService lessonService) : ControllerBase
             Data = await lessonService.GetAllAsync()
         });
     }
+    [HttpGet("{id:long}")]
+    public async ValueTask<IActionResult> GetByIdAsync(long id)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "SUccess",
+            Data = await lessonService.GetByIdAsync(id)
+        });
+    }
 }
 
