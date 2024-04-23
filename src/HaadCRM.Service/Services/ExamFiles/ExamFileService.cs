@@ -4,7 +4,7 @@ using HaadCRM.Domain.Entities.Exams;
 using HaadCRM.Service.DTOs.ExamDTOs.ExamFiles;
 using HaadCRM.Service.Exceptions;
 
-namespace HaadCRM.Service.Services.Exams.ExamFiles;
+namespace HaadCRM.Service.Services.ExamFiles;
 
 public class ExamFileService(IUnitOfWork unitOfWork, IMapper mapper) : IExamFileService
 {

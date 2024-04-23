@@ -5,7 +5,7 @@ using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Helpers;
-using HaadCRM.WebApi.Validators;
+using HaadCRM.Service.Validators.Users.Users;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace HaadCRM.Service.Services.Users;

@@ -1,5 +1,5 @@
 ﻿using HaadCRM.Service.DTOs.ExamDTOs.ExamGrades;
-using HaadCRM.Service.Services.Exams.ExamGrades;
+using HaadCRM.Service.Services.ExamGrades;
 using HaadCRM.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 

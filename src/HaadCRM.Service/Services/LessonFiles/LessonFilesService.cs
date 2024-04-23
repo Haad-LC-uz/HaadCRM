@@ -8,33 +8,33 @@ namespace HaadCRM.Service.Services.LessonFiles;
 
 public class LessonFilesService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonFilesService
 {
-    public async ValueTask<LessonFileViewModel> CreateAsync(LessonFileViewModel lessonfile)
+    public async ValueTask<LessonFileViewModel> CreateAsync(LessonFileCreateModel lessonFile)
     {
         var existAsset = await unitOfWork.Assets.SelectAsync(
-            expression: a => a.Id == lessonfile.AssetId && !a.IsDeleted)
-            ?? throw new NotFoundException($"Asset with Id = {lessonfile.AssetId} is not found");
+            expression: a => a.Id == lessonFile.AssetId && !a.IsDeleted)
+            ?? throw new NotFoundException($"Asset with Id = {lessonFile.AssetId} is not found");
 
         var existLesson = await unitOfWork.Lessons.SelectAsync(
-            expression: l => l.Id == lessonfile.LessonId && !l.IsDeleted)
-            ?? throw new NotFoundException($"Lesson with Id = {lessonfile.LessonId} is not found");
+            expression: l => l.Id == lessonFile.LessonId && !l.IsDeleted)
+            ?? throw new NotFoundException($"Lesson with Id = {lessonFile.LessonId} is not found");
 
         var existLessonFile = await unitOfWork.LessonFiles.SelectAsync(
-            expression: lf => lf.AssetId == lessonfile.AssetId && lf.LessonId == lessonfile.LessonId && !lf.IsDeleted);
+            expression: lf => lf.AssetId == lessonFile.AssetId && lf.LessonId == lessonFile.LessonId && !lf.IsDeleted);
 
         if (existLessonFile is not null)
-            throw new AlreadyExistException($"Lessonfile with LessonId = {lessonfile.LessonId} and AssetId = {lessonfile.AssetId} is already exists");
+            throw new AlreadyExistException($"LessonFile with LessonId = {lessonFile.LessonId} and AssetId = {lessonFile.AssetId} is already exists");
 
-        var createdLessonfile = await unitOfWork.LessonFiles.InsertAsync(mapper.Map<LessonFile>(lessonfile));
+        var createdLessonFile = await unitOfWork.LessonFiles.InsertAsync(mapper.Map<LessonFile>(lessonFile));
         await unitOfWork.SaveAsync();
 
-        return mapper.Map<LessonFileViewModel>(createdLessonfile);
+        return mapper.Map<LessonFileViewModel>(createdLessonFile);
     }
 
     public async ValueTask<bool> DeleteAsync(long id)
     {
         var existLessonFile = await unitOfWork.LessonFiles.SelectAsync(
             expression: lf => lf.Id == id && !lf.IsDeleted)
-            ?? throw new NotFoundException($"Lessonfile with Id = {id} is not found");
+            ?? throw new NotFoundException($"LessonFile with Id = {id} is not found");
 
         await unitOfWork.LessonFiles.DeleteAsync(existLessonFile);
         await unitOfWork.SaveAsync();
@@ -54,26 +54,26 @@ public class LessonFilesService(IMapper mapper, IUnitOfWork unitOfWork) : ILesso
     {
         var existLessonFile = await unitOfWork.LessonFiles.SelectAsync(
             expression: lf => lf.Id == id && !lf.IsDeleted)
-            ?? throw new NotFoundException($"Lessonfile with Id = {id} is not found");
+            ?? throw new NotFoundException($"LessonFile with Id = {id} is not found");
 
         return mapper.Map<LessonFileViewModel>(existLessonFile);
     }
 
-    public async ValueTask<LessonFileViewModel> UpdateAsync(long id, LessonFileUpdateModel lessonfile)
+    public async ValueTask<LessonFileViewModel> UpdateAsync(long id, LessonFileUpdateModel lessonFile)
     {
         var existAsset = await unitOfWork.Assets.SelectAsync(
-            expression: a => a.Id == lessonfile.AssetId && !a.IsDeleted)
-            ?? throw new NotFoundException($"Asset with Id = {lessonfile.AssetId} is not found");
+            expression: a => a.Id == lessonFile.AssetId && !a.IsDeleted)
+            ?? throw new NotFoundException($"Asset with Id = {lessonFile.AssetId} is not found");
 
         var existLesson = await unitOfWork.Lessons.SelectAsync(
-            expression: l => l.Id == lessonfile.LessonId && !l.IsDeleted)
-            ?? throw new NotFoundException($"Lesson with Id = {lessonfile.LessonId} is not found");
+            expression: l => l.Id == lessonFile.LessonId && !l.IsDeleted)
+            ?? throw new NotFoundException($"Lesson with Id = {lessonFile.LessonId} is not found");
 
         var existLessonFile = await unitOfWork.LessonFiles.SelectAsync(
             expression: lf => lf.Id == id && !lf.IsDeleted)
-            ?? throw new NotFoundException($"Lessonfile with Id = {id} is not found");
+            ?? throw new NotFoundException($"LessonFile with Id = {id} is not found");
 
-        var mapped = mapper.Map(lessonfile, existLessonFile);
+        var mapped = mapper.Map(lessonFile, existLessonFile);
         var updated = await unitOfWork.LessonFiles.UpdateAsync(mapped);
         await unitOfWork.SaveAsync();
 
