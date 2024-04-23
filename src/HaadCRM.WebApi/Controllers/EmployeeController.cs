@@ -1,79 +1,66 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using HaadCRM.Service.DTOs.EmployeeDTOs.Employees;
+﻿using HaadCRM.WebApi.Models;
+using Microsoft.AspNetCore.Mvc;
 using HaadCRM.Service.Services.Employees;
+using HaadCRM.Service.DTOs.EmployeeDTOs.Employees;
 
 namespace HaadCRM.WebApi.Controllers;
 
-public class EmployeeController(
-    IEmployeeService employeeService) : BaseController
+[Route("api/[controller]")]
+[ApiController]
+public class EmployeeController(IEmployeeService employeeService) : ControllerBase
 {
-    [HttpPost("api/[controller]")]
-    public async ValueTask<IActionResult> CreateAsync([FromBody] EmployeeCreateModel createModel)
+    [HttpPost]
+    public async ValueTask<IActionResult> PostAsync([FromBody] EmployeeCreateModel createModel)
     {
-        try
+        return Ok(new Response
         {
-            var createdEmployee = await employeeService.CreateAsync(createModel);
-            return Ok(createdEmployee);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+            StatusCode = 200,
+            Message = "Success",
+            Data = await employeeService.CreateAsync(createModel)
+        });
     }
 
-    [HttpPut("api/[controller]/{id}")]
-    public async ValueTask<IActionResult> UpdateAsync(long id, [FromBody] EmployeeUpdateModel updateModel)
+    [HttpPut("{id:long}")]
+    public async ValueTask<IActionResult> PutAsync(long id, [FromBody] EmployeeUpdateModel updateModel)
     {
-        try
+        return Ok(new Response
         {
-            var updatedEmployee = await employeeService.UpdateAsync(id, updateModel);
-            return Ok(updatedEmployee);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+            StatusCode = 200,
+            Message = "Success",
+            Data = await employeeService.UpdateAsync(id, updateModel)
+        });
     }
 
-    [HttpDelete("api/[controller]/{id}")]
+    [HttpDelete("{id:long}")]
     public async ValueTask<IActionResult> DeleteAsync(long id)
     {
-        try
+        return Ok(new Response
         {
-            var result = await employeeService.DeleteAsync(id);
-            return Ok(result);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+            StatusCode = 200,
+            Message = "Success",
+            Data = await employeeService.DeleteAsync(id)
+        });
     }
 
-    [HttpGet("api/[controller]")]
-    public async ValueTask<IActionResult> GetAllAsync()
+    [HttpGet("{id:long}")]
+    public async ValueTask<IActionResult> GetAsync(long id)
     {
-        try
+        return Ok(new Response
         {
-            var employees = await employeeService.GetAllAsync();
-            return Ok(employees);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+            StatusCode = 200,
+            Message = "Success",
+            Data = await employeeService.GetByIdAsync(id)
+        });
     }
 
-    [HttpGet("api/[controller]/{id}")]
-    public async ValueTask<IActionResult> GetByIdAsync(long id)
+    [HttpGet]
+    public async ValueTask<IActionResult> GetAsync()
     {
-        try
+        return Ok(new Response
         {
-            var employee = await employeeService.GetByIdAsync(id);
-            return Ok(employee);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+            StatusCode = 200,
+            Message = "Success",
+            Data = await employeeService.GetAllAsync()
+        });
     }
 }
