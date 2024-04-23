@@ -3,7 +3,9 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Users;
 using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Helpers;
+using HaadCRM.WebApi.Validators;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace HaadCRM.Service.Services.Users;
@@ -11,13 +13,16 @@ namespace HaadCRM.Service.Services.Users;
 public class UserService(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    IMemoryCache memoryCache) : IUserService
+    IMemoryCache memoryCache,
+    UserCreateModelValidator userCreateModelValidator,
+    UserUpdateModelValidator userUpdateModelValidator) : IUserService
 {
     private readonly string cacheKey = "EmailCodeKey";
 
     // Creates a new user
     public async ValueTask<UserViewModel> CreateAsync(UserCreateModel createModel)
     {
+        await userCreateModelValidator.ValidateOrPanicAsync(createModel);
         // Check if a user with the same email or phone already exists
         var existingUser = await unitOfWork.Users.SelectAsync(user =>
             user.Email == createModel.Email || user.Phone == createModel.Phone);
@@ -51,6 +56,7 @@ public class UserService(
     // Updates an existing user by ID with the provided updateModel
     public async ValueTask<UserViewModel> UpdateAsync(long id, UserUpdateModel updateModel)
     {
+        await userUpdateModelValidator.ValidateOrPanicAsync(updateModel);
         // Find the user by ID, throw NotFoundException if not found
         var user = await unitOfWork.Users.SelectAsync(user => user.Id == id)
             ?? throw new NotFoundException($"User is not found with ID={id}");
