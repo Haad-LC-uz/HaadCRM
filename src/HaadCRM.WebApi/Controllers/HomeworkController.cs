@@ -29,4 +29,14 @@ public class HomeworkController(IHomeWorkService homeWorkService) : ControllerBa
             Data = await homeWorkService.UpdateAsync(id, homework)
         });
     }
+    [HttpDelete("{id:long}")]
+    public async ValueTask<IActionResult> DeleteAsync(long id)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await homeWorkService.DeleteAsync(id)
+        });
+    }
 }
