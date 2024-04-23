@@ -19,7 +19,7 @@ public class StudentService(
     {
         await createModelValidator.ValidateOrPanicAsync(createModel);
 
-        var exist = unitOfWork.Students.SelectAsync(u => u.UserId == createModel.UserId);
+        var exist = await unitOfWork.Students.SelectAsync(u => u.UserId == createModel.UserId);
         if (exist != null)
             throw new AlreadyExistException("This student is already exists");
 
