@@ -1,17 +1,26 @@
 ﻿using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Services.Users;
 using HaadCRM.WebApi.Models;
+using HaadCRM.WebApi.Validators;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class UsersController(IUserService userService) : BaseController
+public class UsersController(IUserService userService, UserCreateModelValidator validator) : BaseController
 {
-    [HttpPost("api/[controller]")]
+    [HttpPost]
     public async ValueTask<IActionResult> CreateAsync([FromBody] UserCreateModel createModel)
     {
+        // Validate the incoming data
+        var validationResult = await validator.ValidateAsync(createModel);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
+        // Data is valid, proceed with service call
         var createdUser = await userService.CreateAsync(createModel);
         return Ok(new Response
         {
@@ -20,6 +29,7 @@ public class UsersController(IUserService userService) : BaseController
             Data = createdUser
         });
     }
+
 
     [HttpPut("api/[controller]/{id}")]
     public async ValueTask<IActionResult> UpdateAsync(long id, [FromBody] UserUpdateModel updateModel)
