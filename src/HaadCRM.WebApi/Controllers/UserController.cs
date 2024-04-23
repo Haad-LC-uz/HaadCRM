@@ -1,25 +1,17 @@
-﻿using FluentValidation;
-using HaadCRM.Service.DTOs.UserDTOs.Users;
+﻿using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Services.Users;
-using HaadCRM.WebApi.Extensions;
 using HaadCRM.WebApi.Models;
-using HaadCRM.WebApi.Validators;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class UsersController(
-    IUserService userService, 
-    UserCreateModelValidator createModelValidator,
-    UserUpdateModelValidator updateModelValidator) : BaseController
+public class UsersController(IUserService userService) : BaseController
 {
-    [HttpPost]
+    [HttpPost("api/[controller]")]
     public async ValueTask<IActionResult> CreateAsync([FromBody] UserCreateModel createModel)
     {
-        await createModelValidator.ValidateOrPanicAsync(createModel);
-
         var createdUser = await userService.CreateAsync(createModel);
         return Ok(new Response
         {
@@ -29,12 +21,9 @@ public class UsersController(
         });
     }
 
-
     [HttpPut("api/[controller]/{id}")]
     public async ValueTask<IActionResult> UpdateAsync(long id, [FromBody] UserUpdateModel updateModel)
     {
-        await updateModelValidator.ValidateOrPanicAsync(updateModel);
-
         var updatedUser = await userService.UpdateAsync(id, updateModel);
         return Ok(new Response
         {

@@ -2,7 +2,7 @@
 using FluentValidation.Results;
 using HaadCRM.Service.Exceptions;
 
-namespace HaadCRM.WebApi.Extensions;
+namespace HaadCRM.Service.Extensions;
 
 public static class ValidationExtensions
 {
