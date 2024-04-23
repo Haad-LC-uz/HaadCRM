@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using HaadCRM.Service.DTOs.GroupDTOs.GroupStudents;
+﻿using HaadCRM.Service.DTOs.GroupDTOs.GroupStudents;
 using HaadCRM.Service.Services.GroupStudents;
 using HaadCRM.WebApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 

@@ -1,7 +1,7 @@
-﻿using HaadCRM.WebApi.Models;
-using Microsoft.AspNetCore.Mvc;
-using HaadCRM.Service.DTOs.StudentDTOs.Students;
+﻿using HaadCRM.Service.DTOs.StudentDTOs.Students;
 using HaadCRM.Service.Services.Students.Students;
+using HaadCRM.WebApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 

@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGenJwt();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
- 
+
 builder.Services.AddDbContext<HaadDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddJwtService(builder.Configuration);

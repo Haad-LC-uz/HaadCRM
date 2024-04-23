@@ -1,5 +1,5 @@
-﻿using HaadCRM.WebApi.Models;
-using HaadCRM.Service.Exceptions;
+﻿using HaadCRM.Service.Exceptions;
+using HaadCRM.WebApi.Models;
 
 namespace HaadCRM.WebApi.MiddleWares;
 

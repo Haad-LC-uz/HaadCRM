@@ -1,7 +1,7 @@
-﻿using HaadCRM.WebApi.Models;
-using Microsoft.AspNetCore.Mvc;
-using HaadCRM.Service.DTOs.LessonsDTOs.LessonFiles;
+﻿using HaadCRM.Service.DTOs.LessonsDTOs.LessonFiles;
 using HaadCRM.Service.Services.LessonFiles;
+using HaadCRM.WebApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 

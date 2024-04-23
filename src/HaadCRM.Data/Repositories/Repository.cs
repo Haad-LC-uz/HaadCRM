@@ -1,7 +1,7 @@
 ﻿using HaadCRM.Data.Contexts;
 using HaadCRM.Domain.Commons;
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace HaadCRM.Data.Repositories;
 

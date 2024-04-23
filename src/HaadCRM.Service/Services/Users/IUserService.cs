@@ -11,7 +11,7 @@ public interface IUserService
     /// <param name="createModel">A UserCreateModel object containing data for the new user.</param>
     /// <returns>A task containing a UserViewModel object representing the created user.</returns>
     ValueTask<UserViewModel> CreateAsync(UserCreateModel createModel);
-    
+
     /// <summary>
     /// Updates an existing user account.
     /// </summary>

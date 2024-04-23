@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using HaadCRM.Service.DTOs.StudentDTOs.RemovedStudents;
+﻿using HaadCRM.Service.DTOs.StudentDTOs.RemovedStudents;
 using HaadCRM.Service.Services.RemovedStudents;
 using HaadCRM.WebApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 

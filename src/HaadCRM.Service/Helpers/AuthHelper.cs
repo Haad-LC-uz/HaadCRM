@@ -1,8 +1,8 @@
-﻿using System.Text;
-using System.Security.Claims;
-using HaadCRM.Domain.Entities.Users;
+﻿using HaadCRM.Domain.Entities.Users;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace HaadCRM.Service.Helpers;
 
