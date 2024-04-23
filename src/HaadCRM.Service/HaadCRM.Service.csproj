@@ -20,7 +20,6 @@
     <ProjectReference Include="..\HaadCRM.Domain\HaadCRM.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Validators\Homework\HomeworkFiles\" />
     <Folder Include="Validators\Homework\HomeworkGrades\" />
   </ItemGroup>
 </Project>
