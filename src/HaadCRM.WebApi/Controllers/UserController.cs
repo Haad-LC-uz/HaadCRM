@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.UserDTOs.Users;
+﻿using FluentValidation;
+using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Services.Users;
 using HaadCRM.WebApi.Models;
 using HaadCRM.WebApi.Validators;
@@ -8,19 +9,20 @@ namespace HaadCRM.WebApi.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class UsersController(IUserService userService, UserCreateModelValidator validator) : BaseController
+public class UsersController(
+    IUserService userService, 
+    UserCreateModelValidator createModelValidator,
+    UserUpdateModelValidator updateModelValidator) : BaseController
 {
     [HttpPost]
     public async ValueTask<IActionResult> CreateAsync([FromBody] UserCreateModel createModel)
     {
-        // Validate the incoming data
-        var validationResult = await validator.ValidateAsync(createModel);
+        var validationResult = await createModelValidator.ValidateAsync(createModel);
         if (!validationResult.IsValid)
         {
             return BadRequest(validationResult.Errors);
         }
 
-        // Data is valid, proceed with service call
         var createdUser = await userService.CreateAsync(createModel);
         return Ok(new Response
         {
@@ -34,6 +36,12 @@ public class UsersController(IUserService userService, UserCreateModelValidator 
     [HttpPut("api/[controller]/{id}")]
     public async ValueTask<IActionResult> UpdateAsync(long id, [FromBody] UserUpdateModel updateModel)
     {
+        var validationResult = await updateModelValidator.ValidateAsync(updateModel);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
         var updatedUser = await userService.UpdateAsync(id, updateModel);
         return Ok(new Response
         {
