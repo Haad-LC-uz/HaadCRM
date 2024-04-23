@@ -1,14 +1,14 @@
-﻿using HaadCRM.Data.Repositories;
-using HaadCRM.Domain.Commons;
-using HaadCRM.Domain.Entities.Attendances;
-using HaadCRM.Domain.Entities.Courses;
-using HaadCRM.Domain.Entities.Employees;
+﻿using HaadCRM.Domain.Commons;
+using HaadCRM.Data.Repositories;
 using HaadCRM.Domain.Entities.Exams;
+using HaadCRM.Domain.Entities.Users;
 using HaadCRM.Domain.Entities.Groups;
-using HaadCRM.Domain.Entities.Homeworks;
+using HaadCRM.Domain.Entities.Courses;
 using HaadCRM.Domain.Entities.Lessons;
 using HaadCRM.Domain.Entities.Students;
-using HaadCRM.Domain.Entities.Users;
+using HaadCRM.Domain.Entities.Employees;
+using HaadCRM.Domain.Entities.Homeworks;
+using HaadCRM.Domain.Entities.Attendances;
 
 namespace HaadCRM.Data.UnitOfWorks;
 
@@ -24,7 +24,7 @@ public interface IUnitOfWork : IDisposable
     IRepository<ExamGrade> ExamGrades { get; }
     IRepository<Group> Groups { get; }
     IRepository<GroupStudent> GroupStudents { get; }
-    IRepository<Homework> Homeworks { get; }
+    IRepository<Homework> Homework { get; }
     IRepository<HomeworkFile> HomeworkFiles { get; }
     IRepository<HomeworkGrade> HomeworkGrades { get; }
     IRepository<Lesson> Lessons { get; }

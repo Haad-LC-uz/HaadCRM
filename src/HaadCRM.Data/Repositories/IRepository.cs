@@ -11,7 +11,7 @@ public interface IRepository<T> where T : Auditable
     ValueTask<T> UpdateAsync(T entity);
     ValueTask<T> SelectAsync(Expression<Func<T, bool>> expression, string[] includes = null);
     ValueTask<IEnumerable<T>> SelectAsEnumerableAsync(
-        Expression<Func<T, bool>> expression = null,
+         Expression<Func<T, bool>> expression = null,
          string[] includes = null,
          bool isTracked = true);
     IQueryable<T> SelectAsQueryable(

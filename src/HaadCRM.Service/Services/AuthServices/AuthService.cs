@@ -1,9 +1,9 @@
-﻿using HaadCRM.Domain.Entities.Users;
-using Microsoft.Extensions.Configuration;
+﻿using System.Text;
+using System.Security.Claims;
+using HaadCRM.Domain.Entities.Users;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace HaadCRM.Service.Services.AuthServices;
 

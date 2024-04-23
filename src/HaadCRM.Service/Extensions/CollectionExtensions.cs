@@ -1,8 +1,8 @@
-﻿using HaadCRM.Service.Configurations;
-using HaadCRM.Service.Exceptions;
+﻿using Newtonsoft.Json;
 using HaadCRM.Service.Helpers;
-using Newtonsoft.Json;
 using System.Linq.Expressions;
+using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Configurations;
 
 namespace HaadCRM.Service.Extensions
 {

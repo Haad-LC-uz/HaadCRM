@@ -1,35 +1,46 @@
 ﻿using AutoMapper;
-using HaadCRM.Data.UnitOfWorks;
+using HaadCRM.Domain.Enums;
 using HaadCRM.Domain.Commons;
-using HaadCRM.Service.DTOs.Assets;
-using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Helpers;
+using HaadCRM.Data.UnitOfWorks;
+using Microsoft.AspNetCore.Http;
+using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.DTOs.Assets;
 
 namespace HaadCRM.Service.Services.Assets;
 
 public class AssetService(IMapper mapper, IUnitOfWork unitOfWork) : IAssetService
 {
-    public async ValueTask<AssetViewModel> UploadAsync(AssetCreateModel asset)
+    public async ValueTask<AssetViewModel> UploadAsync(IFormFile file, FileType type)
     {
-        var assetData = await FileHelper.CreateFileAsync(asset.File, asset.FileType);
-        var existAsset = new Asset()
+        var directoryPath = Path.Combine(EnvironmentHelper.WebRootPath, type.ToString());
+        Directory.CreateDirectory(directoryPath);
+
+        var fullPath = Path.Combine(directoryPath, file.FileName);
+
+        using var stream = new FileStream(fullPath, FileMode.Create);
+        await file.CopyToAsync(stream);
+        await stream.FlushAsync();
+        stream.Close();
+
+        var asset = new Asset()
         {
-            Name = assetData.Name,
-            Path = assetData.Path,
+            Path = fullPath,
+            Name = file.FileName
         };
 
-        var createdAsset = await unitOfWork.Assets.InsertAsync(existAsset);
+        var createdAsset = await unitOfWork.Assets.InsertAsync(asset);
         await unitOfWork.SaveAsync();
 
-        return mapper.Map<AssetViewModel>(createdAsset);
+        return mapper.Map<AssetViewModel>(asset);
     }
 
     public async ValueTask<bool> DeleteAsync(long id)
     {
-        var existAsset = await unitOfWork.Assets.SelectAsync(asset => asset.Id == id)
-            ?? throw new NotFoundException("Asset is not found");
+        var asset = await unitOfWork.Assets.SelectAsync(a => a.Id == id)
+          ?? throw new NotFoundException($"Asset is not found with this id: {id}");
 
-        await unitOfWork.Assets.DropAsync(existAsset);
+        var deletedAsset = await unitOfWork.Assets.DropAsync(asset);
         await unitOfWork.SaveAsync();
 
         return true;
@@ -37,9 +48,9 @@ public class AssetService(IMapper mapper, IUnitOfWork unitOfWork) : IAssetServic
 
     public async ValueTask<AssetViewModel> GetByIdAsync(long id)
     {
-        var existAsset = await unitOfWork.Assets.SelectAsync(asset => asset.Id == id)
-            ?? throw new NotFoundException("Asset is not found");
+        var asset = await unitOfWork.Assets.SelectAsync(a => a.Id == id)
+            ?? throw new NotFoundException($"Asset is not found with this id: {id}");
 
-        return mapper.Map<AssetViewModel>(existAsset);
+        return mapper.Map<AssetViewModel>(asset);
     }
 }
