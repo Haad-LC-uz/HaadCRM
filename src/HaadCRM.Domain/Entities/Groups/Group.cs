@@ -6,6 +6,18 @@ using HaadCRM.Domain.Entities.Students;
 
 namespace HaadCRM.Domain.Entities.Groups;
 
+/// <summary>
+/// The Group class represents the Group entity that contains properties for Group,
+/// such as:
+/// Course,
+/// Teacher,
+/// Name
+/// StartTime
+/// Duration
+/// EndTime
+/// Price
+/// Room
+/// </summary>
 public class Group : Auditable
 {
     public long CourseId { get; set; }
