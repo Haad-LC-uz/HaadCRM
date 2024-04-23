@@ -71,6 +71,7 @@ public class LessonFilesService(
     public async ValueTask<LessonFileViewModel> UpdateAsync(long id, LessonFileUpdateModel lessonFile)
     {
         await updateModelValidator.ValidateOrPanicAsync(lessonFile);
+
         var existAsset = await unitOfWork.Assets.SelectAsync(
             expression: a => a.Id == lessonFile.AssetId && !a.IsDeleted)
             ?? throw new NotFoundException($"Asset with Id = {lessonFile.AssetId} is not found");
