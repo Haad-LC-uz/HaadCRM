@@ -1,10 +1,9 @@
-﻿using AutoMapper;
-using HaadCRM.Data.UnitOfWorks;
+﻿using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Students;
 using HaadCRM.Service.DTOs.StudentDTOs.Students;
 using HaadCRM.Service.Exceptions;
 
-namespace HaadCRM.Service.Services.Students;
+namespace HaadCRM.Service.Services.Students.Students;
 
 public class StudentService(IUnitOfWork unitOfWork, IMapper mapper) : IStudentService
 {
