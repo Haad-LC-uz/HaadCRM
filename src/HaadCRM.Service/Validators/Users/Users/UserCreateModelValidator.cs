@@ -2,7 +2,7 @@
 using HaadCRM.Service.DTOs.UserDTOs.Users;
 using System.Text.RegularExpressions;
 
-namespace HaadCRM.Service.Validators.Users;
+namespace HaadCRM.Service.Validators.Users.Users;
 
 public class UserCreateModelValidator : AbstractValidator<UserCreateModel>
 {
