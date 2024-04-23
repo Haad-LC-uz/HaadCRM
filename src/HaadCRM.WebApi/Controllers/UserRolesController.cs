@@ -1,7 +1,7 @@
-﻿using HaadCRM.WebApi.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using HaadCRM.Service.DTOs.UserDTOs.UserRoles;
 using HaadCRM.Service.Services.UserRoles;
-using HaadCRM.Service.DTOs.UserDTOs.UserRoles;
+using HaadCRM.WebApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 

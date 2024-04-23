@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using HaadCRM.Service.DTOs.GroupDTOs.Groups;
+﻿using HaadCRM.Service.DTOs.GroupDTOs.Groups;
 using HaadCRM.Service.Services.GroupService;
 using HaadCRM.WebApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 

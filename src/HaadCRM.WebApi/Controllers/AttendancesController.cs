@@ -1,7 +1,7 @@
-﻿using HaadCRM.WebApi.Models;
-using Microsoft.AspNetCore.Mvc;
-using HaadCRM.Service.DTOs.Attendances;
+﻿using HaadCRM.Service.DTOs.Attendances;
 using HaadCRM.Service.Services.Attendances;
+using HaadCRM.WebApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 

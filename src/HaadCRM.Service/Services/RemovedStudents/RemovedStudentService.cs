@@ -17,7 +17,7 @@ public class RemovedStudentService(IUnitOfWork unitOfWork, IMapper mapper) : IRe
 
         await unitOfWork.RemovedStudents.InsertAsync(mapper.Map<RemovedStudent>(createModel));
         await unitOfWork.SaveAsync();
-        return  mapper.Map<RemovedStudentViewModel>(createModel);
+        return mapper.Map<RemovedStudentViewModel>(createModel);
     }
 
     public async ValueTask<RemovedStudentViewModel> GetByIdAsync(long id)
