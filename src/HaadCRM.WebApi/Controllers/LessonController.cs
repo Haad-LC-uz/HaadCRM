@@ -19,5 +19,16 @@ public class LessonController(ILessonService lessonService) : ControllerBase
             Data = await lessonService.CreateAsync(lesson)
         });
     }
+    [HttpPut("{id:long}")]
+    public async ValueTask<IActionResult> PutAsync([FromBody] long id, LessonUpdateModel lesson)
+    {
+
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await lessonService.UpdateAsync(id, lesson)
+        });
+    }
 }
 
