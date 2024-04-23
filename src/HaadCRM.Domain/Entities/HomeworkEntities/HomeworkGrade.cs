@@ -4,6 +4,17 @@ using HaadCRM.Domain.Entities.Students;
 
 namespace HaadCRM.Domain.Entities.Homeworks;
 
+/// <summary>
+/// The HomeworkGrade class represents the HomeworkGrade entity that contains properties for HomeworkGrade,
+/// such as:
+/// StudentId
+/// AssignmentId
+/// HomeWorkId
+/// Grade
+/// HomeWork
+/// Assistant
+/// Student
+/// </summary>
 public class HomeworkGrade : Auditable
 {
     public long StudentId { get; set; }
