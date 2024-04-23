@@ -39,4 +39,14 @@ public class HomeworkController(IHomeWorkService homeWorkService) : ControllerBa
             Data = await homeWorkService.DeleteAsync(id)
         });
     }
+    [HttpGet]
+    public async ValueTask<IActionResult> GetAllAsync()
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await homeWorkService.GetAllAsync()
+        });
+    }
 }
