@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace HaadCRM.WebApi.Controllers
+namespace HaadCRM.WebApi.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class HomeworkController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class HomeworkController : ControllerBase
-    {
-    }
 }
