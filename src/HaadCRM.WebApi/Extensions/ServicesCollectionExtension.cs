@@ -20,13 +20,13 @@ using HaadCRM.Service.Services.HomeworkFiles;
 using HaadCRM.Service.Services.EmployeeRoles;
 using HaadCRM.Service.Services.GroupStudents;
 using HaadCRM.Service.Services.HomeworkGrades;
-using HaadCRM.Service.Services.Exams.ExamFiles;
 using HaadCRM.Service.Services.UserPermissions;
 using HaadCRM.Service.Services.RemovedStudents;
-using HaadCRM.Service.Services.Exams.ExamGrades;
 using HaadCRM.Service.Services.Students.Students;
 using HaadCRM.Service.Services.HomeworkServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using HaadCRM.Service.Services.ExamFiles;
+using HaadCRM.Service.Services.ExamGrades;
 
 namespace HaadCRM.WebApi.Extensions;
 
@@ -39,7 +39,7 @@ public static class ServicesCollectionExtension
         services.AddScoped<IAssetService, AssetService>();
         services.AddScoped<IAttendanceService, AttendanceService>();
         services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<ICourceService, CourseService>();
+        services.AddScoped<ICourseService, CourseService>();
         services.AddScoped<IEmployeeRoleService, EmployeeRoleService>();
         services.AddScoped<IEmployeeService, EmployeeService>();
         services.AddScoped<IExamFileService, ExamFileService>();

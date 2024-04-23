@@ -5,7 +5,7 @@ using HaadCRM.Service.Exceptions;
 
 namespace HaadCRM.Service.Services.Courses;
 
-public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourceService
+public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseService
 {
     public async ValueTask<CourseViewModel> CreateAsync(CourseCreateModel course)
     {

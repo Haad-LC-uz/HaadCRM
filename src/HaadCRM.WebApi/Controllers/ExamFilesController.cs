@@ -1,5 +1,5 @@
 ﻿using HaadCRM.Service.DTOs.ExamDTOs.ExamFiles;
-using HaadCRM.Service.Services.Exams.ExamFiles;
+using HaadCRM.Service.Services.ExamFiles;
 using HaadCRM.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 

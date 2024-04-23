@@ -1,8 +1,7 @@
-﻿using HaadCRM.Service.DTOs.ExamDTOs.Exams;
-using HaadCRM.Service.DTOs.UserDTOs.UserRoles;
-using HaadCRM.Service.Services.Exams.Exams;
-using HaadCRM.WebApi.Models;
+﻿using HaadCRM.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using HaadCRM.Service.DTOs.ExamDTOs.Exams;
+using HaadCRM.Service.Services.Exams.Exams;
 
 namespace HaadCRM.WebApi.Controllers
 {
