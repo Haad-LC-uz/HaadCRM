@@ -19,4 +19,14 @@ public class HomeworkFileController(IHomeworkFilesService homeworkFilesService) 
             Data = await homeworkFilesService.CreateAsync(homeworkFile)
         });
     }
+    [HttpPut("{id:long}")]
+    public async ValueTask<IActionResult> PutAsync(long id, [FromBody] HomeworkFileUpdateModel homeworkFile)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await homeworkFilesService.UpdateAsync(id, homeworkFile)
+        });
+    }
 }
