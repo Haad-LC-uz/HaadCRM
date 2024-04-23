@@ -3,15 +3,24 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Users;
 using HaadCRM.Service.DTOs.UserDTOs.UserPermissions;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Users.Permissions;
+using HaadCRM.Service.Validators.Users.UserPermissions;
 
 namespace HaadCRM.Service.Services.UserPermissions;
 
-public class UserPermissionService(IMapper mapper, IUnitOfWork unitOfWork) : IUserPermissionService
+public class UserPermissionService(
+    IMapper mapper, 
+    IUnitOfWork unitOfWork,
+    UserPermissionCreateModelValidator createModelValidator,
+    UserPermissionUpdateModelValidator updateModelValidator) : IUserPermissionService
 {
 
     // Creates a new user permission
     public async ValueTask<UserPermissionViewModel> CreateAsync(UserPermissionCreateModel createModel)
     {
+        await createModelValidator.ValidateOrPanicAsync(createModel);
+
         // Check if a user permission with the same user ID and permission ID already exists
         var existingPermission = await unitOfWork.UserPermissions.SelectAsync(up =>
             up.UserId == createModel.UserId && up.PermissionId == createModel.PermissionId);
@@ -35,6 +44,8 @@ public class UserPermissionService(IMapper mapper, IUnitOfWork unitOfWork) : IUs
     // Updates an existing user permission
     public async ValueTask<UserPermissionViewModel> UpdateAsync(UserPermissionUpdateModel updateModel)
     {
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
+
         // Find the user permission by user ID and permission ID, throw NotFoundException if not found
         var userPermission = await unitOfWork.UserPermissions.SelectAsync(up =>
             up.UserId == updateModel.UserId && up.PermissionId == updateModel.PermissionId)
