@@ -1,6 +1,6 @@
 ﻿using HaadCRM.Service.DTOs.StudentDTOs.Students;
 
-namespace HaadCRM.Service.Services.Students;
+namespace HaadCRM.Service.Services.Students.Students;
 
 public interface IStudentService
 {
