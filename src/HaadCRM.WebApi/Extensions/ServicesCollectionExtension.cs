@@ -39,7 +39,7 @@ public static class ServicesCollectionExtension
         services.AddScoped<IAssetService, AssetService>();
         services.AddScoped<IAttendanceService, AttendanceService>();
         services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<ICourceService, CourseService>();
+        services.AddScoped<ICourseService, CourseService>();
         services.AddScoped<IEmployeeRoleService, EmployeeRoleService>();
         services.AddScoped<IEmployeeService, EmployeeService>();
         services.AddScoped<IExamFileService, ExamFileService>();

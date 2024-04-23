@@ -2,7 +2,7 @@
 
 namespace HaadCRM.Service.Services.Courses;
 
-public interface ICourceService
+public interface ICourseService
 {
     /// <summary>
     /// Creates new Course
