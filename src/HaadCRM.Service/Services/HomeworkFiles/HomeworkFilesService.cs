@@ -4,7 +4,7 @@ using HaadCRM.Domain.Entities.Homeworks;
 using HaadCRM.Service.DTOs.HomeworkDTOs.HomeworkFiles;
 using HaadCRM.Service.Exceptions;
 
-namespace HaadCRM.Service.Services.Homeworks.HomeworkFiles;
+namespace HaadCRM.Service.Services.HomeworkFiles;
 
 public class HomeworkFilesService(IUnitOfWork unitOfWork, IMapper mapper) : IHomeworkFilesService
 {
@@ -48,7 +48,7 @@ public class HomeworkFilesService(IUnitOfWork unitOfWork, IMapper mapper) : IHom
         var homeworkFile = await unitOfWork.HomeworkFiles.SelectAsync(hf => hf.Id == id && !hf.IsDeleted);
         if (homeworkFile == null)
             throw new NotFoundException($"Homework file with ID={id} is not FOUND");
-        
+
         return mapper.Map<HomeworkFileViewModel>(homeworkFile);
     }
 

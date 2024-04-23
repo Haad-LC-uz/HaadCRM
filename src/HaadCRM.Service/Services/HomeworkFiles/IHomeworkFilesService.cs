@@ -1,6 +1,6 @@
 ﻿using HaadCRM.Service.DTOs.HomeworkDTOs.HomeworkFiles;
 
-namespace HaadCRM.Service.Services.Homeworks.HomeworkFiles;
+namespace HaadCRM.Service.Services.HomeworkFiles;
 
 public interface IHomeworkFilesService
 {

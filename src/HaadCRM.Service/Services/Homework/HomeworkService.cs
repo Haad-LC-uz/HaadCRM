@@ -4,7 +4,7 @@ using HaadCRM.Domain.Entities.Homeworks;
 using HaadCRM.Service.DTOs.HomeworkDTOs.Homework;
 using HaadCRM.Service.Exceptions;
 
-namespace HaadCRM.Service.Services.Homeworks.Homeworks;
+namespace HaadCRM.Service.Services.Homework;
 
 public class HomeworkService(IUnitOfWork unitOfWork, IMapper mapper) : IHomeWorkService
 {

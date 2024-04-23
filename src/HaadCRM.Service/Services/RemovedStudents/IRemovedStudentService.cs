@@ -1,6 +1,6 @@
 ﻿using HaadCRM.Service.DTOs.StudentDTOs.RemovedStudents;
 
-namespace HaadCRM.Service.Services.Students.RemovedStudents;
+namespace HaadCRM.Service.Services.RemovedStudents;
 
 public interface IRemovedStudentService
 {
