@@ -1,6 +1,6 @@
 ﻿using HaadCRM.Service.DTOs.ExamDTOs.ExamFiles;
 
-namespace HaadCRM.Service.Services.Exams.ExamFiles;
+namespace HaadCRM.Service.Services.ExamFiles;
 
 public interface IExamFileService
 {
