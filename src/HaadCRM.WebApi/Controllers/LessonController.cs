@@ -46,7 +46,7 @@ public class LessonController(ILessonService lessonService) : ControllerBase
         return Ok(new Response
         {
             StatusCode = 200,
-            Message = "SUccess",
+            Message = "Success",
             Data = await lessonService.GetAllAsync()
         });
     }
