@@ -3,13 +3,22 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Students;
 using HaadCRM.Service.DTOs.StudentDTOs.RemovedStudents;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Lessons.Lessons;
+using HaadCRM.Service.Validators.Students.RemovedStudents;
 
 namespace HaadCRM.Service.Services.RemovedStudents;
 
-public class RemovedStudentService(IUnitOfWork unitOfWork, IMapper mapper) : IRemovedStudentService
+public class RemovedStudentService(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    RemovedStudentCreateModelValidator createModelValidator,
+    RemovedStudentUpdateModelValidator updateModelValidator) : IRemovedStudentService
 {
     public async ValueTask<RemovedStudentViewModel> CreateAsync(RemovedStudentCreateModel createModel)
     {
+        await createModelValidator.ValidateOrPanicAsync(createModel);
+
         var removedStudent = await unitOfWork.RemovedStudents.SelectAsync(rs => rs.StudentId == createModel.StudentId);
 
         if (removedStudent is not null)
@@ -39,6 +48,8 @@ public class RemovedStudentService(IUnitOfWork unitOfWork, IMapper mapper) : IRe
 
     public async ValueTask<RemovedStudentViewModel> UpdateAsync(long id, RemovedStudentUpdateModel updateModel)
     {
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
+
         var removedStudent = await unitOfWork.RemovedStudents.SelectAsync(rs => rs.Id == id)
                       ?? throw new NotFoundException($"Removed student with ID={id} is not found");
         mapper.Map(updateModel, removedStudent);

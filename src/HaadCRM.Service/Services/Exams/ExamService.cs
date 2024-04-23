@@ -3,13 +3,20 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Exams;
 using HaadCRM.Service.DTOs.ExamDTOs.Exams;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Exams.Exams;
 
 namespace HaadCRM.Service.Services.Exams.Exams;
 
-public class ExamService(IUnitOfWork unitOfWork, IMapper mapper) : IExamService
+public class ExamService(
+    IUnitOfWork unitOfWork,
+    IMapper mapper,
+    ExamCreateModelValidator createModelValidator,
+    ExamUpdateModelValidator updateModelValidator) : IExamService
 {
     public async ValueTask<ExamViewModel> CreateAsync(ExamCreateModel createModel)
     {
+        await createModelValidator.ValidateOrPanicAsync(createModel);
         var existExam = await unitOfWork.Exams.SelectAsync(e =>
             (e.AssistantId == createModel.AssistantId || e.TeacherId == createModel.TeacherId) && e.DateOfExam == createModel.DateOfExam);
 
@@ -24,10 +31,8 @@ public class ExamService(IUnitOfWork unitOfWork, IMapper mapper) : IExamService
 
     public async ValueTask<ExamViewModel> GetByIdAsync(long id)
     {
-        var exam = await unitOfWork.Exams.SelectAsync(exam => exam.Id == id && !exam.IsDeleted);
-        if (exam == null)
-            throw new NotFoundException($"Homework with ID={id} is not found or was deleted");
-
+        var exam = await unitOfWork.Exams.SelectAsync(exam => exam.Id == id && !exam.IsDeleted) 
+            ?? throw new NotFoundException($"Homework with ID={id} is not found or was deleted");
         return await Task.FromResult(mapper.Map<ExamViewModel>(exam));
     }
 
@@ -42,6 +47,8 @@ public class ExamService(IUnitOfWork unitOfWork, IMapper mapper) : IExamService
 
     public async ValueTask<ExamViewModel> UpdateAsync(long id, ExamUpdateModel updateModel)
     {
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
+
         var exam = await unitOfWork.Exams.SelectAsync(e => e.Id == id && !e.IsDeleted)
                    ?? throw new NotFoundException($"exam with ID={id} is not found");
 

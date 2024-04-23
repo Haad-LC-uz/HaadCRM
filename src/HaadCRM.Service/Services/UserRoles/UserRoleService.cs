@@ -3,15 +3,24 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Users;
 using HaadCRM.Service.DTOs.UserDTOs.UserRoles;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Users.Permissions;
+using HaadCRM.Service.Validators.Users.UserRoles;
 
 namespace HaadCRM.Service.Services.UserRoles;
 
-public class UserRoleService(IUnitOfWork unitOfWork, IMapper mapper) : IUserRoleService
+public class UserRoleService(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    UserRoleCreateModelValidator createModelValidator,
+    UserRoleUpdateModelValidator updateModelValidator) : IUserRoleService
 {
 
     // Creates a new user role
     public async ValueTask<UserRoleViewModel> CreateAsync(UserRoleCreateModel createModel)
     {
+        await createModelValidator.ValidateOrPanicAsync(createModel);
+
         // Check if a role with the same name already exists
         var existingRole = await unitOfWork.UserRoles.SelectAsync(role => role.Name == createModel.Name);
 
@@ -69,6 +78,8 @@ public class UserRoleService(IUnitOfWork unitOfWork, IMapper mapper) : IUserRole
     // Updates an existing user role by ID with the provided updateModel
     public async ValueTask<UserRoleViewModel> UpdateAsync(long id, UserRoleUpdateModel updateModel)
     {
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
+
         // Find the user role by ID, throw NotFoundException if not found
         var userRole = await unitOfWork.UserRoles.SelectAsync(role => role.Id == id)
             ?? throw new NotFoundException($"UserRole is not found with this ID={id}");

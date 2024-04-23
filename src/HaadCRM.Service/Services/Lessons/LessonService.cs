@@ -3,13 +3,21 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Lessons;
 using HaadCRM.Service.DTOs.LessonsDTOs.Lessons;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Exams.ExamGrades;
+using HaadCRM.Service.Validators.Lessons.Lessons;
 
 namespace HaadCRM.Service.Services.Lessons;
 
-public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonService
+public class LessonService(
+    IMapper mapper, 
+    IUnitOfWork unitOfWork,
+    LessonCreateModelValidator createModelValidator,
+    LessonUpdateModelValidator updateModelValidator) : ILessonService
 {
     public async ValueTask<LessonViewModel> CreateAsync(LessonCreateModel lesson)
     {
+        await createModelValidator.ValidateOrPanicAsync(lesson);
         var existGroup = await unitOfWork.Groups.SelectAsync(
             expression: g => g.Id == lesson.GroupId && !g.IsDeleted)
             ?? throw new NotFoundException($"Group is not found with Id = {lesson.GroupId}");
@@ -61,6 +69,7 @@ public class LessonService(IMapper mapper, IUnitOfWork unitOfWork) : ILessonServ
 
     public async ValueTask<LessonViewModel> UpdateAsync(long id, LessonUpdateModel lesson)
     {
+        await updateModelValidator.ValidateOrPanicAsync(lesson);
         var existGroup = await unitOfWork.Groups.SelectAsync(
             expression: g => g.Id == lesson.GroupId && !g.IsDeleted)
             ?? throw new NotFoundException($"Group is not found with Id = {lesson.GroupId}");

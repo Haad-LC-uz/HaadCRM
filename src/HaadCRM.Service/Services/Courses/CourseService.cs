@@ -2,13 +2,22 @@
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Service.DTOs.Courses;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Attendances;
+using HaadCRM.Service.Validators.Cources;
 
 namespace HaadCRM.Service.Services.Courses;
 
-public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseService
+public class CourseService(
+    IMapper mapper, 
+    IUnitOfWork unitOfWork,
+    CourseCreateModelValidator createModelValidator,
+    CourseUpdateModelValidator updateModelValidator) : ICourseService
 {
     public async ValueTask<CourseViewModel> CreateAsync(CourseCreateModel course)
     {
+        await createModelValidator.ValidateOrPanicAsync(course);
+
         var existCourse = await unitOfWork.Courses.SelectAsync(
             expression: c => c.Name == course.Name && !c.IsDeleted);
 
@@ -52,6 +61,8 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
 
     public async ValueTask<CourseViewModel> UpdateAsync(long id, CourseUpdateModel course)
     {
+        await updateModelValidator.ValidateOrPanicAsync(course);
+
         var existCourse = await unitOfWork.Courses.SelectAsync(
             expression: c => c.Id == id && !c.IsDeleted)
             ?? throw new NotFoundException($"Course is not found with Id = {id}");
