@@ -1,11 +1,13 @@
-﻿using HaadCRM.Data.UnitOfWorks;
+﻿using System.Text;
+using Microsoft.OpenApi.Models;
+using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Data.Repositories;
-using HaadCRM.WebApi.Middlewares;
+using Microsoft.IdentityModel.Tokens;
 using HaadCRM.Service.Services.Users;
 using HaadCRM.Service.Services.Assets;
 using HaadCRM.Service.Services.Lessons;
 using HaadCRM.Service.Services.Courses;
-using HaadCRM.Service.Services.Homework;
+using HaadCRM.Service.Services.Options;
 using HaadCRM.Service.Services.UserRoles;
 using HaadCRM.Service.Services.Employees;
 using HaadCRM.Service.Services.Attendances;
@@ -23,6 +25,8 @@ using HaadCRM.Service.Services.UserPermissions;
 using HaadCRM.Service.Services.RemovedStudents;
 using HaadCRM.Service.Services.Exams.ExamGrades;
 using HaadCRM.Service.Services.Students.Students;
+using HaadCRM.Service.Services.HomeworkServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace HaadCRM.WebApi.Extensions;
 
@@ -56,12 +60,55 @@ public static class ServicesCollectionExtension
         services.AddScoped<IUserService, UserService>();
     }
 
-    public static void AddExceptionHandlers(this IServiceCollection services)
+    public static void AddJwtService(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddExceptionHandler<NotFoundExceptionHandler>();
-        services.AddExceptionHandler<AlreadyExistExceptionHandler>();
-        services.AddExceptionHandler<ArgumentIsNotValidExceptionHandler>();
-        services.AddExceptionHandler<CustomExceptionHandler>();
-        services.AddExceptionHandler<InternalServerExceptionHandler>();
+        services.Configure<JwtOption>(configuration.GetSection("JWT"));
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = configuration["JWT:Issuer"],
+                ValidAudience = configuration["JWT:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"])),
+                ClockSkew = TimeSpan.Zero
+            };
+        });
+    }
+
+    public static void AddSwaggerGenJwt(this IServiceCollection services)
+    {
+        var jwtSecurityScheme = new OpenApiSecurityScheme
+        {
+            BearerFormat = "JWT",
+            Name = "JWT Authentication",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = JwtBearerDefaults.AuthenticationScheme,
+            Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
+
+            Reference = new OpenApiReference()
+            {
+                Id = JwtBearerDefaults.AuthenticationScheme,
+                Type = ReferenceType.SecurityScheme
+            }
+        };
+
+        services.AddSwaggerGen(options =>
+        {
+            options.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            {
+                { jwtSecurityScheme, Array.Empty<string>() }
+            });
+        });
     }
 }
