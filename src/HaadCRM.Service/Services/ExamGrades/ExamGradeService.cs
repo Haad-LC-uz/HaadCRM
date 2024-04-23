@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
+using HaadCRM.Service.Exceptions;
 using HaadCRM.Domain.Entities.Exams;
 using HaadCRM.Service.DTOs.ExamDTOs.ExamGrades;
-using HaadCRM.Service.Exceptions;
 
-namespace HaadCRM.Service.Services.Exams.ExamGrades;
+namespace HaadCRM.Service.Services.ExamGrades;
 
 public class ExamGradeService(IUnitOfWork unitOfWork, IMapper mapper) : IExamGradeService
 {

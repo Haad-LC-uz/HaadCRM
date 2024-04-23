@@ -9,14 +9,14 @@ public interface ILessonFilesService
     /// </summary>
     /// <param name="lessonfile"></param>
     /// <returns></returns>
-    ValueTask<LessonFileViewModel> CreateAsync(LessonFileViewModel lessonfile);
+    ValueTask<LessonFileViewModel> CreateAsync(LessonFileCreateModel lessonFile);
     /// <summary>
     /// Updates exist LessonFile
     /// </summary>
     /// <param name="id"></param>
     /// <param name="lessonfile"></param>
     /// <returns></returns>
-    ValueTask<LessonFileViewModel> UpdateAsync(long id, LessonFileUpdateModel lessonfile);
+    ValueTask<LessonFileViewModel> UpdateAsync(long id, LessonFileUpdateModel lessonFile);
     /// <summary>
     /// Deletes exist LessonFile
     /// </summary>
