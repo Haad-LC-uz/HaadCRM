@@ -77,14 +77,11 @@ public class UserPermissionService(IMapper mapper, IUnitOfWork unitOfWork) : IUs
     }
 
     // Gets a user permission by user ID and permission ID
-    public async ValueTask<UserPermissionViewModel> GetByIdAsync(long userId, long permissionId)
+    public async ValueTask<UserPermissionViewModel> GetByIdAsync(long id)
     {
-        // Find the user permission by user ID and permission ID, throw NotFoundException if not found
-        var userPermission = await unitOfWork.UserPermissions.SelectAsync(up =>
-            up.UserId == userId && up.PermissionId == permissionId)
-            ?? throw new NotFoundException("User permission not found.");
+        var existPermission = await unitOfWork.UserPermissions.SelectAsync(p => p.Id == id && !p.IsDeleted)
+                ?? throw new NotFoundException($"User permission not found with ID = {id}");
 
-        // Map the retrieved user permission to a view model and return
-        return mapper.Map<UserPermissionViewModel>(userPermission);
+        return mapper.Map<UserPermissionViewModel>(existPermission);
     }
 }

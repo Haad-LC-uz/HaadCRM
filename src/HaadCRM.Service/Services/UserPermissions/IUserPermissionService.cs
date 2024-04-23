@@ -33,7 +33,7 @@ public interface IUserPermissionService
     /// <param name="userId">The ID of the user.</param>
     /// <param name="permissionId">The ID of the permission.</param>
     /// <returns>The user permission view model corresponding to the specified user ID and permission ID.</returns>
-    ValueTask<UserPermissionViewModel> GetByIdAsync(long userId, long permissionId);
+    ValueTask<UserPermissionViewModel> GetByIdAsync(long id);
 
     /// <summary>
     /// Updates an existing user permission using the provided updateModel.
