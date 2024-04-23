@@ -2,6 +2,12 @@
 
 namespace HaadCRM.Domain.Entities.Homeworks;
 
+/// <summary>
+/// The HomeworkFile class represents the HomeworkFile entity that contains properties for HomeworkFile,
+/// such as:
+/// HomeworkId
+/// AssetId
+/// </summary>
 public class HomeworkFile : Auditable
 {
     public long HomeworkId { get; set; }
