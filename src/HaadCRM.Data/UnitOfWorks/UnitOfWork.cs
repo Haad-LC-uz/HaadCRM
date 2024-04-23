@@ -1,15 +1,15 @@
 ﻿using HaadCRM.Data.Contexts;
-using HaadCRM.Data.Repositories;
 using HaadCRM.Domain.Commons;
-using HaadCRM.Domain.Entities.Attendances;
-using HaadCRM.Domain.Entities.Courses;
-using HaadCRM.Domain.Entities.Employees;
+using HaadCRM.Data.Repositories;
 using HaadCRM.Domain.Entities.Exams;
-using HaadCRM.Domain.Entities.Groups;
-using HaadCRM.Domain.Entities.Homeworks;
-using HaadCRM.Domain.Entities.Lessons;
-using HaadCRM.Domain.Entities.Students;
 using HaadCRM.Domain.Entities.Users;
+using HaadCRM.Domain.Entities.Groups;
+using HaadCRM.Domain.Entities.Lessons;
+using HaadCRM.Domain.Entities.Courses;
+using HaadCRM.Domain.Entities.Students;
+using HaadCRM.Domain.Entities.Employees;
+using HaadCRM.Domain.Entities.Homeworks;
+using HaadCRM.Domain.Entities.Attendances;
 
 namespace HaadCRM.Data.UnitOfWorks;
 
@@ -27,7 +27,7 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<ExamGrade> ExamGrades { get; }
     public IRepository<Group> Groups { get; }
     public IRepository<GroupStudent> GroupStudents { get; }
-    public IRepository<Homework> Homeworks { get; }
+    public IRepository<Homework> Homework { get; }
     public IRepository<HomeworkFile> HomeworkFiles { get; }
     public IRepository<HomeworkGrade> HomeworkGrades { get; }
     public IRepository<Lesson> Lessons { get; }
@@ -53,7 +53,7 @@ public class UnitOfWork : IUnitOfWork
         ExamGrades = new Repository<ExamGrade>(_context);
         Groups = new Repository<Group>(_context);
         GroupStudents = new Repository<GroupStudent>(_context);
-        Homeworks = new Repository<Homework>(_context);
+        Homework = new Repository<Homework>(_context);
         HomeworkFiles = new Repository<HomeworkFile>(_context);
         HomeworkGrades = new Repository<HomeworkGrade>(_context);
         Lessons = new Repository<Lesson>(_context);
@@ -65,7 +65,6 @@ public class UnitOfWork : IUnitOfWork
         Permissions = new Repository<Permission>(_context);
         UserPermissions = new Repository<UserPermission>(_context);
     }
-
 
     public void Dispose()
     {

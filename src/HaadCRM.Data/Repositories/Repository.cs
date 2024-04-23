@@ -1,7 +1,7 @@
 ﻿using HaadCRM.Data.Contexts;
 using HaadCRM.Domain.Commons;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Data.Repositories;
 
@@ -24,7 +24,7 @@ public class Repository<T> : IRepository<T> where T : Auditable
     {
         entity.UpdatedAt = DateTime.UtcNow;
         set.Update(entity);
-         return await Task.FromResult(entity);
+        return await Task.FromResult(entity);
     }
 
     public async ValueTask<T> DeleteAsync(T entity)
@@ -51,7 +51,10 @@ public class Repository<T> : IRepository<T> where T : Auditable
         return await query.FirstOrDefaultAsync();
     }
 
-    public async ValueTask<IEnumerable<T>> SelectAsEnumerableAsync(Expression<Func<T, bool>> expression = null, string[] includes = null, bool isTracked = true)
+    public async ValueTask<IEnumerable<T>> SelectAsEnumerableAsync(
+        Expression<Func<T, bool>> expression = null,
+        string[] includes = null,
+        bool isTracked = true)
     {
         var query = expression is null ? set : set.Where(expression);
 
@@ -65,7 +68,10 @@ public class Repository<T> : IRepository<T> where T : Auditable
         return await query.ToListAsync();
     }
 
-    public IQueryable<T> SelectAsQueryable(Expression<Func<T, bool>> expression = null, string[] includes = null, bool isTracked = true)
+    public IQueryable<T> SelectAsQueryable(
+        Expression<Func<T, bool>> expression = null,
+        string[] includes = null,
+        bool isTracked = true)
     {
         var query = expression is null ? set : set.Where(expression);
 
