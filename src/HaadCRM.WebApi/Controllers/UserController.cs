@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Services.Users;
+using HaadCRM.WebApi.Extensions;
 using HaadCRM.WebApi.Models;
 using HaadCRM.WebApi.Validators;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +18,7 @@ public class UsersController(
     [HttpPost]
     public async ValueTask<IActionResult> CreateAsync([FromBody] UserCreateModel createModel)
     {
-        var validationResult = await createModelValidator.ValidateAsync(createModel);
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(validationResult.Errors);
-        }
+        await createModelValidator.ValidateOrPanicAsync(createModel);
 
         var createdUser = await userService.CreateAsync(createModel);
         return Ok(new Response
@@ -36,11 +33,7 @@ public class UsersController(
     [HttpPut("api/[controller]/{id}")]
     public async ValueTask<IActionResult> UpdateAsync(long id, [FromBody] UserUpdateModel updateModel)
     {
-        var validationResult = await updateModelValidator.ValidateAsync(updateModel);
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(validationResult.Errors);
-        }
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
 
         var updatedUser = await userService.UpdateAsync(id, updateModel);
         return Ok(new Response
