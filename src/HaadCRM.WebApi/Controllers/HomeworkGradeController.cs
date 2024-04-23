@@ -29,4 +29,14 @@ public class HomeworkGradeController(IHomeworkGradeService homeworkGradeService)
             Data = await homeworkGradeService.UpdateAsync(id, homeworkGrade)
         });
     }
+    [HttpDelete("{id:long")]
+    public async ValueTask<IActionResult> DeleteAsync(long id)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await homeworkGradeService.DeleteAsync(id)
+        });
+    }
 }
