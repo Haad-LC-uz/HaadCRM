@@ -19,7 +19,4 @@
     <ProjectReference Include="..\HaadCRM.Data\HaadCRM.Data.csproj" />
     <ProjectReference Include="..\HaadCRM.Domain\HaadCRM.Domain.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Validators\Groups\GroupStudents\" />
-  </ItemGroup>
 </Project>
