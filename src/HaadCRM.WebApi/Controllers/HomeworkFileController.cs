@@ -49,4 +49,14 @@ public class HomeworkFileController(IHomeworkFilesService homeworkFilesService) 
             Data = await homeworkFilesService.GetAllAsync()
         });
     }
+    [HttpGet("{id:long}")]
+    public async ValueTask<IActionResult> GetByIdAsync(long id)
+    {
+        return Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await homeworkFilesService.GetByIdAsync(id)
+        });
+    }
 }
