@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using HaadCRM.Service.DTOs.HomeworkDTOs.HomeworkFiles;
+using HaadCRM.Service.DTOs.LessonsDTOs.Lessons;
 
 namespace HaadCRM.Service.Validators.Homework.HomeworkFiles;
 
