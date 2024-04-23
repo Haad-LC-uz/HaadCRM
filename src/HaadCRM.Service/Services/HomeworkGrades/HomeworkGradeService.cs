@@ -3,13 +3,22 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Homeworks;
 using HaadCRM.Service.DTOs.HomeworkDTOs.HomeworkGrades;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Exams.ExamGrades;
+using HaadCRM.Service.Validators.Homework.HomeworkFiles;
+using HaadCRM.Service.Validators.Homework.HomeworkGrades;
 
 namespace HaadCRM.Service.Services.HomeworkGrades;
 
-public class HomeworkGradeService(IUnitOfWork unitOfWork, IMapper mapper) : IHomeworkGradeService
+public class HomeworkGradeService(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    HomeworkGradeCreateModelValidator createModelValidator,
+    HomeworkGradeUpdateModelValidator updateModelValidator) : IHomeworkGradeService
 {
     public async ValueTask<HomeworkGradeViewModel> CreateAsync(HomeworkGradeCreateModel createModel)
     {
+        await createModelValidator.ValidateOrPanicAsync(createModel);
         var homeworkGrade = await unitOfWork.HomeworkGrades.SelectAsync(hg =>
         hg.HomeworkId == createModel.HomeworkId
         && hg.AssistantId == createModel.AssistantId
@@ -56,10 +65,9 @@ public class HomeworkGradeService(IUnitOfWork unitOfWork, IMapper mapper) : IHom
 
     public async ValueTask<HomeworkGradeViewModel> UpdateAsync(long id, HomeworkGradeUpdateModel updateModel)
     {
-        var homeworkGrade = await unitOfWork.HomeworkGrades.SelectAsync(hg => hg.Id == id && !hg.IsDeleted);
-        if (homeworkGrade == null)
-            throw new NotFoundException($"Homework Grade with ID={id} is not found or was deleted");
-
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
+        var homeworkGrade = await unitOfWork.HomeworkGrades.SelectAsync(hg => hg.Id == id && !hg.IsDeleted)
+            ?? throw new NotFoundException($"Homework Grade with ID={id} is not found or was deleted");
         await unitOfWork.HomeworkGrades.UpdateAsync(homeworkGrade);
         await unitOfWork.SaveAsync();
         return await Task.FromResult(mapper.Map<HomeworkGradeViewModel>(homeworkGrade));

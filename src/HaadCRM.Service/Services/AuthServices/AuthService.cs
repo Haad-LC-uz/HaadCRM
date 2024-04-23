@@ -7,19 +7,13 @@ using System.Text;
 
 namespace HaadCRM.Service.Services.AuthServices;
 
-public class AuthService : IAuthService
+public class AuthService(
+    IConfiguration configuration) : IAuthService
 {
-    private readonly IConfiguration _configuration;
-
-    public AuthService(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
     public string GenerateToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var tokenKey = Encoding.UTF8.GetBytes(_configuration["JWT:Key"]);
+        var tokenKey = Encoding.UTF8.GetBytes(configuration["JWT:Key"]);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new Claim[]

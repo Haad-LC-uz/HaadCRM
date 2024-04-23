@@ -3,15 +3,24 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Employees;
 using HaadCRM.Service.DTOs.EmployeeDTOs.Employees;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Employees.EmployeeRoles;
+using HaadCRM.Service.Validators.Employees.Employees;
 
 namespace HaadCRM.Service.Services.Employees;
 
-public class EmployeeService(IUnitOfWork unitOfWork, IMapper mapper) : IEmployeeService
+public class EmployeeService(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    EmployeeCreateModelValidator createModelValidator,
+    EmployeeUpdateModelValidator updateModelValidator) : IEmployeeService
 {
 
     // Creates a new employee
     public async ValueTask<EmployeeViewModel> CreateAsync(EmployeeCreateModel createModel)
     {
+        await createModelValidator.ValidateOrPanicAsync(createModel);
+
         // Check if an employee with the same user ID already exists
         var existEmployee = await unitOfWork.Employees.SelectAsync(employee => employee.UserId == createModel.UserId);
         if (existEmployee != null)
@@ -36,6 +45,8 @@ public class EmployeeService(IUnitOfWork unitOfWork, IMapper mapper) : IEmployee
     // Updates an existing employee
     public async ValueTask<EmployeeViewModel> UpdateAsync(long id, EmployeeUpdateModel updateModel)
     {
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
+
         // Find the employee by ID, throw NotFoundException if not found
         var employee = await unitOfWork.Employees.SelectAsync(emp => emp.Id == id)
             ?? throw new NotFoundException($"Employee is not found with this ID={id}");

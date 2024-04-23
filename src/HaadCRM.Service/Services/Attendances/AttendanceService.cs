@@ -3,13 +3,21 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Attendances;
 using HaadCRM.Service.DTOs.Attendances;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Attendances;
 
 namespace HaadCRM.Service.Services.Attendances;
 
-public class AttendanceService(IUnitOfWork unitOfWork, IMapper mapper) : IAttendanceService
+public class AttendanceService(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    AttendanceCreateModelValidator createModelValidator,
+    AttendanceUpdateModelValidator updateModelValidator) : IAttendanceService
 {
     public async ValueTask<AttendanceViewModel> CreateAsync(AttendanceCreateModel createModel)
     {
+        await createModelValidator.ValidateOrPanicAsync(createModel);
+
         var existAttendance = await unitOfWork.Attendances.SelectAsync(attendance =>
             attendance.LessonId == createModel.LessonId && attendance.StudentId == createModel.StudentId);
 
@@ -41,6 +49,7 @@ public class AttendanceService(IUnitOfWork unitOfWork, IMapper mapper) : IAttend
 
     public async ValueTask<AttendanceViewModel> UpdateAsync(long id, AttendanceUpdateModel updateModel)
     {
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
         var attendance = await unitOfWork.Attendances.SelectAsync(a => a.Id == id)
                          ?? throw new NotFoundException($"Attendance with ID={id} is not found");
 

@@ -3,14 +3,23 @@ using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Students;
 using HaadCRM.Service.DTOs.StudentDTOs.Students;
 using HaadCRM.Service.Exceptions;
+using HaadCRM.Service.Extensions;
+using HaadCRM.Service.Validators.Lessons.Lessons;
+using HaadCRM.Service.Validators.Students.Students;
 
 namespace HaadCRM.Service.Services.Students.Students;
 
-public class StudentService(IUnitOfWork unitOfWork, IMapper mapper) : IStudentService
+public class StudentService(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    StudentCreateModelValidator createModelValidator,
+    StudentUpdateModelValidator updateModelValidator) : IStudentService
 {
     public async ValueTask<StudentViewModel> CreateAsync(StudentCreateModel createModel)
     {
-        var exist = unitOfWork.Students.SelectAsync(u => u.UserId == createModel.UserId);
+        await createModelValidator.ValidateOrPanicAsync(createModel);
+
+        var exist = await unitOfWork.Students.SelectAsync(u => u.UserId == createModel.UserId);
         if (exist != null)
             throw new AlreadyExistException("This student is already exists");
 
@@ -21,6 +30,7 @@ public class StudentService(IUnitOfWork unitOfWork, IMapper mapper) : IStudentSe
 
     public async ValueTask<StudentViewModel> UpdateAsync(long id, StudentUpdateModel updateModel)
     {
+        await updateModelValidator.ValidateOrPanicAsync(updateModel);
         var student = await unitOfWork.Students.SelectAsync(user => user.Id == id)
             ?? throw new NotFoundException($"Student with ID={id} is not found");
         mapper.Map(updateModel, student);
