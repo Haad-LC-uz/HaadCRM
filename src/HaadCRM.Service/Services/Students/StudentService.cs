@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Students;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.StudentDTOs.Students;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Lessons.Lessons;
 using HaadCRM.Service.Validators.Students.Students;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.Students.Students;
 
@@ -59,11 +61,13 @@ public class StudentService(
         return await Task.FromResult(mapper.Map<StudentViewModel>(student));
     }
 
-    public async ValueTask<IEnumerable<StudentViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<StudentViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var students = await unitOfWork.Students.SelectAsEnumerableAsync(
+        var students = unitOfWork.Students.SelectAsQueryable(
             expression: s => !s.IsDeleted,
-            includes: ["User", "Asset"]);
-        return mapper.Map<IEnumerable<StudentViewModel>>(students);
+            includes: ["User", "Asset"],
+            isTracked: false).OrderBy(filter);
+
+        return mapper.Map<IEnumerable<StudentViewModel>>(students.ToPaginateAsQueryable(@params).ToListAsync());
     }
 }

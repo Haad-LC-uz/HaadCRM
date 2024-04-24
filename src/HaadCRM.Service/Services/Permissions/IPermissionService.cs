@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.UserDTOs.Permissions;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.UserDTOs.Permissions;
 
 namespace HaadCRM.Service.Services.Permissions;
 
@@ -25,7 +26,7 @@ public interface IPermissionService
     /// Retrieves all permissions.
     /// </summary>
     /// <returns>An enumerable collection of permission view models.</returns>
-    ValueTask<IEnumerable<PermissionViewModel>> GetAllAsync();
+    ValueTask<IEnumerable<PermissionViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 
     /// <summary>
     /// Retrieves a permission by its ID.

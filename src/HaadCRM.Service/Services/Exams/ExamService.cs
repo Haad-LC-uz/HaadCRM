@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Exams;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.ExamDTOs.Exams;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.Exams;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.Exams.Exams;
 
@@ -36,13 +38,14 @@ public class ExamService(
         return await Task.FromResult(mapper.Map<ExamViewModel>(exam));
     }
 
-    public async ValueTask<IEnumerable<ExamViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<ExamViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var exams = await unitOfWork.Exams.SelectAsEnumerableAsync(
+        var exams = unitOfWork.Exams.SelectAsQueryable(
             expression: exam => !exam.IsDeleted,
-            includes: ["Employee", "Group", "Asset"]);
+            includes: ["Employee", "Group", "Asset"],
+            isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<ExamViewModel>>(exams);
+        return mapper.Map<IEnumerable<ExamViewModel>>(exams.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     public async ValueTask<ExamViewModel> UpdateAsync(long id, ExamUpdateModel updateModel)

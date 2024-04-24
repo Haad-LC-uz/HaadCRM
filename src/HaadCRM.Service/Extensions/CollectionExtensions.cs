@@ -8,7 +8,7 @@ namespace HaadCRM.Service.Extensions
 {
     public static class CollectionExtensions
     {
-        public static IEnumerable<T> ToPaginate<T>(this IQueryable<T> source, PaginationParams @params)
+        public static IQueryable<T> ToPaginateAsQueryable<T>(this IQueryable<T> source, PaginationParams @params)
         {
             int totalCount = source.Count();
 

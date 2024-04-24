@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Groups;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.GroupDTOs.Groups;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.ExamGrades;
 using HaadCRM.Service.Validators.Groups.Groups;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.GroupService;
 
@@ -54,12 +56,13 @@ public class GroupService(
         return true;
     }
 
-    public async ValueTask<IEnumerable<GroupViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<GroupViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var Groups = await unitOfWork.Groups.SelectAsEnumerableAsync(
-            expression: g => !g.IsDeleted);
+        var Groups = unitOfWork.Groups.SelectAsQueryable(
+            expression: g => !g.IsDeleted,
+            isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<GroupViewModel>>(Groups);
+        return mapper.Map<IEnumerable<GroupViewModel>>(Groups.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     public async ValueTask<GroupViewModel> GetByIdAsync(long id)

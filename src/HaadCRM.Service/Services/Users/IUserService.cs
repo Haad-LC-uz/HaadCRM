@@ -1,4 +1,5 @@
 ﻿using HaadCRM.Domain.Entities.Users; // Namespace containing User entity definition
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.UserDTOs.Users; // Namespace containing User DTOs (Data Transfer Objects)
 
 namespace HaadCRM.Service.Services.Users;
@@ -31,7 +32,7 @@ public interface IUserService
     /// Retrieves all user accounts as UserViewModel objects.
     /// </summary>
     /// <returns>A task containing an IEnumerable collection of UserViewModel objects.</returns>
-    ValueTask<IEnumerable<UserViewModel>> GetAllAsync();
+    ValueTask<IEnumerable<UserViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 
     /// <summary>
     /// Gets a user account by its ID.

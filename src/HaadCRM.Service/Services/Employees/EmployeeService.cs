@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Employees;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.EmployeeDTOs.Employees;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Employees.EmployeeRoles;
 using HaadCRM.Service.Validators.Employees.Employees;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.Employees;
 
@@ -77,13 +79,15 @@ public class EmployeeService(
     }
 
     // Gets all employees
-    public async ValueTask<IEnumerable<EmployeeViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<EmployeeViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         // Retrieve all employees from the database
-        var employees = await unitOfWork.Employees.SelectAsEnumerableAsync();
+        var employees = unitOfWork.Employees.SelectAsQueryable(
+            expression: emp => emp.IsDeleted, 
+            isTracked: false).OrderBy(filter);
 
         // Map the list of employees to a list of view models and return
-        return mapper.Map<IEnumerable<EmployeeViewModel>>(employees);
+        return mapper.Map<IEnumerable<EmployeeViewModel>>(employees.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     // Gets an employee by ID

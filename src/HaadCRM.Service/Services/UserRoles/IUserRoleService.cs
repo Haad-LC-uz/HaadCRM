@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.UserDTOs.UserRoles;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.UserDTOs.UserRoles;
 
 namespace HaadCRM.Service.Services.UserRoles;
 
@@ -25,7 +26,7 @@ public interface IUserRoleService
     /// Retrieves all user roles.
     /// </summary>
     /// <returns>An enumerable collection of user role view models.</returns>
-    ValueTask<IEnumerable<UserRoleViewModel>> GetAllAsync();
+    ValueTask<IEnumerable<UserRoleViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 
     /// <summary>
     /// Retrieves a user role by its ID.

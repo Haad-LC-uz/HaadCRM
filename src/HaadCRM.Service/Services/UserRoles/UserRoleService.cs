@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Users;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.UserDTOs.UserRoles;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Users.Permissions;
 using HaadCRM.Service.Validators.Users.UserRoles;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.UserRoles;
 
@@ -55,13 +57,16 @@ public class UserRoleService(
     }
 
     // Gets all user roles
-    public async ValueTask<IEnumerable<UserRoleViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<UserRoleViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         // Retrieve all user roles from the database
-        var userRoles = await unitOfWork.UserRoles.SelectAsEnumerableAsync();
+        var userRoles = unitOfWork.UserRoles.SelectAsQueryable(
+            expression: ur => ur.IsDeleted,
+            isTracked: false)
+            .OrderBy(filter);
 
         // Map the list of user roles to a list of view models and return
-        return mapper.Map<IEnumerable<UserRoleViewModel>>(userRoles);
+        return mapper.Map<IEnumerable<UserRoleViewModel>>(userRoles.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     // Gets a user role by ID
