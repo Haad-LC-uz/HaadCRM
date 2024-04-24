@@ -12,6 +12,8 @@ namespace HaadCRM.Domain.Entities.Homeworks;
 /// Title
 /// Description
 /// DeadLine
+/// Lesson
+/// Assistant
 /// HomeworkFiles
 /// HomeworkGrades
 /// </summary>
