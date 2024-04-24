@@ -7,6 +7,8 @@ namespace HaadCRM.Domain.Entities.Homeworks;
 /// such as:
 /// HomeworkId
 /// AssetId
+/// Homework
+/// Assistant
 /// </summary>
 public class HomeworkFile : Auditable
 {
