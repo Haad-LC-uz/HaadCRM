@@ -15,12 +15,33 @@ namespace HaadCRM.Domain.Entities.Users;
 /// </summary>
 public class User : Auditable
 {
+    /// <summary>
+    /// The FirstName property represents the firstname of the user
+    /// </summary>
     public string FirstName { get; set; }
+    /// <summary>
+    /// The LastName property represents the lastname of the user
+    /// </summary>
     public string LastName { get; set; }
+    /// <summary>
+    /// The Email property represents the Email of the user
+    /// </summary>
     public string Email { get; set; }
+    /// <summary>
+    /// The Password property represents the password of the user
+    /// </summary>
     public string Password { get; set; }
+    /// <summary>
+    /// The Phone property represents the phone of the user
+    /// </summary>
     public string Phone { get; set; }
+    /// <summary>
+    /// The UserRoleId property represents the Id of the UserRole
+    /// </summary>
     public long UserRoleId { get; set; }
 
+    /// <summary>
+    /// The UserRole property represents the UserRole object
+    /// </summary>
     public UserRole UserRole { get; set; }
 }
