@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class EmployeeController(IEmployeeService employeeService) : ControllerBase
+public class EmployeeController(IEmployeeService employeeService) : BaseController
 {
     [HttpPost]
     public async ValueTask<IActionResult> PostAsync([FromBody] EmployeeCreateModel createModel)

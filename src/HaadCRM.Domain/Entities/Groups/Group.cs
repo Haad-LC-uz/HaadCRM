@@ -79,13 +79,13 @@ public class Group : Auditable
     /// <summary>
     /// The Lessons property represents the list of Lessons that Group has
     /// </summary>
-    public IEnumerable<Lesson> Lessons { get; set; }
+    public ICollection<Lesson> Lessons { get; set; }
     /// <summary>
     /// The GroupStudents property represents the list of GroupStudents that Group has
     /// </summary>
-    public IEnumerable<GroupStudent> GroupStudents { get; set; }
+    public ICollection<GroupStudent> GroupStudents { get; set; }
     /// <summary>
     /// The RemovedStudents property represents the list of RemovedStudents that Group has
     /// </summary>
-    public IEnumerable<RemovedStudent> RemovedStudents { get; set; }
+    public ICollection<RemovedStudent> RemovedStudents { get; set; }
 }

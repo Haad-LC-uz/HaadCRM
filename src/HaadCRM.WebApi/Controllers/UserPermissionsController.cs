@@ -18,7 +18,7 @@ public class UserPermissionsController(IUserPermissionService userPermissionServ
         });
     }
 
-    [HttpPut("{id:long}")]
+    [HttpPut]
     public async ValueTask<IActionResult> PutAsync([FromBody] UserPermissionUpdateModel updateModel)
     {
         return Ok(new Response

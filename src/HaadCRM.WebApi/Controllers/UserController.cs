@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 
-[Route("[controller]")]
-[ApiController]
 public class UsersController(IUserService userService) : BaseController
 {
     [HttpPost("api/[controller]")]

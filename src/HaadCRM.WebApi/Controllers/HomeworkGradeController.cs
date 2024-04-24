@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class HomeworkGradeController(IHomeworkGradeService homeworkGradeService) : ControllerBase
+public class HomeworkGradeController(IHomeworkGradeService homeworkGradeService) : BaseController
 {
     [HttpPost]
     public async ValueTask<IActionResult> PostAsync(HomeworkGradeCreateModel homeworkGrade)

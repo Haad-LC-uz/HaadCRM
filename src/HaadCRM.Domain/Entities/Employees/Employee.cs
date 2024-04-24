@@ -52,9 +52,4 @@ public class Employee : Auditable
     /// The Asset property represents the Asset object
     /// </summary>
     public Asset Asset { get; set; }
-
-    /// <summary>
-    /// The Groups property represents the list of Group that Employee has
-    /// </summary>
-    public IEnumerable<Group> Groups { get; set; }
 }
