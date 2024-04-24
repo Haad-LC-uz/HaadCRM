@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.GroupDTOs.GroupStudents;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.GroupDTOs.GroupStudents;
 
 namespace HaadCRM.Service.Services.GroupStudents;
 
@@ -33,5 +34,5 @@ public interface IGroupStudentService
     /// Will get all groupStudents and returns IEnumerable
     /// </summary>
     /// <returns></returns>
-    ValueTask<IEnumerable<GroupStudentViewModel>> GetAllAsync();
+    ValueTask<IEnumerable<GroupStudentViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Groups;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.GroupDTOs.GroupStudents;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
@@ -50,10 +51,11 @@ public class GroupStudentService(
         return true;
     }
 
-    public async ValueTask<IEnumerable<GroupStudentViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<GroupStudentViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var GroupStudents = await unitOfWork.GroupStudents.SelectAsEnumerableAsync(
-            expression: gss => !gss.IsDeleted);
+        var GroupStudents = unitOfWork.GroupStudents.SelectAsQueryable(
+            expression: gss => !gss.IsDeleted,
+            isTracked: false);
 
         return mapper.Map<IEnumerable<GroupStudentViewModel>>(GroupStudents);
     }
