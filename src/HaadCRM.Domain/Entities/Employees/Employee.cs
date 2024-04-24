@@ -6,7 +6,16 @@ namespace HaadCRM.Domain.Entities.Employees;
 
 /// <summary>
 /// The Employee class represents an Employee that contains properties for Employee,
-/// such as Data, Salary and EmployeeRole
+/// such as:
+/// UserId
+/// EmployeeRoleId
+/// AssetId
+/// Description
+/// Salary
+/// User
+/// EmployeeRole
+/// Asset
+/// Groups
 /// </summary>
 public class Employee : Auditable
 {
