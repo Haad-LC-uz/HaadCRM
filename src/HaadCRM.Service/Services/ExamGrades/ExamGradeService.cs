@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Exams;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.ExamDTOs.ExamGrades;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
@@ -41,11 +42,12 @@ public class ExamGradeService(
         return mapper.Map<ExamGradeViewModel>(examGrade);
     }
 
-    public async ValueTask<IEnumerable<ExamGradeViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<ExamGradeViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var examGrades = await unitOfWork.ExamGrades.SelectAsEnumerableAsync(
+        var examGrades = unitOfWork.ExamGrades.SelectAsQueryable(
             expression: eg => !eg.IsDeleted,
-            includes: ["Student", "Exam", "Employee"]);
+            includes: ["Student", "Exam", "Employee"],
+            isTracked: false);
 
         return mapper.Map<IEnumerable<ExamGradeViewModel>>(examGrades);
     }
