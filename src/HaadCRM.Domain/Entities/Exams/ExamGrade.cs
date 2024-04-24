@@ -6,7 +6,16 @@ namespace HaadCRM.Domain.Entities.Exams;
 
 /// <summary>
 /// The ExamGrade class represents the student's grade from exam that contains properties for ExamGrade, 
-/// such as StudentId, ExamId, TeacherId, AssistantId and Grade
+/// such as:
+/// StudentId
+/// ExamId
+/// TeacherId
+/// AssistantId
+/// Grade
+/// Student
+/// Exam
+/// Teacher
+/// Assistant
 /// </summary>
 public class ExamGrade : Auditable
 {
