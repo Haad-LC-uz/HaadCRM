@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class HomeworkFileController(IHomeworkFilesService homeworkFilesService) : ControllerBase
+public class HomeworkFileController(IHomeworkFilesService homeworkFilesService) : BaseController
 {
     [HttpPost]
     public async ValueTask<IActionResult> PostAsync([FromBody] HomeworkFileCreateModel homeworkFile)

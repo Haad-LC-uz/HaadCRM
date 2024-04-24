@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class LessonController(ILessonService lessonService) : ControllerBase
+public class LessonController(ILessonService lessonService) : BaseController
 {
     [HttpPost]
     public async ValueTask<IActionResult> PostAsync([FromBody] LessonCreateModel lesson)
