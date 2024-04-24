@@ -3,6 +3,15 @@ using HaadCRM.Domain.Entities.Groups;
 
 namespace HaadCRM.Domain.Entities.Students;
 
+/// <summary>
+/// The RemovedStudent class represents the RemovedStudent entity that contains properties for RemovedStudent,
+/// such as:
+/// StudentId
+/// GroupId
+/// Reason
+/// Group
+/// Student
+/// </summary>
 public class RemovedStudent : Auditable
 {
     /// <summary>
