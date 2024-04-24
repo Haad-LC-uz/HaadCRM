@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Employees;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.EmployeeDTOs.EmployeeRoles;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
@@ -71,10 +72,10 @@ public class EmployeeRoleService(
     }
 
     // Gets all employee roles
-    public async ValueTask<IEnumerable<EmployeeRoleViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<EmployeeRoleViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         // Retrieve all employee roles from the database
-        var employeeRoles = await unitOfWork.EmployeeRoles.SelectAsEnumerableAsync();
+        var employeeRoles = unitOfWork.EmployeeRoles.SelectAsQueryable(expression: er => er.IsDeleted, isTracked: false);
 
         // Map the list of employee roles to a list of view models and return
         return mapper.Map<IEnumerable<EmployeeRoleViewModel>>(employeeRoles);
