@@ -4,6 +4,14 @@ using HaadCRM.Domain.Entities.Users;
 
 namespace HaadCRM.Domain.Entities.Students;
 
+/// <summary>
+/// The Student class represents the Student entity that contains properties for Student, 
+/// such as 
+/// UserId
+/// AssetId
+/// User
+/// Asset
+/// </summary>
 public class Student : Auditable
 {
     public long UserId { get; set; }
