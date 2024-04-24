@@ -10,6 +10,8 @@ namespace HaadCRM.Domain.Entities.Groups;
 /// StudentId
 /// IsPaid
 /// IsPassed
+/// Group
+/// Student
 /// </summary>
 public class GroupStudent : Auditable
 {
