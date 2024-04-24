@@ -6,7 +6,19 @@ namespace HaadCRM.Domain.Entities.Exams;
 
 /// <summary>
 /// The Exam class represents the Exam that contains properties for Exam,
-/// such as Data, DeadLine and so on
+/// such as:
+/// TeacherId
+/// AssistantId
+/// GroupId
+/// AssetId
+/// DateOfExam
+/// DeadLine
+/// Teacher
+/// Assistant
+/// Group
+/// ProfilePicture
+/// ExamFiles
+/// ExamGrades
 /// </summary>
 public class Exam : Auditable
 {
