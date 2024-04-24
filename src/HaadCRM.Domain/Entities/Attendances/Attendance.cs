@@ -6,7 +6,12 @@ namespace HaadCRM.Domain.Entities.Attendances;
 
 /// <summary>
 /// The Attendance class represents Attendance object that contains properties for student's attendance,
-/// such as Data and Attendance status
+/// such as 
+/// StudentId
+/// LessonId
+/// IsAttended
+/// Student
+/// Lesson
 /// </summary>
 public class Attendance : Auditable
 {
