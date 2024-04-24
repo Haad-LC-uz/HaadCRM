@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.Courses;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
@@ -42,10 +43,11 @@ public class CourseService(
         return true;
     }
 
-    public async ValueTask<IEnumerable<CourseViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<CourseViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var Courses = await unitOfWork.Courses.SelectAsEnumerableAsync(
-            expression: c => !c.IsDeleted);
+        var Courses = unitOfWork.Courses
+            .SelectAsQueryable(expression: c => !c.IsDeleted, isTracked: false)
+            .OrderBy(filter);
 
         return mapper.Map<IEnumerable<CourseViewModel>>(Courses);
     }
