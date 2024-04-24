@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Users;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.UserDTOs.UserPermissions;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
@@ -78,10 +79,12 @@ public class UserPermissionService(
     }
 
     // Gets all user permissions
-    public async ValueTask<IEnumerable<UserPermissionViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<UserPermissionViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         // Retrieve all user permissions from the database
-        var userPermissions = await unitOfWork.UserPermissions.SelectAsEnumerableAsync();
+        var userPermissions = unitOfWork.UserPermissions.SelectAsQueryable(
+            expression: up => up.IsDeleted, 
+            isTracked: false);
 
         // Map the list of user permissions to a list of view models and return
         return mapper.Map<IEnumerable<UserPermissionViewModel>>(userPermissions);
