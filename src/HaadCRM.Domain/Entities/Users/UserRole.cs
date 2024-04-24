@@ -9,5 +9,8 @@ namespace HaadCRM.Domain.Entities.Users;
 /// </summary>
 public class UserRole : Auditable
 {
+    /// <summary>
+    /// The Name property represents the name of the User role
+    /// </summary>
     public string Name { get; set; }
 }
