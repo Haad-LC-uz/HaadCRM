@@ -7,6 +7,7 @@ using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.ExamGrades;
 using HaadCRM.Service.Validators.Lessons.Lessons;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.Lessons;
 
@@ -56,7 +57,7 @@ public class LessonService(
             includes: ["Group"],
             isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<LessonViewModel>>(Lessons);
+        return mapper.Map<IEnumerable<LessonViewModel>>(Lessons.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     public async ValueTask<LessonViewModel> GetByIdAsync(long id)

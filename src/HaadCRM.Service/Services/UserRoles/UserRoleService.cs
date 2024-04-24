@@ -7,6 +7,7 @@ using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Users.Permissions;
 using HaadCRM.Service.Validators.Users.UserRoles;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.UserRoles;
 
@@ -65,7 +66,7 @@ public class UserRoleService(
             .OrderBy(filter);
 
         // Map the list of user roles to a list of view models and return
-        return mapper.Map<IEnumerable<UserRoleViewModel>>(userRoles);
+        return mapper.Map<IEnumerable<UserRoleViewModel>>(userRoles.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     // Gets a user role by ID

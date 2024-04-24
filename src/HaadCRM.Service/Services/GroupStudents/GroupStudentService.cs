@@ -7,6 +7,7 @@ using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.ExamGrades;
 using HaadCRM.Service.Validators.Groups.GroupStudents;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.GroupStudents;
 
@@ -57,7 +58,7 @@ public class GroupStudentService(
             expression: gss => !gss.IsDeleted,
             isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<GroupStudentViewModel>>(GroupStudents);
+        return mapper.Map<IEnumerable<GroupStudentViewModel>>(GroupStudents.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     public async ValueTask<GroupStudentViewModel> GetByIdAsync(long id)

@@ -6,6 +6,7 @@ using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Attendances;
 using HaadCRM.Service.Validators.Cources;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.Courses;
 
@@ -49,7 +50,7 @@ public class CourseService(
             .SelectAsQueryable(expression: c => !c.IsDeleted, isTracked: false)
             .OrderBy(filter);
 
-        return mapper.Map<IEnumerable<CourseViewModel>>(Courses);
+        return mapper.Map<IEnumerable<CourseViewModel>>(Courses.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     public async ValueTask<CourseViewModel> GetByIdAsync(long id)

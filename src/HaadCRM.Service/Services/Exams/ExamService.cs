@@ -6,6 +6,7 @@ using HaadCRM.Service.DTOs.ExamDTOs.Exams;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.Exams;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.Exams.Exams;
 
@@ -44,7 +45,7 @@ public class ExamService(
             includes: ["Employee", "Group", "Asset"],
             isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<ExamViewModel>>(exams);
+        return mapper.Map<IEnumerable<ExamViewModel>>(exams.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     public async ValueTask<ExamViewModel> UpdateAsync(long id, ExamUpdateModel updateModel)

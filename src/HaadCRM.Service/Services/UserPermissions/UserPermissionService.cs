@@ -7,6 +7,7 @@ using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Users.Permissions;
 using HaadCRM.Service.Validators.Users.UserPermissions;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.UserPermissions;
 
@@ -87,7 +88,7 @@ public class UserPermissionService(
             isTracked: false).OrderBy(filter);
 
         // Map the list of user permissions to a list of view models and return
-        return mapper.Map<IEnumerable<UserPermissionViewModel>>(userPermissions);
+        return mapper.Map<IEnumerable<UserPermissionViewModel>>(userPermissions.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     // Gets a user permission by user ID and permission ID

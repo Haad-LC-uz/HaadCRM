@@ -7,6 +7,7 @@ using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.ExamFiles;
 using HaadCRM.Service.Validators.Exams.ExamGrades;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.ExamGrades;
 
@@ -49,7 +50,7 @@ public class ExamGradeService(
             includes: ["Student", "Exam", "Employee"],
             isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<ExamGradeViewModel>>(examGrades);
+        return mapper.Map<IEnumerable<ExamGradeViewModel>>(examGrades.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     public async ValueTask<ExamGradeViewModel> UpdateAsync(long id, ExamGradeUpdateModel updateModel)

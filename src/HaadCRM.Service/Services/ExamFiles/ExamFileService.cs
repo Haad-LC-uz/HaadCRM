@@ -7,6 +7,7 @@ using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Employees.EmployeeRoles;
 using HaadCRM.Service.Validators.Exams.ExamFiles;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.ExamFiles;
 
@@ -48,7 +49,7 @@ public class ExamFileService(
             includes: ["Exam", "Asset"],
             isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<ExamFileViewModel>>(examFiles);
+        return mapper.Map<IEnumerable<ExamFileViewModel>>(examFiles.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     public async ValueTask<ExamFileViewModel> UpdateAsync(long id, ExamFileUpdateModel updateModel)

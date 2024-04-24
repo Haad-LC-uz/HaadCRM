@@ -8,6 +8,7 @@ using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.ExamGrades;
 using HaadCRM.Service.Validators.Homework.HomeworkFiles;
 using HaadCRM.Service.Validators.Homework.HomeworkGrades;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.HomeworkGrades;
 
@@ -53,7 +54,7 @@ public class HomeworkGradeService(
             includes: ["Homework", "Student", "Assistant"],
             isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<HomeworkGradeViewModel>>(homeworkGrades);
+        return mapper.Map<IEnumerable<HomeworkGradeViewModel>>(homeworkGrades.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     public async ValueTask<HomeworkGradeViewModel> GetByIdAsync(long id)

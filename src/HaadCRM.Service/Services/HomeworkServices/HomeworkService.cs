@@ -7,6 +7,7 @@ using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.ExamGrades;
 using HaadCRM.Service.Validators.Homework.Homework;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.HomeworkServices;
 
@@ -49,7 +50,7 @@ public class HomeworkService(
             includes: ["Lesson", "Assistant"],
             isTracked: false).OrderBy(filter);
 
-        return await Task.FromResult(mapper.Map<IEnumerable<HomeworkViewModel>>(homeworks));
+        return await Task.FromResult(mapper.Map<IEnumerable<HomeworkViewModel>>(homeworks.ToPaginateAsQueryable(@params).ToListAsync()));
     }
 
     public async ValueTask<HomeworkViewModel> GetByIdAsync(long id)

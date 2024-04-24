@@ -7,6 +7,7 @@ using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Lessons.Lessons;
 using HaadCRM.Service.Validators.Students.Students;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.Students.Students;
 
@@ -67,6 +68,6 @@ public class StudentService(
             includes: ["User", "Asset"],
             isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<StudentViewModel>>(students);
+        return mapper.Map<IEnumerable<StudentViewModel>>(students.ToPaginateAsQueryable(@params).ToListAsync());
     }
 }

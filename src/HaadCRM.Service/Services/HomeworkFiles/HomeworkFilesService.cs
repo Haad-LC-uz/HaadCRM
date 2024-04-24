@@ -7,6 +7,7 @@ using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.ExamGrades;
 using HaadCRM.Service.Validators.Homework.HomeworkFiles;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 
 namespace HaadCRM.Service.Services.HomeworkFiles;
@@ -51,7 +52,7 @@ public class HomeworkFilesService(
             includes: ["Homework", "Asset"],
             isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<HomeworkFileViewModel>>(homeworkFiles);
+        return mapper.Map<IEnumerable<HomeworkFileViewModel>>(homeworkFiles.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     public async ValueTask<HomeworkFileViewModel> GetByIdAsync(long id)

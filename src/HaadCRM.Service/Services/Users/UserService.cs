@@ -7,6 +7,7 @@ using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Helpers;
 using HaadCRM.Service.Validators.Users.Users;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace HaadCRM.Service.Services.Users;
@@ -97,7 +98,7 @@ public class UserService(
             .OrderBy(filter);
 
         // Map the list of users to a list of view models and return
-        return mapper.Map<IEnumerable<UserViewModel>>(users);
+        return mapper.Map<IEnumerable<UserViewModel>>(users.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     // Gets a user by ID

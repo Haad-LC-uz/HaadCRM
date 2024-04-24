@@ -6,6 +6,7 @@ using HaadCRM.Service.DTOs.EmployeeDTOs.EmployeeRoles;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Employees.EmployeeRoles;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.EmployeeRoles;
 
@@ -80,7 +81,7 @@ public class EmployeeRoleService(
             isTracked: false).OrderBy(filter);
 
         // Map the list of employee roles to a list of view models and return
-        return mapper.Map<IEnumerable<EmployeeRoleViewModel>>(employeeRoles);
+        return mapper.Map<IEnumerable<EmployeeRoleViewModel>>(employeeRoles.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     // Gets an employee role by ID

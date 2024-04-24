@@ -7,6 +7,7 @@ using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.ExamGrades;
 using HaadCRM.Service.Validators.Lessons.LessonFiles;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.LessonFiles;
 
@@ -58,7 +59,7 @@ public class LessonFilesService(
             expression: lf => !lf.IsDeleted,
             isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<LessonFileViewModel>>(Lessons);
+        return mapper.Map<IEnumerable<LessonFileViewModel>>(Lessons.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     public async ValueTask<LessonFileViewModel> GetByIdAsync(long id)
