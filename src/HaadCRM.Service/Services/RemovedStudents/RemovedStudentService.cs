@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Students;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.StudentDTOs.RemovedStudents;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
@@ -37,11 +38,12 @@ public class RemovedStudentService(
         return mapper.Map<RemovedStudentViewModel>(removedStudent);
     }
 
-    public async ValueTask<IEnumerable<RemovedStudentViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<RemovedStudentViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var removedStudents = await unitOfWork.RemovedStudents.SelectAsEnumerableAsync(
+        var removedStudents = unitOfWork.RemovedStudents.SelectAsQueryable(
             expression: rs => !rs.IsDeleted,
-            includes: ["Student", "Group"]);
+            includes: ["Student", "Group"],
+            isTracked: false);
         return mapper.Map<IEnumerable<RemovedStudentViewModel>>(removedStudents);
     }
 
