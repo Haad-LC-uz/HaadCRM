@@ -1,5 +1,6 @@
 ﻿using HaadCRM.Data.Repositories;
 using HaadCRM.Data.UnitOfWorks;
+using HaadCRM.Service.Helpers;
 using HaadCRM.Service.Services.Assets;
 using HaadCRM.Service.Services.Attendances;
 using HaadCRM.Service.Services.AuthServices;
@@ -175,5 +176,15 @@ public static class ServicesCollectionExtension
             });
         });
     }
-    
+    public static void InjectEnvironmentItems(this WebApplication app)
+    {
+        HttpContextHelper.ContextAccessor = app.Services.GetRequiredService<IHttpContextAccessor>();
+        EnvironmentHelper.WebRootPath = Path.GetFullPath("wwwroot");
+        EnvironmentHelper.JWTKey = app.Configuration.GetSection("JWT:Key").Value;
+        EnvironmentHelper.TokenLifeTimeInHours = app.Configuration.GetSection("JWT:LifeTime").Value;
+        EnvironmentHelper.EmailAddress = app.Configuration.GetSection("Email:EmailAddress").Value;
+        EnvironmentHelper.EmailPassword = app.Configuration.GetSection("Email:Password").Value;
+        EnvironmentHelper.SmtpPort = app.Configuration.GetSection("Email:Port").Value;
+        EnvironmentHelper.SmtpHost = app.Configuration.GetSection("Email:Host").Value;
+    }
 }

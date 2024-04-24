@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.LessonsDTOs.LessonFiles;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.LessonsDTOs.LessonFiles;
 using HaadCRM.Service.Services.LessonFiles;
 using HaadCRM.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -52,13 +53,16 @@ public class LessonFilesController(ILessonFilesService lessonFilesService) : Bas
     }
 
     [HttpGet]
-    public async ValueTask<IActionResult> GetAsync()
+    public async ValueTask<IActionResult> GetAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter,
+        [FromQuery] string search = null)
     {
         return Ok(new Response
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await lessonFilesService.GetAllAsync()
+            Data = await lessonFilesService.GetAllAsync(@params, filter, search)
         });
     }
 }

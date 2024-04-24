@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.GroupDTOs.Groups;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.GroupDTOs.Groups;
 using HaadCRM.Service.Services.GroupService;
 using HaadCRM.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -44,9 +45,12 @@ public class GroupsController(IGroupService groupService) : BaseController
     }
 
     [HttpGet]
-    public async ValueTask<IActionResult> GetAllAsync()
+    public async ValueTask<IActionResult> GetAllAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter,
+        [FromQuery] string search = null)
     {
-        var groups = await groupService.GetAllAsync();
+        var groups = await groupService.GetAllAsync(@params, filter, search);
         return Ok(new Response
         {
             StatusCode = 200,

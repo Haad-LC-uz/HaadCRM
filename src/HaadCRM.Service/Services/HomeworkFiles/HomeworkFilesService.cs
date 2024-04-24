@@ -45,7 +45,7 @@ public class HomeworkFilesService(
         return true;
     }
 
-    public async ValueTask<IEnumerable<HomeworkFileViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null
+    public async ValueTask<IEnumerable<HomeworkFileViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var homeworkFiles = unitOfWork.HomeworkFiles.SelectAsQueryable(
             expression: hf => !hf.IsDeleted,

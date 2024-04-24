@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.HomeworkDTOs.HomeworkFiles;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.HomeworkDTOs.HomeworkFiles;
 using HaadCRM.Service.Services.HomeworkFiles;
 using HaadCRM.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -38,13 +39,16 @@ public class HomeworkFileController(IHomeworkFilesService homeworkFilesService) 
         });
     }
     [HttpGet]
-    public async ValueTask<IActionResult> GetAllAsync()
+    public async ValueTask<IActionResult> GetAllAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter,
+        [FromQuery] string search = null)
     {
         return Ok(new Response
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await homeworkFilesService.GetAllAsync()
+            Data = await homeworkFilesService.GetAllAsync(@params, filter, search)
         });
     }
     [HttpGet("{id:long}")]

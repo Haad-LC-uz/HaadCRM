@@ -9,6 +9,7 @@ using HaadCRM.Service.Helpers;
 using HaadCRM.Service.Validators.Users.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using System.Security.Principal;
 
 namespace HaadCRM.Service.Services.Users;
 
@@ -117,11 +118,14 @@ public class UserService(
         // Find a user with the matching phone number (avoid mentioning password)
         var existingUser = await unitOfWork.Users.SelectAsync(
             user => user.Phone == phone && !user.IsDeleted, // Omit password check for security
-            includes: ["Role"]  // Include the user's role information
+            includes: ["UserRole"]  // Include the user's role information
         ) ?? throw new ArgumentIsNotValidException("Invalid login credentials");
-
+        bool isVerified = PasswordHasher.Verify(password, existingUser.Password);
+        if (!isVerified)
+            throw new ArgumentIsNotValidException("Phone or password is not valid");
         // Login successful, return user and generated token
-        return (user: existingUser, token: AuthHelper.GenerateToken(existingUser));
+        var token = AuthHelper.GenerateToken(existingUser);
+        return (existingUser, token);
     }
 
     public async ValueTask<bool> ResetPasswordAsync(string phone, string newPassword)

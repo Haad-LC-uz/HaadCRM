@@ -33,12 +33,7 @@ builder.Services.AddMemoryCache();
 EnvironmentHelper.WebRootPath = builder.Environment.WebRootPath;
 
 var app = builder.Build();
-
-//using var scope = app.Services.CreateScope();
-//HttpContextHelper.ContextAccessor = scope.ServiceProvider.GetRequiredService<IHttpContextAccessor>();
-//var context = scope.ServiceProvider.GetRequiredService<HaadDbContext>();
-//context.Database.EnsureCreated();
-//context.Database.Migrate();
+app.InjectEnvironmentItems();
 
 using (var scope = app.Services.CreateScope())
 {

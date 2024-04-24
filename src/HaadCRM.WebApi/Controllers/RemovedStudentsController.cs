@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.StudentDTOs.RemovedStudents;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.StudentDTOs.RemovedStudents;
 using HaadCRM.Service.Services.RemovedStudents;
 using HaadCRM.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -44,9 +45,12 @@ public class RemovedStudentsController(IRemovedStudentService removedStudentServ
     }
 
     [HttpGet]
-    public async ValueTask<IActionResult> GetAllAsync()
+    public async ValueTask<IActionResult> GetAllAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter,
+        [FromQuery] string search = null)
     {
-        var removedStudents = await removedStudentService.GetAllAsync();
+        var removedStudents = await removedStudentService.GetAllAsync(@params, filter, search);
         return Ok(new Response
         {
             StatusCode = 200,

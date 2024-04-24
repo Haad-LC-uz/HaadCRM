@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.EmployeeDTOs.EmployeeRoles;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.EmployeeDTOs.EmployeeRoles;
 using HaadCRM.Service.Services.EmployeeRoles;
 using HaadCRM.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -52,13 +53,16 @@ public class EmployeeRolesController(IEmployeeRoleService employeeRoleService) :
     }
 
     [HttpGet]
-    public async ValueTask<IActionResult> GetAsync()
+    public async ValueTask<IActionResult> GetAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter,
+        [FromQuery] string search = null)
     {
         return Ok(new Response
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await employeeRoleService.GetAllAsync()
+            Data = await employeeRoleService.GetAllAsync(@params, filter, search)
         });
     }
 }

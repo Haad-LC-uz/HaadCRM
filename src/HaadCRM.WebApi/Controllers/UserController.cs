@@ -1,12 +1,15 @@
-﻿using HaadCRM.Service.DTOs.UserDTOs.Users;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Services.Users;
 using HaadCRM.WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 
 public class UsersController(IUserService userService) : BaseController
 {
+    [AllowAnonymous]
     [HttpPost("api/[controller]")]
     public async ValueTask<IActionResult> CreateAsync([FromBody] UserCreateModel createModel)
     {
@@ -44,9 +47,12 @@ public class UsersController(IUserService userService) : BaseController
     }
 
     [HttpGet("api/[controller]")]
-    public async ValueTask<IActionResult> GetAllAsync()
+    public async ValueTask<IActionResult> GetAllAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter,
+        [FromQuery] string search = null)
     {
-        var users = await userService.GetAllAsync();
+        var users = await userService.GetAllAsync(@params, filter, search);
         return Ok(new Response
         {
             StatusCode = 200,
@@ -66,11 +72,12 @@ public class UsersController(IUserService userService) : BaseController
             Data = user
         });
     }
-
+    [AllowAnonymous]
     [HttpGet("login")]
     public async ValueTask<IActionResult> LoginAsync(string phone, string password)
     {
         var result = await userService.LoginAsync(phone, password);
+        await Console.Out.WriteLineAsync(result.token);
         return Ok(new Response
         {
             StatusCode = 200,
