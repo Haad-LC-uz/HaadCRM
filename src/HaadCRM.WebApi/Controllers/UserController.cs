@@ -2,12 +2,14 @@
 using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Services.Users;
 using HaadCRM.WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 
 public class UsersController(IUserService userService) : BaseController
 {
+    [AllowAnonymous]
     [HttpPost("api/[controller]")]
     public async ValueTask<IActionResult> CreateAsync([FromBody] UserCreateModel createModel)
     {
