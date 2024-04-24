@@ -17,6 +17,7 @@ public class HomeworkGradeController(IHomeworkGradeService homeworkGradeService)
             Data = await homeworkGradeService.CreateAsync(homeworkGrade)
         });
     }
+
     [HttpPut("{id:long}")]
     public async ValueTask<IActionResult> PutAsync(long id, [FromBody] HomeworkGradeUpdateModel homeworkGrade)
     {
@@ -27,7 +28,8 @@ public class HomeworkGradeController(IHomeworkGradeService homeworkGradeService)
             Data = await homeworkGradeService.UpdateAsync(id, homeworkGrade)
         });
     }
-    [HttpDelete("{id:long")]
+
+    [HttpDelete("{id:long}")]
     public async ValueTask<IActionResult> DeleteAsync(long id)
     {
         return Ok(new Response
@@ -37,6 +39,7 @@ public class HomeworkGradeController(IHomeworkGradeService homeworkGradeService)
             Data = await homeworkGradeService.DeleteAsync(id)
         });
     }
+
     [HttpGet]
     public async ValueTask<IActionResult> GetAllAsync()
     {
@@ -47,6 +50,8 @@ public class HomeworkGradeController(IHomeworkGradeService homeworkGradeService)
             Data = await homeworkGradeService.GetAllAsync()
         });
     }
+
+    [HttpGet("{id:long}")]
     public async ValueTask<IActionResult> GetByIdAsync(long id)
     {
         return Ok(new Response

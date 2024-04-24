@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.HomeworkDTOs.HomeworkFiles;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.HomeworkDTOs.HomeworkFiles;
 
 namespace HaadCRM.Service.Services.HomeworkFiles;
 
