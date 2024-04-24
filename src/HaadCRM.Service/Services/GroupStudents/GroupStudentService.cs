@@ -55,7 +55,7 @@ public class GroupStudentService(
     {
         var GroupStudents = unitOfWork.GroupStudents.SelectAsQueryable(
             expression: gss => !gss.IsDeleted,
-            isTracked: false);
+            isTracked: false).OrderBy(filter);
 
         return mapper.Map<IEnumerable<GroupStudentViewModel>>(GroupStudents);
     }

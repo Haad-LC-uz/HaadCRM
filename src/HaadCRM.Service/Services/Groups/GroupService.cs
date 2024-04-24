@@ -59,7 +59,7 @@ public class GroupService(
     {
         var Groups = unitOfWork.Groups.SelectAsQueryable(
             expression: g => !g.IsDeleted,
-            isTracked: false);
+            isTracked: false).OrderBy(filter);
 
         return mapper.Map<IEnumerable<GroupViewModel>>(Groups);
     }

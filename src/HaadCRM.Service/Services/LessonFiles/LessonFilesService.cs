@@ -56,7 +56,7 @@ public class LessonFilesService(
     {
         var Lessons = unitOfWork.Lessons.SelectAsQueryable(
             expression: lf => !lf.IsDeleted,
-            isTracked: false);
+            isTracked: false).OrderBy(filter);
 
         return mapper.Map<IEnumerable<LessonFileViewModel>>(Lessons);
     }

@@ -79,7 +79,7 @@ public class PermissionService(
         // Retrieve all permissions from the database
         var permissions = unitOfWork.Permissions.SelectAsQueryable(
             expression: p => p.IsDeleted,
-            isTracked: false);
+            isTracked: false).OrderBy(filter);
 
         // Map the list of permissions to a list of view models and return
         return mapper.Map<IEnumerable<PermissionViewModel>>(permissions);

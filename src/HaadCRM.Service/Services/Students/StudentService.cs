@@ -65,7 +65,7 @@ public class StudentService(
         var students = unitOfWork.Students.SelectAsQueryable(
             expression: s => !s.IsDeleted,
             includes: ["User", "Asset"],
-            isTracked: false);
+            isTracked: false).OrderBy(filter);
 
         return mapper.Map<IEnumerable<StudentViewModel>>(students);
     }

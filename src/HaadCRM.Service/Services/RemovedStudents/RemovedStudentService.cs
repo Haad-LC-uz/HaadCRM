@@ -43,7 +43,7 @@ public class RemovedStudentService(
         var removedStudents = unitOfWork.RemovedStudents.SelectAsQueryable(
             expression: rs => !rs.IsDeleted,
             includes: ["Student", "Group"],
-            isTracked: false);
+            isTracked: false).OrderBy(filter);
         return mapper.Map<IEnumerable<RemovedStudentViewModel>>(removedStudents);
     }
 

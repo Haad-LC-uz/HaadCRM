@@ -46,7 +46,7 @@ public class ExamFileService(
         var examFiles = unitOfWork.ExamFiles.SelectAsQueryable(
             expression: examFile => !examFile.IsDeleted,
             includes: ["Exam", "Asset"],
-            isTracked: false);
+            isTracked: false).OrderBy(filter);
 
         return mapper.Map<IEnumerable<ExamFileViewModel>>(examFiles);
     }

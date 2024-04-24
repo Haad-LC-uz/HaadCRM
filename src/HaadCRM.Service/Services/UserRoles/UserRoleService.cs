@@ -61,7 +61,8 @@ public class UserRoleService(
         // Retrieve all user roles from the database
         var userRoles = unitOfWork.UserRoles.SelectAsQueryable(
             expression: ur => ur.IsDeleted,
-            isTracked: false);
+            isTracked: false)
+            .OrderBy(filter);
 
         // Map the list of user roles to a list of view models and return
         return mapper.Map<IEnumerable<UserRoleViewModel>>(userRoles);

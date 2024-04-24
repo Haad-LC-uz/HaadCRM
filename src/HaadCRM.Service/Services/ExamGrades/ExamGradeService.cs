@@ -47,7 +47,7 @@ public class ExamGradeService(
         var examGrades = unitOfWork.ExamGrades.SelectAsQueryable(
             expression: eg => !eg.IsDeleted,
             includes: ["Student", "Exam", "Employee"],
-            isTracked: false);
+            isTracked: false).OrderBy(filter);
 
         return mapper.Map<IEnumerable<ExamGradeViewModel>>(examGrades);
     }

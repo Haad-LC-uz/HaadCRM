@@ -54,7 +54,7 @@ public class LessonService(
         var Lessons = unitOfWork.Lessons.SelectAsQueryable(
             expression: l => !l.IsDeleted,
             includes: ["Group"],
-            isTracked: false);
+            isTracked: false).OrderBy(filter);
 
         return mapper.Map<IEnumerable<LessonViewModel>>(Lessons);
     }

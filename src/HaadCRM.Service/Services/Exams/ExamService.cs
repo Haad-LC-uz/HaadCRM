@@ -42,7 +42,7 @@ public class ExamService(
         var exams = unitOfWork.Exams.SelectAsQueryable(
             expression: exam => !exam.IsDeleted,
             includes: ["Employee", "Group", "Asset"],
-            isTracked: false);
+            isTracked: false).OrderBy(filter);
 
         return mapper.Map<IEnumerable<ExamViewModel>>(exams);
     }

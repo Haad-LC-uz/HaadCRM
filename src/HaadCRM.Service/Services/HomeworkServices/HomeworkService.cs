@@ -47,7 +47,7 @@ public class HomeworkService(
         var homeworks = unitOfWork.Homework.SelectAsQueryable(
             expression: h => !h.IsDeleted,
             includes: ["Lesson", "Assistant"],
-            isTracked: false);
+            isTracked: false).OrderBy(filter);
 
         return await Task.FromResult(mapper.Map<IEnumerable<HomeworkViewModel>>(homeworks));
     }

@@ -93,7 +93,8 @@ public class UserService(
         // Retrieve all users from the database
         var users = unitOfWork.Users.SelectAsQueryable(
             expression: user => user.IsDeleted,
-            isTracked: false);
+            isTracked: false)
+            .OrderBy(filter);
 
         // Map the list of users to a list of view models and return
         return mapper.Map<IEnumerable<UserViewModel>>(users);

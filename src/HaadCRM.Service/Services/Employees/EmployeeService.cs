@@ -81,7 +81,9 @@ public class EmployeeService(
     public async ValueTask<IEnumerable<EmployeeViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         // Retrieve all employees from the database
-        var employees = unitOfWork.Employees.SelectAsQueryable(expression: emp => emp.IsDeleted, isTracked: false);
+        var employees = unitOfWork.Employees.SelectAsQueryable(
+            expression: emp => emp.IsDeleted, 
+            isTracked: false).OrderBy(filter);
 
         // Map the list of employees to a list of view models and return
         return mapper.Map<IEnumerable<EmployeeViewModel>>(employees);

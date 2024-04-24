@@ -51,7 +51,7 @@ public class HomeworkGradeService(
         var homeworkGrades = unitOfWork.HomeworkGrades.SelectAsQueryable(
             expression: hg => !hg.IsDeleted,
             includes: ["Homework", "Student", "Assistant"],
-            isTracked: false);
+            isTracked: false).OrderBy(filter);
 
         return mapper.Map<IEnumerable<HomeworkGradeViewModel>>(homeworkGrades);
     }
