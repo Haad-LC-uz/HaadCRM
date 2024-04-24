@@ -4,7 +4,11 @@ namespace HaadCRM.Domain.Entities.Exams;
 
 /// <summary>
 /// The ExamFile class represents the File of exam that contains properties for Examfile,
-/// such as ExamId, AssetId
+/// such as:
+/// ExamId 
+/// AssetId
+/// Exam
+/// Asset
 /// </summary>
 public class ExamFile : Auditable
 {
