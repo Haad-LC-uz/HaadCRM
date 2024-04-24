@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace HaadCRM.Service.Services.Courses;
 
 public class CourseService(
-    IMapper mapper, 
+    IMapper mapper,
     IUnitOfWork unitOfWork,
     CourseCreateModelValidator createModelValidator,
     CourseUpdateModelValidator updateModelValidator) : ICourseService
@@ -50,7 +50,7 @@ public class CourseService(
             .SelectAsQueryable(expression: c => !c.IsDeleted, isTracked: false)
             .OrderBy(filter);
 
-        return mapper.Map<IEnumerable<CourseViewModel>>(Courses.ToPaginateAsQueryable(@params).ToListAsync());
+        return await Task.FromResult(mapper.Map<IEnumerable<CourseViewModel>>(Courses.ToPaginateAsQueryable(@params).ToListAsync()));
     }
 
     public async ValueTask<CourseViewModel> GetByIdAsync(long id)

@@ -24,8 +24,10 @@ public class ExamService(
 
         if (existExam != null)
             throw new AlreadyExistException("Exam at this time with these teachers already exists");
-
-        await unitOfWork.Exams.InsertAsync(mapper.Map<Exam>(createModel));
+        var mapped = mapper.Map<Exam>(createModel);
+        var last = await unitOfWork.Exams.SelectAsEnumerableAsync();
+        mapped.Id = last.Any() ? last.Last().Id + 1 : 1;
+        await unitOfWork.Exams.InsertAsync(mapped);
         await unitOfWork.SaveAsync();
 
         return mapper.Map<ExamViewModel>(createModel);
@@ -33,7 +35,7 @@ public class ExamService(
 
     public async ValueTask<ExamViewModel> GetByIdAsync(long id)
     {
-        var exam = await unitOfWork.Exams.SelectAsync(exam => exam.Id == id && !exam.IsDeleted) 
+        var exam = await unitOfWork.Exams.SelectAsync(exam => exam.Id == id && !exam.IsDeleted)
             ?? throw new NotFoundException($"Homework with ID={id} is not found or was deleted");
         return await Task.FromResult(mapper.Map<ExamViewModel>(exam));
     }
