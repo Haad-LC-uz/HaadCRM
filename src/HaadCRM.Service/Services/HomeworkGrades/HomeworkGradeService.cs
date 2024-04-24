@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Homeworks;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.HomeworkDTOs.HomeworkGrades;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
@@ -45,11 +46,12 @@ public class HomeworkGradeService(
         return await Task.FromResult(true);
     }
 
-    public async ValueTask<IEnumerable<HomeworkGradeViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<HomeworkGradeViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var homeworkGrades = await unitOfWork.HomeworkGrades.SelectAsEnumerableAsync(
+        var homeworkGrades = unitOfWork.HomeworkGrades.SelectAsQueryable(
             expression: hg => !hg.IsDeleted,
-            includes: ["Homework", "Student", "Assistant"]);
+            includes: ["Homework", "Student", "Assistant"],
+            isTracked: false);
 
         return mapper.Map<IEnumerable<HomeworkGradeViewModel>>(homeworkGrades);
     }
