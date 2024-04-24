@@ -2,12 +2,14 @@
 using HaadCRM.Service.DTOs.UserDTOs.UserRoles;
 using HaadCRM.Service.Services.UserRoles;
 using HaadCRM.WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HaadCRM.WebApi.Controllers;
 
 public class UserRolesController(IUserRoleService userRoleService) : BaseController
 {
+    [AllowAnonymous]
     [HttpPost]
     public async ValueTask<IActionResult> PostAsync([FromBody] UserRoleCreateModel createModel)
     {

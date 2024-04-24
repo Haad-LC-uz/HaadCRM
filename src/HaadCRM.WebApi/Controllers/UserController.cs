@@ -72,11 +72,12 @@ public class UsersController(IUserService userService) : BaseController
             Data = user
         });
     }
-
+    [AllowAnonymous]
     [HttpGet("login")]
     public async ValueTask<IActionResult> LoginAsync(string phone, string password)
     {
         var result = await userService.LoginAsync(phone, password);
+        await Console.Out.WriteLineAsync(result.token);
         return Ok(new Response
         {
             StatusCode = 200,

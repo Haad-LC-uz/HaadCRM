@@ -1,6 +1,8 @@
-﻿namespace HaadCRM.Service.Helpers;
+﻿using Microsoft.Extensions.Configuration;
 
-public class EnvironmentHelper
+namespace HaadCRM.Service.Helpers;
+
+public class EnvironmentHelper()
 {
     public static string WebRootPath { get; set; }
     public static string JWTKey { get; set; }
