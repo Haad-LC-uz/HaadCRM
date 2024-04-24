@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.LessonsDTOs.LessonFiles;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.LessonsDTOs.LessonFiles;
 
 namespace HaadCRM.Service.Services.LessonFiles;
 
@@ -33,5 +34,5 @@ public interface ILessonFilesService
     /// Will get all LessonFiles and returns IEnumerable
     /// </summary>
     /// <returns></returns>
-    ValueTask<IEnumerable<LessonFileViewModel>> GetAllAsync();
+    ValueTask<IEnumerable<LessonFileViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 }

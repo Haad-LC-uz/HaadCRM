@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Homeworks;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.HomeworkDTOs.Homework;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.ExamGrades;
 using HaadCRM.Service.Validators.Homework.Homework;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.HomeworkServices;
 
@@ -41,13 +43,14 @@ public class HomeworkService(
         return true;
     }
 
-    public async ValueTask<IEnumerable<HomeworkViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<HomeworkViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var homeworks = await unitOfWork.Homework.SelectAsEnumerableAsync(
+        var homeworks = unitOfWork.Homework.SelectAsQueryable(
             expression: h => !h.IsDeleted,
-            includes: ["Lesson", "Assistant"]);
+            includes: ["Lesson", "Assistant"],
+            isTracked: false).OrderBy(filter);
 
-        return await Task.FromResult(mapper.Map<IEnumerable<HomeworkViewModel>>(homeworks));
+        return await Task.FromResult(mapper.Map<IEnumerable<HomeworkViewModel>>(homeworks.ToPaginateAsQueryable(@params).ToListAsync()));
     }
 
     public async ValueTask<HomeworkViewModel> GetByIdAsync(long id)

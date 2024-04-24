@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Users;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.UserDTOs.Permissions;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Lessons.Lessons;
 using HaadCRM.Service.Validators.Users.Permissions;
 using HaadCRM.Service.Validators.Users.UserPermissions;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.Permissions;
 
@@ -73,13 +75,15 @@ public class PermissionService(
     }
 
     // Gets all permissions
-    public async ValueTask<IEnumerable<PermissionViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<PermissionViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         // Retrieve all permissions from the database
-        var permissions = await unitOfWork.Permissions.SelectAsEnumerableAsync();
+        var permissions = unitOfWork.Permissions.SelectAsQueryable(
+            expression: p => p.IsDeleted,
+            isTracked: false).OrderBy(filter);
 
         // Map the list of permissions to a list of view models and return
-        return mapper.Map<IEnumerable<PermissionViewModel>>(permissions);
+        return mapper.Map<IEnumerable<PermissionViewModel>>(permissions.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     // Gets a permission by ID

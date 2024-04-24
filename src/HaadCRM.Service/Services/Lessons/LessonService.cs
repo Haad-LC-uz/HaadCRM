@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Lessons;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.LessonsDTOs.Lessons;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.ExamGrades;
 using HaadCRM.Service.Validators.Lessons.Lessons;
+using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.Lessons;
 
@@ -48,13 +50,14 @@ public class LessonService(
         return true;
     }
 
-    public async ValueTask<IEnumerable<LessonViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<LessonViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var Lessons = await unitOfWork.Lessons.SelectAsEnumerableAsync(
+        var Lessons = unitOfWork.Lessons.SelectAsQueryable(
             expression: l => !l.IsDeleted,
-            includes: ["Group"]);
+            includes: ["Group"],
+            isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<LessonViewModel>>(Lessons);
+        return mapper.Map<IEnumerable<LessonViewModel>>(Lessons.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     public async ValueTask<LessonViewModel> GetByIdAsync(long id)

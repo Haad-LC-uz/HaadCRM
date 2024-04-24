@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.EmployeeDTOs.EmployeeRoles; // Import the necessary DTO namespace
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.EmployeeDTOs.EmployeeRoles; // Import the necessary DTO namespace
 
 namespace HaadCRM.Service.Services.EmployeeRoles;
 
@@ -25,7 +26,7 @@ public interface IEmployeeRoleService
     /// Retrieves all employee roles.
     /// </summary>
     /// <returns>A collection of all employee role view models.</returns>
-    ValueTask<IEnumerable<EmployeeRoleViewModel>> GetAllAsync();
+    ValueTask<IEnumerable<EmployeeRoleViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 
     /// <summary>
     /// Retrieves an employee role by its ID.

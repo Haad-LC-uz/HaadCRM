@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Homeworks;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.HomeworkDTOs.HomeworkFiles;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.ExamGrades;
 using HaadCRM.Service.Validators.Homework.HomeworkFiles;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 
 namespace HaadCRM.Service.Services.HomeworkFiles;
@@ -43,13 +45,14 @@ public class HomeworkFilesService(
         return true;
     }
 
-    public async ValueTask<IEnumerable<HomeworkFileViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<HomeworkFileViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null
     {
-        var homeworkFiles = await unitOfWork.HomeworkFiles.SelectAsEnumerableAsync(
+        var homeworkFiles = unitOfWork.HomeworkFiles.SelectAsQueryable(
             expression: hf => !hf.IsDeleted,
-            includes: ["Homework", "Asset"]);
+            includes: ["Homework", "Asset"],
+            isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<HomeworkFileViewModel>>(homeworkFiles);
+        return mapper.Map<IEnumerable<HomeworkFileViewModel>>(homeworkFiles.ToPaginateAsQueryable(@params).ToListAsync());
     }
 
     public async ValueTask<HomeworkFileViewModel> GetByIdAsync(long id)

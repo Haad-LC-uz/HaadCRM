@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.Courses;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.Courses;
 
 namespace HaadCRM.Service.Services.Courses;
 
@@ -33,5 +34,5 @@ public interface ICourseService
     /// Will get all Courses and returns IEnumerable
     /// </summary>
     /// <returns></returns>
-    ValueTask<IEnumerable<CourseViewModel>> GetAllAsync();
+    ValueTask<IEnumerable<CourseViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 }
