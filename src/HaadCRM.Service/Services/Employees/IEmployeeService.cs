@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.EmployeeDTOs.Employees;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.EmployeeDTOs.Employees;
 
 namespace HaadCRM.Service.Services.Employees;
 
@@ -25,7 +26,7 @@ public interface IEmployeeService
     /// Retrieves all employees.
     /// </summary>
     /// <returns>An enumerable collection of employee view models.</returns>
-    ValueTask<IEnumerable<EmployeeViewModel>> GetAllAsync();
+    ValueTask<IEnumerable<EmployeeViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 
     /// <summary>
     /// Retrieves an employee by their ID.
