@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.UserDTOs.Permissions;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.UserDTOs.Permissions;
 using HaadCRM.Service.Services.Permissions;
 using HaadCRM.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -52,13 +53,16 @@ public class PermissionsController(IPermissionService permissionService) : BaseC
     }
 
     [HttpGet]
-    public async ValueTask<IActionResult> GetAsync()
+    public async ValueTask<IActionResult> GetAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter,
+        [FromQuery] string search = null)
     {
         return Ok(new Response
         {
             StatusCode = 200,
             Message = "Ok",
-            Data = await permissionService.GetAllAsync()
+            Data = await permissionService.GetAllAsync(@params, filter, search)
         });
     }
 }

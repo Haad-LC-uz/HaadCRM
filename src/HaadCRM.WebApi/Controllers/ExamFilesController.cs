@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.ExamDTOs.ExamFiles;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.ExamDTOs.ExamFiles;
 using HaadCRM.Service.Services.ExamFiles;
 using HaadCRM.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -52,13 +53,16 @@ namespace HaadCRM.WebApi.Controllers
         }
 
         [HttpGet]
-        public async ValueTask<IActionResult> GetAsync()
+        public async ValueTask<IActionResult> GetAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter,
+        [FromQuery] string search = null)
         {
             return Ok(new Response
             {
                 StatusCode = 200,
                 Message = "Success",
-                Data = await examFileService.GetAllAsync()
+                Data = await examFileService.GetAllAsync(@params, filter, search)
             });
         }
     }

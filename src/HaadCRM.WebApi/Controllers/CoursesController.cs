@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.Courses;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.Courses;
 using HaadCRM.Service.Services.Courses;
 using HaadCRM.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -52,13 +53,16 @@ public class CoursesController(ICourseService courseService) : BaseController
     }
 
     [HttpGet]
-    public async ValueTask<IActionResult> GetAsync()
+    public async ValueTask<IActionResult> GetAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter,
+        [FromQuery] string search = null)
     {
         return Ok(new Response
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await courseService.GetAllAsync()
+            Data = await courseService.GetAllAsync(@params, filter, search)
         });
     }
 }
