@@ -1,5 +1,14 @@
 ﻿namespace HaadCRM.Service.Configurations;
 
+/// <summary>
+/// The PaginationMetaData class represents the PaginationMetaData entity,
+/// that contains properties for PaginationMetaData,
+/// such as:
+/// TotalPages
+/// CurrentPage
+/// HasPrevious
+/// HasNext
+/// </summary>
 public class PaginationMetaData
 {
     public PaginationMetaData(int totalCount, PaginationParams @params)
