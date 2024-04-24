@@ -1,4 +1,5 @@
-﻿using HaadCRM.Service.DTOs.GroupDTOs.Groups;
+﻿using HaadCRM.Service.Configurations;
+using HaadCRM.Service.DTOs.GroupDTOs.Groups;
 
 namespace HaadCRM.Service.Services.GroupService;
 
@@ -33,5 +34,5 @@ public interface IGroupService
     /// Will get all groups and returns IEnumerable
     /// </summary>
     /// <returns></returns>
-    ValueTask<IEnumerable<GroupViewModel>> GetAllAsync();
+    ValueTask<IEnumerable<GroupViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 }
