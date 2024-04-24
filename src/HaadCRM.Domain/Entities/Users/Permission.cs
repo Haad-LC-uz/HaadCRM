@@ -2,7 +2,12 @@ using HaadCRM.Domain.Commons;
 
 namespace HaadCRM.Domain.Entities.Users;
 
-
+/// <summary>
+/// The Persmission class represents the Permission entity that contains properties for Permission,
+/// such as:
+/// Method
+/// Controller
+/// </summary>
 public class Permission : Auditable
 {
     /// <summary>
