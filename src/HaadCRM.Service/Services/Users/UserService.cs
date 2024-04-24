@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Users;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
@@ -87,10 +88,12 @@ public class UserService(
     }
 
     // Gets all users
-    public async ValueTask<IEnumerable<UserViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<UserViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         // Retrieve all users from the database
-        var users = await unitOfWork.Users.SelectAsEnumerableAsync();
+        var users = unitOfWork.Users.SelectAsQueryable(
+            expression: user => user.IsDeleted,
+            isTracked: false);
 
         // Map the list of users to a list of view models and return
         return mapper.Map<IEnumerable<UserViewModel>>(users);
