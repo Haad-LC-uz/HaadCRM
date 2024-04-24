@@ -17,6 +17,12 @@ namespace HaadCRM.Domain.Entities.Groups;
 /// EndTime
 /// Price
 /// Room
+/// Course
+/// Teacher
+/// Assistant
+/// Lessons
+/// GroupStudents
+/// RemovedStudents
 /// </summary>
 public class Group : Auditable
 {
