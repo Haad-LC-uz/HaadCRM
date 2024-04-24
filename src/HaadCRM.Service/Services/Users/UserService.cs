@@ -6,6 +6,7 @@ using HaadCRM.Service.DTOs.UserDTOs.Users;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Helpers;
+using HaadCRM.Service.Services.AuthServices;
 using HaadCRM.Service.Validators.Users.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -17,6 +18,7 @@ public class UserService(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IMemoryCache memoryCache,
+    IAuthService authService,
     UserCreateModelValidator userCreateModelValidator,
     UserUpdateModelValidator userUpdateModelValidator) : IUserService
 {
@@ -124,7 +126,7 @@ public class UserService(
         if (!isVerified)
             throw new ArgumentIsNotValidException("Phone or password is not valid");
         // Login successful, return user and generated token
-        var token = AuthHelper.GenerateToken(existingUser);
+        var token = authService.GenerateToken(existingUser);
         return (existingUser, token);
     }
 
