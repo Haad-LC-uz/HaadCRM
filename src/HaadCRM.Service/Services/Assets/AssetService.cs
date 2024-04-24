@@ -35,6 +35,7 @@ public class AssetService(IMapper mapper, IUnitOfWork unitOfWork) : IAssetServic
         return mapper.Map<AssetViewModel>(asset);
     }
 
+
     public async ValueTask<bool> DeleteAsync(long id)
     {
         var asset = await unitOfWork.Assets.SelectAsync(a => a.Id == id)
