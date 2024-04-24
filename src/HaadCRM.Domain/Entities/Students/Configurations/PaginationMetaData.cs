@@ -17,8 +17,20 @@ public class PaginationMetaData
         CurrentPage = @params.PageIndex;
     }
 
+    /// <summary>
+    /// The TotalPages property represents the total Paginated pages
+    /// </summary>
     public int TotalPages { get; set; }
+    /// <summary>
+    /// The CurrentPage property represents the Current Paginated page
+    /// </summary>
     public int CurrentPage { get; set; }
+    /// <summary>
+    /// The HasPrevious property represents the status of paginated pages that has previous behind current page
+    /// </summary>
     public bool HasPrevious => CurrentPage > 1;
+    /// <summary>
+    /// The HasNext property represents the status of paginated pages that has next ahead current page
+    /// </summary>
     public bool HasNext => CurrentPage < TotalPages;
 }
