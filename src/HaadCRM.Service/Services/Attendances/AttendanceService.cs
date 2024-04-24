@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
 using HaadCRM.Domain.Entities.Attendances;
+using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.Attendances;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
@@ -40,9 +41,11 @@ public class AttendanceService(
         return mapper.Map<AttendanceViewModel>(attendance);
     }
 
-    public async ValueTask<IEnumerable<AttendanceViewModel>> GetAllAsync()
+    public async ValueTask<IEnumerable<AttendanceViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var attendances = await unitOfWork.Attendances.SelectAsEnumerableAsync();
+        var attendances = unitOfWork.Attendances
+            .SelectAsQueryable(expression: attendance => attendance.IsDeleted, isTracked: false)
+            .OrderBy(filter);
 
         return mapper.Map<IEnumerable<AttendanceViewModel>>(attendances);
     }
