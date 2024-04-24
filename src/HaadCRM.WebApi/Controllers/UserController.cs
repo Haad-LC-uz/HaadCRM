@@ -82,7 +82,7 @@ public class UsersController(IUserService userService) : BaseController
         {
             StatusCode = 200,
             Message = "Ok",
-            Data = result
+            Data = result.token
         });
     }
 
