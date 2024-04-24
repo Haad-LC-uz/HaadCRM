@@ -5,7 +5,10 @@ namespace HaadCRM.Domain.Entities.Courses;
 
 /// <summary>
 /// The Couse class represents a Course that contains properties for course,
-/// such as Course's name and Description
+/// such as:
+/// Name
+/// Description
+/// Groups
 /// </summary>
 public class Course : Auditable
 {
