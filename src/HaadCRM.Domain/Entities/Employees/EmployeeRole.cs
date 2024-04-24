@@ -4,7 +4,8 @@ namespace HaadCRM.Domain.Entities.Employees;
 
 /// <summary>
 /// The EmployeeRole class represents the Employee role than contains properties for role, 
-/// such as Role name
+/// such as:
+/// Name
 /// </summary>
 public class EmployeeRole : Auditable
 {
