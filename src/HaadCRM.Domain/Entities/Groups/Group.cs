@@ -9,8 +9,8 @@ namespace HaadCRM.Domain.Entities.Groups;
 /// <summary>
 /// The Group class represents the Group entity that contains properties for Group,
 /// such as:
-/// Course,
-/// Teacher,
+/// Course
+/// Teacher
 /// Name
 /// StartTime
 /// Duration
