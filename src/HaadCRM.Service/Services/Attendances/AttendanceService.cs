@@ -45,10 +45,10 @@ public class AttendanceService(
     public async ValueTask<IEnumerable<AttendanceViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var attendances = unitOfWork.Attendances
-            .SelectAsQueryable(expression: attendance => attendance.IsDeleted, isTracked: false)
+            .SelectAsQueryable(expression: attendance => !attendance.IsDeleted, includes: ["Student", "Lesson"], isTracked: false)
             .OrderBy(filter);
 
-        return mapper.Map<IEnumerable<AttendanceViewModel>>(await attendances.ToPaginateAsQueryable(@params).ToListAsync());
+        return await Task.FromResult(mapper.Map<IEnumerable<AttendanceViewModel>>(attendances.ToPaginateAsQueryable(@params)));
     }
 
     public async ValueTask<AttendanceViewModel> UpdateAsync(long id, AttendanceUpdateModel updateModel)
