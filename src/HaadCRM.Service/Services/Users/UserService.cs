@@ -101,7 +101,7 @@ public class UserService(
             .OrderBy(filter);
 
         // Map the list of users to a list of view models and return
-        return mapper.Map<IEnumerable<UserViewModel>>(users.ToPaginateAsQueryable(@params).ToListAsync());
+        return await Task.FromResult(mapper.Map<IEnumerable<UserViewModel>>(users.ToPaginateAsQueryable(@params)));
     }
 
     // Gets a user by ID
