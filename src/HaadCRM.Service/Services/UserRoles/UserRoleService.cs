@@ -66,7 +66,7 @@ public class UserRoleService(
             .OrderBy(filter);
 
         // Map the list of user roles to a list of view models and return
-        return mapper.Map<IEnumerable<UserRoleViewModel>>(userRoles.ToPaginateAsQueryable(@params).ToListAsync());
+        return await Task.FromResult(mapper.Map<IEnumerable<UserRoleViewModel>>(userRoles.ToPaginateAsQueryable(@params)));
     }
 
     // Gets a user role by ID

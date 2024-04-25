@@ -25,9 +25,9 @@ public class StudentService(
         if (exist != null)
             throw new AlreadyExistException("This student is already exists");
 
-        await unitOfWork.Students.InsertAsync(mapper.Map<Student>(createModel));
+        var created=await unitOfWork.Students.InsertAsync(mapper.Map<Student>(createModel));
         await unitOfWork.SaveAsync();
-        return await Task.FromResult(mapper.Map<StudentViewModel>(createModel));
+        return await Task.FromResult(mapper.Map<StudentViewModel>(created));
     }
 
     public async ValueTask<StudentViewModel> UpdateAsync(long id, StudentUpdateModel updateModel)

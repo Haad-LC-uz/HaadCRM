@@ -25,11 +25,11 @@ public class GroupService(
             ?? throw new NotFoundException($"Course with Id = {group.CourseId} is not found");
 
         var existTeacher = await unitOfWork.Users.SelectAsync(
-            expression: t => (t.UserRole.Name.ToLower() == ("Teacher").ToLower()) && t.Id == group.TeacherId && !t.IsDeleted)
+            expression: t => t.Id == group.TeacherId && !t.IsDeleted)
             ?? throw new NotFoundException($"Teacher with Id = {group.TeacherId} is not found");
 
         var existAssistant = await unitOfWork.Users.SelectAsync(
-            expression: t => (t.UserRole.Name.ToLower() == ("Assistant").ToLower()) && t.Id == group.AssistantId && !t.IsDeleted)
+            expression: t => t.Id == group.AssistantId && !t.IsDeleted)
             ?? throw new NotFoundException($"Assistant with Id = {group.TeacherId} is not found");
 
         var existGroup = await unitOfWork.Groups.SelectAsync(
