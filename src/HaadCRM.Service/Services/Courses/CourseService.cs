@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HaadCRM.Data.UnitOfWorks;
+using HaadCRM.Domain.Entities.Courses;
 using HaadCRM.Service.Configurations;
 using HaadCRM.Service.DTOs.Courses;
 using HaadCRM.Service.Exceptions;
@@ -26,10 +27,17 @@ public class CourseService(
         if (existCourse is not null)
             throw new AlreadyExistException($"Course is already exist with Name = {course.Name}");
 
-        var createdCourse = await unitOfWork.Courses.InsertAsync(existCourse);
+        var mapped = mapper.Map<Course>(course);
+
+        var courses = await unitOfWork.Courses.SelectAsEnumerableAsync();
+
+        mapped.Id = courses.Any() ? courses.Last().Id + 1 : 1;
+
+        var created = await unitOfWork.Courses.InsertAsync(mapped);
+
         await unitOfWork.SaveAsync();
 
-        return mapper.Map<CourseViewModel>(createdCourse);
+        return mapper.Map<CourseViewModel>(created);
     }
 
     public async ValueTask<bool> DeleteAsync(long id)
@@ -50,7 +58,7 @@ public class CourseService(
             .SelectAsQueryable(expression: c => !c.IsDeleted, isTracked: false)
             .OrderBy(filter);
 
-        return await Task.FromResult(mapper.Map<IEnumerable<CourseViewModel>>(Courses.ToPaginateAsQueryable(@params).ToListAsync()));
+        return await Task.FromResult(mapper.Map<IEnumerable<CourseViewModel>>(Courses.ToPaginateAsQueryable(@params)));
     }
 
     public async ValueTask<CourseViewModel> GetByIdAsync(long id)
@@ -66,14 +74,16 @@ public class CourseService(
     {
         await updateModelValidator.ValidateOrPanicAsync(course);
 
-        var existCourse = await unitOfWork.Courses.SelectAsync(
-            expression: c => c.Id == id && !c.IsDeleted)
+        var existingCourse = await unitOfWork.Courses
+            .SelectAsync(c => c.Id == id && !c.IsDeleted)
             ?? throw new NotFoundException($"Course is not found with Id = {id}");
 
-        var mapped = mapper.Map(course, existCourse);
-        var updated = await unitOfWork.Courses.UpdateAsync(mapped);
+        mapper.Map(course, existingCourse);
+
+        var updatedCourse = await unitOfWork.Courses.UpdateAsync(existingCourse);
         await unitOfWork.SaveAsync();
 
-        return mapper.Map<CourseViewModel>(course);
+        return mapper.Map<CourseViewModel>(updatedCourse);
     }
+
 }
