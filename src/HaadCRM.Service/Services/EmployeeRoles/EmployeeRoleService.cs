@@ -77,11 +77,11 @@ public class EmployeeRoleService(
     {
         // Retrieve all employee roles from the database
         var employeeRoles = unitOfWork.EmployeeRoles.SelectAsQueryable(
-            expression: er => er.IsDeleted, 
+            expression: er => !er.IsDeleted, 
             isTracked: false).OrderBy(filter);
 
         // Map the list of employee roles to a list of view models and return
-        return mapper.Map<IEnumerable<EmployeeRoleViewModel>>(employeeRoles.ToPaginateAsQueryable(@params).ToListAsync());
+        return await Task.FromResult(mapper.Map<IEnumerable<EmployeeRoleViewModel>>(employeeRoles.ToPaginateAsQueryable(@params)));
     }
 
     // Gets an employee role by ID

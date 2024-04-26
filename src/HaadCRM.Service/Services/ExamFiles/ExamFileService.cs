@@ -36,8 +36,10 @@ public class ExamFileService(
 
     public async ValueTask<ExamFileViewModel> GetByIdAsync(long id)
     {
-        var examFile = await unitOfWork.ExamFiles.SelectAsync(ef => ef.Id == id)
-                       ?? throw new NotFoundException($"ExamFile with ID={id} is not found");
+        var examFile = await unitOfWork.ExamFiles.SelectAsync(
+            ef => ef.Id == id,
+            includes: ["Exam", "Asset"])
+                ?? throw new NotFoundException($"ExamFile with ID={id} is not found");
 
         return mapper.Map<ExamFileViewModel>(examFile);
     }
@@ -49,7 +51,7 @@ public class ExamFileService(
             includes: ["Exam", "Asset"],
             isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<ExamFileViewModel>>(examFiles.ToPaginateAsQueryable(@params).ToListAsync());
+        return await Task.FromResult(mapper.Map<IEnumerable<ExamFileViewModel>>(examFiles.ToPaginateAsQueryable(@params)));
     }
 
     public async ValueTask<ExamFileViewModel> UpdateAsync(long id, ExamFileUpdateModel updateModel)
