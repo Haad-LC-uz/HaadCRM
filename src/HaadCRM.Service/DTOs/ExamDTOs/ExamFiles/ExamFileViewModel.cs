@@ -1,8 +1,11 @@
-﻿namespace HaadCRM.Service.DTOs.ExamDTOs.ExamFiles;
+﻿using HaadCRM.Service.DTOs.Assets;
+using HaadCRM.Service.DTOs.ExamDTOs.Exams;
+
+namespace HaadCRM.Service.DTOs.ExamDTOs.ExamFiles;
 
 public class ExamFileViewModel
 {
     public long Id { get; set; }
-    public long ExamId { get; set; }
-    public long AssetId { get; set; }
+    public AssetViewModel Asset { get; set; }
+    public ExamViewModel Exam { get; set; }
 }

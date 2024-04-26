@@ -13,4 +13,5 @@ public class EmployeeRole : Auditable
     /// The Name property represents the name of the EmployeeRole
     /// </summary>
     public string Name { get; set; }
+    IEnumerable<Employee> Employees { get; set; }
 }

@@ -1,4 +1,7 @@
 ﻿using HaadCRM.Domain.Commons;
+using HaadCRM.Domain.Entities.Employees;
+using HaadCRM.Domain.Entities.Groups;
+using HaadCRM.Domain.Entities.Students;
 
 namespace HaadCRM.Domain.Entities.Users;
 

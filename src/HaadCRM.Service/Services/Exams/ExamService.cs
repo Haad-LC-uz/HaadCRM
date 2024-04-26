@@ -30,12 +30,15 @@ public class ExamService(
         await unitOfWork.Exams.InsertAsync(mapped);
         await unitOfWork.SaveAsync();
 
-        return mapper.Map<ExamViewModel>(createModel);
+        return mapper.Map<ExamViewModel>(mapped);
     }
 
     public async ValueTask<ExamViewModel> GetByIdAsync(long id)
     {
-        var exam = await unitOfWork.Exams.SelectAsync(exam => exam.Id == id && !exam.IsDeleted)
+        var exam = await unitOfWork.Exams.SelectAsync(
+            exam => exam.Id == id && !exam.IsDeleted,
+            ["Teacher", "Assistant", "Group", "ProfilePicture", "ExamFiles", "ExamGrades"]
+            )
             ?? throw new NotFoundException($"Homework with ID={id} is not found or was deleted");
         return await Task.FromResult(mapper.Map<ExamViewModel>(exam));
     }
@@ -44,10 +47,10 @@ public class ExamService(
     {
         var exams = unitOfWork.Exams.SelectAsQueryable(
             expression: exam => !exam.IsDeleted,
-            includes: ["Employee", "Group", "Asset"],
+            includes: ["Teacher", "Assistant","Group", "ProfilePicture"],
             isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<ExamViewModel>>(exams.ToPaginateAsQueryable(@params).ToListAsync());
+        return await Task.FromResult(mapper.Map<IEnumerable<ExamViewModel>>(exams.ToPaginateAsQueryable(@params)));
     }
 
     public async ValueTask<ExamViewModel> UpdateAsync(long id, ExamUpdateModel updateModel)
