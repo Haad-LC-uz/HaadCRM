@@ -6,7 +6,6 @@ using HaadCRM.Service.DTOs.ExamDTOs.Exams;
 using HaadCRM.Service.Exceptions;
 using HaadCRM.Service.Extensions;
 using HaadCRM.Service.Validators.Exams.Exams;
-using Microsoft.EntityFrameworkCore;
 
 namespace HaadCRM.Service.Services.Exams.Exams;
 
@@ -47,7 +46,7 @@ public class ExamService(
     {
         var exams = unitOfWork.Exams.SelectAsQueryable(
             expression: exam => !exam.IsDeleted,
-            includes: ["Teacher", "Assistant","Group", "ProfilePicture"],
+            includes: ["Teacher", "Assistant", "Group", "ProfilePicture"],
             isTracked: false).OrderBy(filter);
 
         return await Task.FromResult(mapper.Map<IEnumerable<ExamViewModel>>(exams.ToPaginateAsQueryable(@params)));

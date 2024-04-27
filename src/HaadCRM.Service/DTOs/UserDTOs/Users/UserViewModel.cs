@@ -1,4 +1,7 @@
-﻿namespace HaadCRM.Service.DTOs.UserDTOs.Users;
+﻿using HaadCRM.Domain.Entities.Users;
+using HaadCRM.Service.DTOs.UserDTOs.UserRoles;
+
+namespace HaadCRM.Service.DTOs.UserDTOs.Users;
 
 public class UserViewModel
 {
@@ -7,5 +10,5 @@ public class UserViewModel
     public string LastName { get; set; }
     public string Email { get; set; }
     public string Phone { get; set; }
-    public long UserRoleId { get; set; }
+    public UserRoleViewModel UserRole { get; set; }
 }

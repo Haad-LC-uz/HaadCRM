@@ -26,13 +26,7 @@ public class User : Auditable
     /// The LastName property represents the lastname of the user
     /// </summary>
     public string LastName { get; set; }
-    /// <summary>
-    /// The Email property represents the Email of the user
-    /// </summary>
     public string Email { get; set; }
-    /// <summary>
-    /// The Password property represents the password of the user
-    /// </summary>
     public string Password { get; set; }
     /// <summary>
     /// The Phone property represents the phone of the user
@@ -47,4 +41,7 @@ public class User : Auditable
     /// The UserRole property represents the UserRole object
     /// </summary>
     public UserRole UserRole { get; set; }
+    public IEnumerable<Student> Students { get;}
+    public IEnumerable<Employee> Employees { get; }
+    public IEnumerable<GroupStudent> GroupStudents { get; }
 }
