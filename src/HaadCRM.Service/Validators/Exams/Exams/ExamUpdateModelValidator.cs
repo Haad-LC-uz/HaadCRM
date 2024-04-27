@@ -24,8 +24,7 @@ public class ExamUpdateModelValidator : AbstractValidator<ExamUpdateModel>
             .GreaterThan(0).WithMessage("Asset ID must be greater than 0.");
 
         RuleFor(model => model.DateOfExam)
-            .NotEmpty().WithMessage("Date of exam must be specified.")
-            .GreaterThanOrEqualTo(DateTime.Now).WithMessage("Date of exam must be in the future.");
+            .NotEmpty().WithMessage("Date of exam must be specified.");
 
         RuleFor(model => model.DeadLine)
             .NotEmpty().WithMessage("Deadline must be specified.")

@@ -1,12 +1,17 @@
-﻿namespace HaadCRM.Service.DTOs.GroupDTOs.Groups;
+﻿using HaadCRM.Domain.Entities.Courses;
+using HaadCRM.Domain.Entities.Employees;
+using HaadCRM.Service.DTOs.Courses;
+using HaadCRM.Service.DTOs.EmployeeDTOs.Employees;
+
+namespace HaadCRM.Service.DTOs.GroupDTOs.Groups;
 
 public class GroupViewModel
 {
     public long Id { get; set; }
-    public long CourseId { get; set; }
-    public long TeacherId { get; set; }
-    public long AssistantId { get; set; }
     public string Name { get; set; }
+    public CourseViewModel Course { get; set; }
+    public EmployeeViewModel Teacher { get; set; }
+    public EmployeeViewModel Assistant { get; set; }
     public DateTime StartTime { get; set; }
     public int Duration { get; set; }
     public DateTime EndTime { get; set; }
