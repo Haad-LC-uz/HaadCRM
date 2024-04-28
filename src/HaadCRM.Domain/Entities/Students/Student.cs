@@ -35,5 +35,4 @@ public class Student : Auditable
     /// <summary>
     /// The Attendances property represents the list of Attendance that Student has
     /// </summary>
-    public IEnumerable<Attendance> Attendances { get; set; }
 }

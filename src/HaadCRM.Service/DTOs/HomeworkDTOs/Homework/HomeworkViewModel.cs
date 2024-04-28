@@ -5,7 +5,6 @@ namespace HaadCRM.Service.DTOs.HomeworkDTOs.Homework;
 
 public class HomeworkViewModel
 {
-    public long Id { get; set; }
     public LessonViewModel Lesson { get; set; }
     public EmployeeViewModel Assistant { get; set; }
     public string Title { get; set; }

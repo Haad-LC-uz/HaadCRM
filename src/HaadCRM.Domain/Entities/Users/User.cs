@@ -41,7 +41,4 @@ public class User : Auditable
     /// The UserRole property represents the UserRole object
     /// </summary>
     public UserRole UserRole { get; set; }
-    public IEnumerable<Student> Students { get;}
-    public IEnumerable<Employee> Employees { get; }
-    public IEnumerable<GroupStudent> GroupStudents { get; }
 }
