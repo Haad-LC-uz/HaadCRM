@@ -64,7 +64,7 @@ public class ExamService(
         await unitOfWork.Exams.UpdateAsync(exam);
         await unitOfWork.SaveAsync();
 
-        return await Task.FromResult(mapper.Map<ExamViewModel>(exam));
+        return await GetByIdAsync(exam.Id);
     }
 
     public async ValueTask<bool> DeleteAsync(long id)

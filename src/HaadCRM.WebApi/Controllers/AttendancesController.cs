@@ -58,13 +58,11 @@ public class AttendancesController(IAttendanceService attendanceService) : BaseC
         [FromQuery] Filter filter,
         [FromQuery] string search = null)
     {
-        var res = await attendanceService.GetAllAsync(@params, filter, search);
-        await Console.Out.WriteLineAsync(res.ToList()[0].LessonId.ToString());
         return Ok(new Response
         {
             StatusCode = 200,
             Message = "Success",
-            Data = res
-        });
+            Data = await attendanceService.GetAllAsync(@params, filter, search)
+    });
     }
 }

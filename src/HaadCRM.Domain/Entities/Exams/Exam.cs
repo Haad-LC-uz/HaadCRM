@@ -32,6 +32,4 @@ public class Exam : Auditable
     public Employee Assistant { get; set; }
     public Group Group { get; set; }
     public Asset ProfilePicture { get; set; }
-    public IEnumerable<ExamFile> ExamFiles { get; set; }
-    public IEnumerable<ExamGrade> ExamGrades { get; set; }
 }

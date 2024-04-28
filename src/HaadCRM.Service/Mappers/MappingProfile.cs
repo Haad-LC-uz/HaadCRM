@@ -63,7 +63,12 @@ public class MappingProfile : Profile
 
         CreateMap<ExamGrade, ExamGradeCreateModel>().ReverseMap();
         CreateMap<ExamGrade, ExamGradeUpdateModel>().ReverseMap();
-        CreateMap<ExamGrade, ExamGradeViewModel>().ReverseMap();
+        CreateMap<ExamGrade, ExamGradeViewModel>()
+                .ForMember(dest => dest.Exam, opt => opt.MapFrom(src => src.Exam))
+                .ForMember(dest => dest.Student, opt => opt.MapFrom(src => src.Student))
+                .ForMember(dest => dest.Teacher, opt => opt.MapFrom(src => src.Teacher))
+                .ForMember(dest => dest.Assistant, opt => opt.MapFrom(src => src.Assistant))
+                .ReverseMap();
 
         CreateMap<Group, GroupCreateModel>().ReverseMap();
         CreateMap<Group, GroupUpdateModel>().ReverseMap();

@@ -7,7 +7,7 @@ namespace HaadCRM.Service.DTOs.EmployeeDTOs.Employees;
 
 public class EmployeeViewModel
 {
-    public User User { get; set; }
+    public UserViewModel User { get; set; }
     public EmployeeRoleViewModel EmployeeRole { get; set; }
     public AssetViewModel Asset { get; set; }
     public string Description { get; set; }

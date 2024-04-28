@@ -37,7 +37,8 @@ public class ExamGradeService(
 
     public async ValueTask<ExamGradeViewModel> GetByIdAsync(long id)
     {
-        var examGrade = await unitOfWork.ExamGrades.SelectAsync(eg => eg.Id == id)
+        var examGrade = await unitOfWork.ExamGrades.SelectAsync(eg => eg.Id == id,
+            ["Student", "Exam", "Teacher", "Assistant"])
                         ?? throw new NotFoundException($"ExamGrade with ID={id} is not found");
 
         return mapper.Map<ExamGradeViewModel>(examGrade);
@@ -47,18 +48,21 @@ public class ExamGradeService(
     {
         var examGrades = unitOfWork.ExamGrades.SelectAsQueryable(
             expression: eg => !eg.IsDeleted,
-            includes: ["Student", "Exam", "Employee"],
+            includes: ["Student", "Exam", "Teacher", "Assistant"],
             isTracked: false).OrderBy(filter);
 
-        return mapper.Map<IEnumerable<ExamGradeViewModel>>(examGrades.ToPaginateAsQueryable(@params).ToListAsync());
+        return await Task.FromResult(mapper.Map<IEnumerable<ExamGradeViewModel>>(examGrades.ToPaginateAsQueryable(@params)));
     }
 
     public async ValueTask<ExamGradeViewModel> UpdateAsync(long id, ExamGradeUpdateModel updateModel)
     {
         await updateModelValidator.ValidateOrPanicAsync(updateModel);
 
-        var existExamGrade = await unitOfWork.ExamGrades.SelectAsync(eg => eg.Id == id)
-                      ?? throw new NotFoundException($"ExamGrade with ID={id} is not found");
+        var existExamGrade = await unitOfWork.ExamGrades
+            .SelectAsync(eg => eg.Id == id,
+                ["Student", "Exam", "Teacher", "Assistant"])
+                ?? throw new NotFoundException($"ExamGrade with ID={id} is not found");
+
         mapper.Map(updateModel, existExamGrade);
 
         await unitOfWork.ExamGrades.UpdateAsync(existExamGrade);
