@@ -1,9 +1,12 @@
-﻿namespace HaadCRM.Service.DTOs.Attendances;
+﻿using HaadCRM.Domain.Entities.Students;
+using HaadCRM.Service.DTOs.LessonsDTOs.Lessons;
+using HaadCRM.Service.DTOs.StudentDTOs.Students;
+
+namespace HaadCRM.Service.DTOs.Attendances;
 
 public class AttendanceViewModel
 {
-    public long Id { get; set; }
-    public long StudentId { get; set; }
-    public long LessonId { get; set; }
     public bool IsAttended { get; set; }
+    public StudentViewModel Student { get; set; }
+    public LessonViewModel Lesson { get; set; }
 }

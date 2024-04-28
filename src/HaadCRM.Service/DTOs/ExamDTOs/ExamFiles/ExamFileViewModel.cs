@@ -5,7 +5,6 @@ namespace HaadCRM.Service.DTOs.ExamDTOs.ExamFiles;
 
 public class ExamFileViewModel
 {
-    public long Id { get; set; }
     public AssetViewModel Asset { get; set; }
     public ExamViewModel Exam { get; set; }
 }

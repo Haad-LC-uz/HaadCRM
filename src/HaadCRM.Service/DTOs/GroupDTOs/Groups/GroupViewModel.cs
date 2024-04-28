@@ -7,7 +7,6 @@ namespace HaadCRM.Service.DTOs.GroupDTOs.Groups;
 
 public class GroupViewModel
 {
-    public long Id { get; set; }
     public string Name { get; set; }
     public CourseViewModel Course { get; set; }
     public EmployeeViewModel Teacher { get; set; }

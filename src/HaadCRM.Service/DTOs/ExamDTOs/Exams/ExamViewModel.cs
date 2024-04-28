@@ -9,7 +9,6 @@ namespace HaadCRM.Service.DTOs.ExamDTOs.Exams;
 
 public class ExamViewModel
 {
-    public long Id { get; set; }
     public EmployeeViewModel Teacher { get; set; }
     public EmployeeViewModel Assistant { get; set; }
     public GroupViewModel Group { get; set; }

@@ -20,7 +20,6 @@ public class ExamFile : Auditable
     /// The AssetId property represents the Id of the AssetId
     /// </summary>
     public long AssetId { get; set; }
-
     /// <summary>
     /// The Exam property represents the Exam object
     /// </summary>
